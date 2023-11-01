@@ -18,7 +18,14 @@ public interface Constants {
 	 */
 	int SCREEN_WIDTH = 1000;
 	int SCREEN_HEIGHT = 800;
-////
+	
+	// Player
+	
+	String playerImg = "src/Images1/player.png";
+	
+	//colours
+	String Bluebackground = "-fx-background-color: #34495E;";
+	String Blackbackground = "-fx-background-color: #111111;";
 	
 	
 }

@@ -8,8 +8,9 @@ import javafx.scene.transform.Rotate;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import static constants.Constants.SCREEN_HEIGHT;
-import static constants.Constants.SCREEN_WIDTH;
+import constants.Constants;
+
+
 
 /**
  * This class is only used for testing that PlayState works as intended. You
@@ -30,6 +31,7 @@ public class Tester {
 	private Point position;
 	private Image banana;
 	private Image car;
+	private Image player;
 	private Image smile;
 	private int angle = 0;
 
@@ -37,9 +39,12 @@ public class Tester {
 		position = new Point(0, 0);
 
 		try {
-			banana = new Image(new FileInputStream("/Users/oscarwiberg/eclipse-workspace/Images1/h-banana.png"));
-			car = new Image(new FileInputStream("/Users/oscarwiberg/eclipse-workspace/Images1/car.png"));
-			smile = new Image(new FileInputStream("/Users/oscarwiberg/eclipse-workspace/Images1/smiley.png"));
+			banana = new Image(new FileInputStream("src/Images1/h-banana.png"));
+			car = new Image(new FileInputStream("src/Images1/car.png"));
+			smile = new Image(new FileInputStream("src/Images1/smiley.png"));
+			player = new Image(new FileInputStream(Constants.playerImg));
+			
+
 		} catch (FileNotFoundException e) {
 			System.out.println("Unable to find image-files!");
 		}
@@ -96,7 +101,7 @@ public class Tester {
 
 	private void draw(GraphicsContext g) {
 		//		if (position.x >= SCREEN_WIDTH || position.y >= SCREEN_HEIGHT) {
-		if (position.x <= 0 || position.y >= SCREEN_HEIGHT) {
+		if (position.x <= 0 || position.y >= Constants.SCREEN_HEIGHT) {
 			// The position is exiting the screen, so we reset it
 			//			position.x = 0.0;
 			position.x = 900.0;
@@ -105,8 +110,8 @@ public class Tester {
 		}
 
 		drawRotatedImage(g, smile, angle, 500, 400);
-				g.drawImage(car, position.x, position.y, 100, 100);
-//		g.drawImage(car, 900, 650, 100, 100);
+		g.drawImage(car, position.x, position.y, 100, 100);
+		g.drawImage(player, Constants.SCREEN_WIDTH/2-50, 600, 100, 100);
 		g.drawImage(banana, position.x, position.y, 100, 100);
 	}
 }

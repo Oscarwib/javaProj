@@ -1,6 +1,7 @@
 package main;
 
 import states.GameModel;
+import constants.Constants;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -39,8 +40,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage gameStage) throws Exception {
 		gameStage.setTitle("TotallyAwesomeGame, sort of");
-		gameStage.setWidth(1000);
-		gameStage.setHeight(800);
+		gameStage.setWidth(Constants.SCREEN_WIDTH);
+		gameStage.setHeight(Constants.SCREEN_HEIGHT);
 		GameModel model = new GameModel();
 		GameFrame frame = new GameFrame(model, 1000, 800);
 		Scene gameScene = new Scene(frame);
