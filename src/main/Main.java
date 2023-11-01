@@ -9,7 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-//FFffffffff
+//FFfffffffff
 /**
  * This Class is the entry point of the application.
  * <p>
