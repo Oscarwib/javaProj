@@ -1,16 +1,21 @@
 package states;
 
 import testing.Tester;
-
+import testing.Tester.Point;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 
-import static constants.Constants.SCREEN_HEIGHT;
-import static constants.Constants.SCREEN_WIDTH;
+
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import constants.Constants;
 
 /**
  * This state represents the Playing State of the Game The main responsibility
@@ -38,17 +43,41 @@ public class PlayState extends GameState {
 	private Color bgColor;
 	private Color fontColor;
 	private Line dottedline;
+	private Image banana;
+	private Image car;
+	private Player player;
+	private Point position;
+
 
 	/* Class only used for testing */
 	private Tester tester;
+
+	public class Point {
+		double x;
+		double y;
+
+		public Point(double x, double y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
 
 	public PlayState(GameModel model) {
 		super(model);
 		informationText = "Press Escape To Return To The Menu";
 		bgColor = Color.WHITE;
 		fontColor = Color.BLUE;
+		position = new Point(0, 0);
 
-		tester = new Tester();
+		try {
+			tester = new Tester();
+			banana = new Image(new FileInputStream("src/Images1/h-banana.png"));
+			car = new Image(new FileInputStream("src/Images1/car.png"));
+			player = new Player(Constants.playerImg);
+		} catch (FileNotFoundException e) {
+			System.out.println("Unable to find image-files!");
+		}
+
 	}
 
 	/**
@@ -60,28 +89,39 @@ public class PlayState extends GameState {
 
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
-		g.fillText(informationText, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
-//		dottedline = new Line(20, 200, 120, 270);
-//		dottedline.getStrokeDashArray().addAll(2d);
+		g.fillText(informationText, Constants.screenWidth / 3, Constants.screenHeight / 3);
+		//		dottedline = new Line(20, 200, 120, 270);
+		//		dottedline.getStrokeDashArray().addAll(2d);
 		g.setStroke(Color.BLACK);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
-		g.strokeLine(SCREEN_WIDTH, 650, 0, 650);
+		g.strokeLine(Constants.screenWidth, 650, 0, 650);
 		// Can also use:
 		// g.setStroke(fontColor);
 		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
 		// This could be a call to all our objects that we want to draw.
 		// Using the tester simply to illustrate how it could work.
-		tester.delegate(g);
+		//		tester.delegate(g);
+		g.drawImage(car, position.x, position.y, 100, 100);
+		g.drawImage(player.getPlayerImageView(), Constants.screenWidth/2-50, 600, 100, 100);
+		g.drawImage(banana, position.x, position.y, 100, 100);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent key) {
 		System.out.println("Trycker på " + key.getCode() + " i PlayState");
 
-		if (key.getCode() == KeyCode.ESCAPE)
+		if (key.getCode() == KeyCode.ESCAPE) {
+
 			model.switchState(new MenuState(model));
+		}
+
+		else {
+			player.move(key.getCode());
+		}
+
+
 	}
 
 	@Override
@@ -97,7 +137,7 @@ public class PlayState extends GameState {
 	 */
 	@Override
 	public void activate() {
-		
+
 	}
 
 	/**
@@ -106,7 +146,7 @@ public class PlayState extends GameState {
 	 */
 	@Override
 	public void deactivate() {
-		
+
 	}
 
 }

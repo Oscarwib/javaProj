@@ -1,11 +1,12 @@
 package states;
 
 import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
-import static constants.Constants.SCREEN_HEIGHT;
-import static constants.Constants.SCREEN_WIDTH;
+
+import constants.Constants;
 
 /**
  * This class represents a state of the game. These states are different views
@@ -63,7 +64,7 @@ public abstract class GameState {
 	public void drawBg(GraphicsContext g, Color color) {
 		// Here we can draw a background if we so desire.
 		g.setFill(color);
-		g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		g.fillRect(0, 0, Constants.screenWidth, Constants.screenHeight);
 
 	}
 

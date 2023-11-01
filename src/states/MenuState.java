@@ -1,13 +1,15 @@
 package states;
 
 import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import static constants.Constants.SCREEN_HEIGHT;
-import static constants.Constants.SCREEN_WIDTH;
+
+
+import constants.Constants;
 
 /**
  * This state represents the menu of the Game The main responsibility of this
@@ -43,21 +45,13 @@ public class MenuState extends GameState {
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
 		// Print the information text, centered on the canvas
-		g.fillText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		g.fillText(informationText, Constants.screenWidth / 2, Constants.screenHeight / 2);
 		// Can also use:
 		// g.setStroke(fontColor);
 		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	}
 
-	/**
-	 *
-	 * @param key KeyEvent representing the pressed key
-	 *
-	 *            This function prints the pressed key to the console it's used to
-	 *            show that a change of state has been made
-	 *
-	 *            For more information see GameState
-	 */
+	
 	@Override
 	public void keyPressed(KeyEvent key) {
 		System.out.println("Trycker på " + key.getText() + " i MenuState");
@@ -69,32 +63,25 @@ public class MenuState extends GameState {
 		}
 	}
 
-	/**
-	 * We have nothing to update in the menu, no moving objects etc. so we leave the
-	 * update method empty.
-	 */
 	@Override
 	public void update() {
+		// TODO Auto-generated method stub
+		
 	}
 
-	/**
-	 * We currently don't have anything to activate in the MenuState so we leave
-	 * this method empty in this case.
-	 */
 	@Override
 	public void activate() {
-
+		// TODO Auto-generated method stub
+		
 	}
-
-	/**
-	 * We currently don't have anything to deactivate in the MenuState so we leave
-	 * this method empty in this case.
-	 */
 
 	@Override
 	public void deactivate() {
-
+		// TODO Auto-generated method stub
+		
 	}
+
+	
 
 }
 

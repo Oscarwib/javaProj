@@ -32,6 +32,11 @@ import javafx.stage.Stage;
  * @author magni54, alomi60
  */
 public class Main extends Application {
+	
+	private GameModel model;
+	private Scene gameScene;
+	private GameFrame frame;
+	
 
 	public static void main(String[] args) {
 		launch(args);
@@ -39,13 +44,14 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage gameStage) throws Exception {
-		gameStage.setTitle("TotallyAwesomeGame, sort of");
-		gameStage.setWidth(Constants.SCREEN_WIDTH);
-		gameStage.setHeight(Constants.SCREEN_HEIGHT);
+		
+		
+		
+		gameStage.setWidth(Constants.screenWidth);
+		gameStage.setHeight(Constants.screenHeight);
 		GameModel model = new GameModel();
 		GameFrame frame = new GameFrame(model, 1000, 800);
 		Scene gameScene = new Scene(frame);
-		// Set the target number of frames per second
 		final double targetFps = 50.0;
 		// Calculate frequency in nano seconds
 		final double nanoPerUpdate = 1000000000.0 / targetFps;

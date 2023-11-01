@@ -16,12 +16,14 @@ public interface Constants {
 	/*
 	 * Define the size of the window
 	 */
-	int SCREEN_WIDTH = 1000;
-	int SCREEN_HEIGHT = 800;
+	int screenWidth = 1000;
+	int screenHeight = 800;
 	
 	// Player
 	
 	String playerImg = "src/Images1/player.png";
+	int playerWidth = 100;
+	int playerHeight = 100;
 	
 	//colours
 	String Bluebackground = "-fx-background-color: #34495E;";
