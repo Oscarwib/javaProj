@@ -16,6 +16,7 @@ public class Player {
 	private int score = 0;
 	private int lives = 3;
 	private int scoreBonus = 1;
+	private Image playerImage;
 	
 	public Player(String playerImg) {
 
@@ -34,6 +35,10 @@ public class Player {
 
 	public ImageView getPlayerImageView() {
 		return playerImageView;
+	}
+	
+	public Image getImage() {
+		return playerImage;
 	}
 
 

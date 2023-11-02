@@ -45,7 +45,7 @@ public class MenuState extends GameState {
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
 		// Print the information text, centered on the canvas
-		g.fillText(informationText, Constants.screenWidth / 2, Constants.screenHeight / 2);
+		g.fillText(informationText, Constants.screenWidth/2 - informationText.length(), Constants.screenHeight / 2);
 		// Can also use:
 		// g.setStroke(fontColor);
 		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);

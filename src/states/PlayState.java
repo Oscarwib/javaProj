@@ -42,38 +42,29 @@ public class PlayState extends GameState {
 	private String informationText;
 	private Color bgColor;
 	private Color fontColor;
-	private Line dottedline;
 	private Image banana;
 	private Image car;
-	private Player player;
-	private Point position;
+	private Image player;
+	private Double posX = Constants.screenWidth/2 - (Constants.playerWidth/2);
+//	private Double posX = Constants.screenWidth/2 - (Constants.playerWidth/2);
+//	private Double posY = Constants.screenHeight - 200;
+//	private Double posY = Constants.screenHeight;
+	private Double posY = Constants.screenHeight / 3 - Constants.playerHeight/2;
 
 
 	/* Class only used for testing */
-	private Tester tester;
-
-	public class Point {
-		double x;
-		double y;
-
-		public Point(double x, double y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
+	
 
 	public PlayState(GameModel model) {
 		super(model);
 		informationText = "Press Escape To Return To The Menu";
 		bgColor = Color.WHITE;
 		fontColor = Color.BLUE;
-		position = new Point(0, 0);
 
 		try {
-			tester = new Tester();
 			banana = new Image(new FileInputStream("src/Images1/h-banana.png"));
 			car = new Image(new FileInputStream("src/Images1/car.png"));
-			player = new Player(Constants.playerImg);
+			player = new Image(new FileInputStream("src/Images1/player.png"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Unable to find image-files!");
 		}
@@ -95,7 +86,7 @@ public class PlayState extends GameState {
 		g.setStroke(Color.BLACK);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
-		g.strokeLine(Constants.screenWidth, 650, 0, 650);
+		g.strokeLine(Constants.screenWidth, Constants.screenHeight/3, 0, Constants.screenHeight/3);
 		// Can also use:
 		// g.setStroke(fontColor);
 		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
@@ -103,9 +94,9 @@ public class PlayState extends GameState {
 		// This could be a call to all our objects that we want to draw.
 		// Using the tester simply to illustrate how it could work.
 		//		tester.delegate(g);
-		g.drawImage(car, position.x, position.y, 100, 100);
-		g.drawImage(player.getPlayerImageView(), Constants.screenWidth/2-50, 600, 100, 100);
-		g.drawImage(banana, position.x, position.y, 100, 100);
+//		g.drawImage(car, posX, posY, 100, 100);
+		g.drawImage(player, posX, posY, 100, 100);
+//		g.drawImage(banana, posX, posY, 100, 100);
 	}
 
 	@Override
@@ -128,7 +119,6 @@ public class PlayState extends GameState {
 	public void update() {
 		// Here one would probably instead move the player and any
 		// enemies / moving obstacles currently active.
-		tester.update();
 	}
 
 	/**
