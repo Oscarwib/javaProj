@@ -17,14 +17,16 @@ public class Player {
 	private int lives = 3;
 	private int scoreBonus = 1;
 	private Image playerImage;
+	private Double posX = Constants.screenWidth/2 - (Constants.playerWidth/2);
+	private Double posY = 265.00;
 	
 	public Player(String playerImg) {
 
 		try {
 			Image playerImage = new Image(new FileInputStream(playerImg));
 			playerImageView = new ImageView(playerImage);
-			playerImageView.setX(playerX);
-			playerImageView.setY(playerY);
+			playerImageView.setX(posX);
+			playerImageView.setY(posY);
 			playerImageView.setFitWidth(Constants.playerWidth);
 			playerImageView.setFitHeight(Constants.playerHeight);
 		} catch (FileNotFoundException e) {
@@ -51,12 +53,12 @@ public class Player {
 	}
 
 	private void moveDown() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	private void moveUp() {
-		// TODO Auto-generated method stub
+		
+			playerImageView.setY(playerY + 5);
 		
 	}
 

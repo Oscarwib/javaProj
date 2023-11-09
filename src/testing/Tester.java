@@ -101,7 +101,7 @@ public class Tester {
 
 	private void draw(GraphicsContext g) {
 		//		if (position.x >= SCREEN_WIDTH || position.y >= SCREEN_HEIGHT) {
-		if (position.x <= 0 || position.y >= Constants.SCREEN_HEIGHT) {
+		if (position.x <= 0 || position.y >= Constants.screenHeight) {
 			// The position is exiting the screen, so we reset it
 			//			position.x = 0.0;
 			position.x = 1000.0;
@@ -111,7 +111,7 @@ public class Tester {
 
 //		drawRotatedImage(g, smile, angle, 500, 400);
 		g.drawImage(car, position.x, position.y, 100, 100);
-		g.drawImage(player, Constants.SCREEN_WIDTH/2-50, 600, 100, 100);
+		g.drawImage(player, Constants.screenWidth/2-50, 600, 100, 100);
 		g.drawImage(banana, position.x, position.y, 100, 100);
 	}
 }

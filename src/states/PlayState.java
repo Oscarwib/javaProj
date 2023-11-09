@@ -4,14 +4,14 @@ import testing.Tester;
 import testing.Tester.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 
-
-
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -42,32 +42,36 @@ public class PlayState extends GameState {
 	private String informationText;
 	private Color bgColor;
 	private Color fontColor;
-	private Image banana;
-	private Image car;
+	private Double playerPosX = Constants.screenWidth/2 - (Constants.playerWidth/2);
+	//	private Double posX = Constants.screenWidth/2 - (Constants.playerWidth/2);
+	//	private Double posY = Constants.screenHeight - 200;
+	//	private Double posY = Constants.screenHeight;
+	private Double playerPosY = 265.00;
 	private Image player;
-	private Double posX = Constants.screenWidth/2 - (Constants.playerWidth/2);
-//	private Double posX = Constants.screenWidth/2 - (Constants.playerWidth/2);
-//	private Double posY = Constants.screenHeight - 200;
-//	private Double posY = Constants.screenHeight;
-	private Double posY = Constants.screenHeight / 3 - Constants.playerHeight/2;
+	private Image obstacle;
+	private Double enemyPosX = -100.00;
+	private Double enemyPosY = 250.00;
 
 
 	/* Class only used for testing */
-	
+
 
 	public PlayState(GameModel model) {
 		super(model);
 		informationText = "Press Escape To Return To The Menu";
 		bgColor = Color.WHITE;
 		fontColor = Color.BLUE;
-
 		try {
-			banana = new Image(new FileInputStream("src/Images1/h-banana.png"));
-			car = new Image(new FileInputStream("src/Images1/car.png"));
-			player = new Image(new FileInputStream("src/Images1/player.png"));
+			player = new Image(new FileInputStream(Constants.playerImg));
+			obstacle = new Image(new FileInputStream(Constants.enemyImg));
 		} catch (FileNotFoundException e) {
-			System.out.println("Unable to find image-files!");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
+		
+		
 
 	}
 
@@ -86,7 +90,7 @@ public class PlayState extends GameState {
 		g.setStroke(Color.BLACK);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
-		g.strokeLine(Constants.screenWidth, Constants.screenHeight/3, 0, Constants.screenHeight/3);
+		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 		// Can also use:
 		// g.setStroke(fontColor);
 		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
@@ -94,9 +98,15 @@ public class PlayState extends GameState {
 		// This could be a call to all our objects that we want to draw.
 		// Using the tester simply to illustrate how it could work.
 		//		tester.delegate(g);
-//		g.drawImage(car, posX, posY, 100, 100);
-		g.drawImage(player, posX, posY, 100, 100);
-//		g.drawImage(banana, posX, posY, 100, 100);
+		//		g.drawImage(car, posX, posY, 100, 100);
+		
+		if (enemyPosX < 0 - Constants.enemyWidth) {
+			enemyPosX = Constants.screenWidth;
+		}
+		
+		g.drawImage(player, playerPosX, playerPosY, Constants.playerWidth, Constants.playerHeight);
+		g.drawImage(obstacle, enemyPosX, enemyPosY, Constants.enemyWidth, Constants.enemyHeight);
+		//		g.drawImage(banana, posX, posY, 100, 100);
 	}
 
 	@Override
@@ -106,10 +116,16 @@ public class PlayState extends GameState {
 		if (key.getCode() == KeyCode.ESCAPE) {
 
 			model.switchState(new MenuState(model));
-		}
+		} else if (key.getCode() == KeyCode.UP) {
+			
+			if (playerPosY < 265) {
+				return;
+			}
 
-		else {
-			player.move(key.getCode());
+			playerPosY -= 175;
+			
+
+
 		}
 
 
@@ -117,6 +133,16 @@ public class PlayState extends GameState {
 
 	@Override
 	public void update() {
+		
+		enemyPosX -= 10;
+		
+		if (playerPosY < 265) {
+			
+			playerPosY += 5;
+			
+		}
+		
+		
 		// Here one would probably instead move the player and any
 		// enemies / moving obstacles currently active.
 	}

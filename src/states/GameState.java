@@ -3,6 +3,7 @@ package states;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 

@@ -1,5 +1,10 @@
 package constants;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javafx.scene.image.Image;
+
 public interface Constants {
 
 	/**
@@ -17,7 +22,7 @@ public interface Constants {
 	 * Define the size of the window
 	 */
 	final double screenWidth = 1000;
-	final double screenHeight = 800;
+	final double screenHeight = 500;
 	
 	// Player
 	
@@ -29,5 +34,9 @@ public interface Constants {
 	String Bluebackground = "-fx-background-color: #34495E;";
 	String Blackbackground = "-fx-background-color: #111111;";
 	
+	//enemies
+	String enemyImg = "src/Images1/tree.png";
+	double enemyWidth = 100;
+	double enemyHeight = 100;
 	
 }
