@@ -1,6 +1,7 @@
 package states;
 
 import testing.Tester;
+
 import testing.Tester.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -43,14 +44,14 @@ public class PlayState extends GameState {
 	private Color bgColor;
 	private Color fontColor;
 	private Double playerPosX = Constants.screenWidth/2 - (Constants.playerWidth/2);
-	//	private Double posX = Constants.screenWidth/2 - (Constants.playerWidth/2);
-	//	private Double posY = Constants.screenHeight - 200;
-	//	private Double posY = Constants.screenHeight;
 	private Double playerPosY = 265.00;
-	private Image player;
+//	private Image player;
 	private Image obstacle;
 	private Double enemyPosX = -100.00;
 	private Double enemyPosY = 250.00;
+	private boolean up = false;
+	private boolean down = false;
+	private Player player;
 
 
 	/* Class only used for testing */
@@ -59,19 +60,18 @@ public class PlayState extends GameState {
 	public PlayState(GameModel model) {
 		super(model);
 		informationText = "Press Escape To Return To The Menu";
-		bgColor = Color.WHITE;
+		bgColor = Color.BEIGE;
 		fontColor = Color.BLUE;
+		
+		player = new Player(Constants.playerImg);
+		
 		try {
-			player = new Image(new FileInputStream(Constants.playerImg));
 			obstacle = new Image(new FileInputStream(Constants.enemyImg));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
+
 
 	}
 
@@ -85,28 +85,17 @@ public class PlayState extends GameState {
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
 		g.fillText(informationText, Constants.screenWidth / 3, Constants.screenHeight / 3);
-		//		dottedline = new Line(20, 200, 120, 270);
-		//		dottedline.getStrokeDashArray().addAll(2d);
 		g.setStroke(Color.BLACK);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
-		// Can also use:
-		// g.setStroke(fontColor);
-		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-		// This could be a call to all our objects that we want to draw.
-		// Using the tester simply to illustrate how it could work.
-		//		tester.delegate(g);
-		//		g.drawImage(car, posX, posY, 100, 100);
-		
 		if (enemyPosX < 0 - Constants.enemyWidth) {
 			enemyPosX = Constants.screenWidth;
 		}
-		
-		g.drawImage(player, playerPosX, playerPosY, Constants.playerWidth, Constants.playerHeight);
+
+		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
 		g.drawImage(obstacle, enemyPosX, enemyPosY, Constants.enemyWidth, Constants.enemyHeight);
-		//		g.drawImage(banana, posX, posY, 100, 100);
 	}
 
 	@Override
@@ -117,14 +106,14 @@ public class PlayState extends GameState {
 
 			model.switchState(new MenuState(model));
 		} else if (key.getCode() == KeyCode.UP) {
-			
-			if (playerPosY < 265) {
+
+			if (player.getPlayerY() != 265.00) {
 				return;
 			}
 
-			playerPosY -= 175;
-			
+			up = true;
 
+			
 
 		}
 
@@ -133,19 +122,56 @@ public class PlayState extends GameState {
 
 	@Override
 	public void update() {
-		
+
 		enemyPosX -= 10;
+
+//		if (up) {
+//
+//			playerPosY -= 10;
+//
+//			if (playerPosY <= 110) {
+//
+//				up = false;
+//				down = true;
+//
+//			}
+//
+//		} else if (down) {
+//
+//			playerPosY += 10;
+//
+//			if (playerPosY == 265) {
+//
+//				down = false;
+//
+//			}
+//
+//		}
 		
-		if (playerPosY < 265) {
+		if (up) {
 			
-			playerPosY += 5;
-			
+			player.moveUp();
+
+
+		} else if (down) {
+
+			playerPosY += 10;
+
+			if (playerPosY == 265) {
+
+				down = false;
+
+			}
+
 		}
-		
-		
-		// Here one would probably instead move the player and any
-		// enemies / moving obstacles currently active.
+
+
 	}
+
+	
+
+	// Here one would probably instead move the player and any
+	// enemies / moving obstacles currently active.
 
 	/**
 	 * We currently don't have anything to activate in the PlayState so we leave

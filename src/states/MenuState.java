@@ -2,12 +2,16 @@ package states;
 
 import javafx.scene.canvas.GraphicsContext;
 
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.image.Image;
 
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import constants.Constants;
 
@@ -26,13 +30,23 @@ public class MenuState extends GameState {
 	private Color fontColor;
 	// A PlayState, so we can change to the PlayState from the menu.
 	private PlayState playState;
+	private Image dinosaur;
 
 	public MenuState(GameModel model) {
 		super(model);
 		playState = new PlayState(model);
-		informationText = "Press Enter To Play\nEscape to exit";
-		bgColor = Color.GREEN;
-		fontColor = Color.RED;
+		informationText = "Welcome to the Dino game!\nTo play, press ENTER for mode 1 or SPACE for mode 2\nEscape to exit game";
+		bgColor = Color.GREY;
+		fontColor = Color.LIGHTBLUE;
+		
+		try {
+			
+		dinosaur = new Image(new FileInputStream("src/Images1/dinosaur.png"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -41,11 +55,11 @@ public class MenuState extends GameState {
 	@Override
 	public void draw(GraphicsContext g) {
 		drawBg(g, bgColor);
-
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
 		// Print the information text, centered on the canvas
-		g.fillText(informationText, Constants.screenWidth/2 - informationText.length(), Constants.screenHeight / 2);
+		g.fillText(informationText, Constants.screenWidth/4, Constants.screenHeight / 4);
+		g.drawImage(dinosaur, Constants.screenWidth/2, Constants.screenHeight/2, 200, 200);
 		// Can also use:
 		// g.setStroke(fontColor);
 		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
