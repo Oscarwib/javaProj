@@ -9,14 +9,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
 public class Player {
-	
+
 	private double playerX = (Constants.screenWidth - Constants.playerWidth) / 2;
 	private double playerY = 265.00;
-	private int score = 0;
+	private int score = 0; 
 	private int lives = 3;
 	private Image image;
+	private boolean down = false;
 
-	
+
 	public Player(String playerImg) {
 
 		try {
@@ -53,22 +54,49 @@ public class Player {
 	}
 
 	public void moveUp() {
-		
-		playerY -= 10;
 
-		if (playerY <= 110) {
-return;
-//			up = false;
-//			down = true;
+
+//		if (playerY > 110) {
+
+			playerY -= 10;
+
+
+			if (playerY <= 110) {
+
+				down = true;
+
+			}
+
+//		} 
+
+		if (down) {
+
+			playerY += 10;
+			
+			if (playerY == 265) {
+				down = false;
+			}
 
 		}
-		
-	}
-	
-	public void moveDown() {
-		
-	}
-	
 
-	
+
+	}
+
+	public void setPlayerX(double playerX) {
+		this.playerX = playerX;
+	}
+
+
+	public void setPlayerY(double playerY) {
+		this.playerY = playerY;
+	}
+
+
+	public boolean moveDown(boolean down) {
+		return down;
+
+	}
+
+
+
 }

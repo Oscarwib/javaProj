@@ -45,7 +45,7 @@ public class PlayState extends GameState {
 	private Color fontColor;
 	private Double playerPosX = Constants.screenWidth/2 - (Constants.playerWidth/2);
 	private Double playerPosY = 265.00;
-//	private Image player;
+	//	private Image player;
 	private Image obstacle;
 	private Double enemyPosX = -100.00;
 	private Double enemyPosY = 250.00;
@@ -62,9 +62,9 @@ public class PlayState extends GameState {
 		informationText = "Press Escape To Return To The Menu";
 		bgColor = Color.BEIGE;
 		fontColor = Color.BLUE;
-		
+
 		player = new Player(Constants.playerImg);
-		
+
 		try {
 			obstacle = new Image(new FileInputStream(Constants.enemyImg));
 		} catch (FileNotFoundException e) {
@@ -107,13 +107,13 @@ public class PlayState extends GameState {
 			model.switchState(new MenuState(model));
 		} else if (key.getCode() == KeyCode.UP) {
 
-			if (player.getPlayerY() != 265.00) {
-				return;
-			}
+			//			if (player.getPlayerY() != 265.00) {
+			//				return;
+			//			}
 
 			up = true;
 
-			
+
 
 		}
 
@@ -125,50 +125,62 @@ public class PlayState extends GameState {
 
 		enemyPosX -= 10;
 
-//		if (up) {
-//
-//			playerPosY -= 10;
-//
-//			if (playerPosY <= 110) {
-//
-//				up = false;
-//				down = true;
-//
-//			}
-//
-//		} else if (down) {
-//
-//			playerPosY += 10;
-//
-//			if (playerPosY == 265) {
-//
-//				down = false;
-//
-//			}
-//
-//		}
-		
+
 		if (up) {
-			
+
 			player.moveUp();
-
-
-		} else if (down) {
-
-			playerPosY += 10;
-
-			if (playerPosY == 265) {
-
-				down = false;
-
-			}
 
 		}
 
 
+		//		if (up) {
+		//			
+		////			 up = false;
+		//		
+		//
+		//				player.setPlayerY(player.getPlayerY()-10);
+		//
+		//			if (player.getPlayerY() <= 110) {
+		//
+		//				up = false;
+		//				down = true;
+		//
+		//			}
+		//
+		//		} else if (down) {
+		//
+		//			playerPosY += 10;
+		//			player.setPlayerY(player.getPlayerY()+10);
+		//
+		//			if (player.getPlayerY() == 265) {
+		//
+		//				down = false;
+		//
+		//			}
+		//
+		//		}
+
+		//		if (up) {
+		//			
+		//			player.move();
+		//
+		//
+		//		} else if (down) {
+		//
+		//			playerPosY += 10;
+		//
+		//			if (playerPosY == 265) {
+		//
+		//				down = false;
+		//
+		//			}
+		//
+		//		}
+
+
 	}
 
-	
+
 
 	// Here one would probably instead move the player and any
 	// enemies / moving obstacles currently active.
