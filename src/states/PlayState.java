@@ -1,18 +1,12 @@
 package states;
 
-import testing.Tester;
-
-import testing.Tester.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -43,14 +37,10 @@ public class PlayState extends GameState {
 	private String informationText;
 	private Color bgColor;
 	private Color fontColor;
-	private Double playerPosX = Constants.screenWidth/2 - (Constants.playerWidth/2);
-	private Double playerPosY = 265.00;
-	//	private Image player;
 	private Image obstacle;
 	private Double enemyPosX = -100.00;
 	private Double enemyPosY = 250.00;
 	private boolean up = false;
-	private boolean down = false;
 	private Player player;
 
 
@@ -106,15 +96,8 @@ public class PlayState extends GameState {
 
 			model.switchState(new MenuState(model));
 		} else if (key.getCode() == KeyCode.UP) {
-
-			//			if (player.getPlayerY() != 265.00) {
-			//				return;
-			//			}
-
 			up = true;
-
-
-
+			
 		}
 
 
@@ -125,59 +108,15 @@ public class PlayState extends GameState {
 
 		enemyPosX -= 10;
 
-
 		if (up) {
 
-			player.moveUp();
-
+			player.jump();
 		}
-
-
-		//		if (up) {
-		//			
-		////			 up = false;
-		//		
-		//
-		//				player.setPlayerY(player.getPlayerY()-10);
-		//
-		//			if (player.getPlayerY() <= 110) {
-		//
-		//				up = false;
-		//				down = true;
-		//
-		//			}
-		//
-		//		} else if (down) {
-		//
-		//			playerPosY += 10;
-		//			player.setPlayerY(player.getPlayerY()+10);
-		//
-		//			if (player.getPlayerY() == 265) {
-		//
-		//				down = false;
-		//
-		//			}
-		//
-		//		}
-
-		//		if (up) {
-		//			
-		//			player.move();
-		//
-		//
-		//		} else if (down) {
-		//
-		//			playerPosY += 10;
-		//
-		//			if (playerPosY == 265) {
-		//
-		//				down = false;
-		//
-		//			}
-		//
-		//		}
-
-
+		
+		if (player.getPlayerY() == 265) {
+			up = false;
+		}
+		
 	}
 
 

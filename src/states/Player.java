@@ -1,12 +1,13 @@
 package states;
 
 import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 
 import constants.Constants;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class Player {
 
@@ -16,6 +17,7 @@ public class Player {
 	private int lives = 3;
 	private Image image;
 	private boolean down = false;
+	private boolean up = false;
 
 
 	public Player(String playerImg) {
@@ -53,22 +55,32 @@ public class Player {
 		return playerY;
 	}
 
-	public void moveUp() {
+	
+	
+	public void move(KeyEvent key) {
+		
+		if (key.getCode() == KeyCode.UP) {
+			this.jump();
+			up = true;
+		}
+		
+	}
+	
+		
+	public void jump() {
+				
+	if (!down) {
+		
+		playerY -= 10;
+		
+		if (playerY <= 110) {
 
+			down = true;
+			
+		}
 
-//		if (playerY > 110) {
-
-			playerY -= 10;
-
-
-			if (playerY <= 110) {
-
-				down = true;
-
-			}
-
-//		} 
-
+	}
+	
 		if (down) {
 
 			playerY += 10;
@@ -79,8 +91,8 @@ public class Player {
 
 		}
 
-
 	}
+	
 
 	public void setPlayerX(double playerX) {
 		this.playerX = playerX;
@@ -90,13 +102,6 @@ public class Player {
 	public void setPlayerY(double playerY) {
 		this.playerY = playerY;
 	}
-
-
-	public boolean moveDown(boolean down) {
-		return down;
-
-	}
-
 
 
 }
