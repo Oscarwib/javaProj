@@ -42,6 +42,7 @@ public class PlayState extends GameState {
 	private Double enemyPosY = 250.00;
 	private boolean up = false;
 	private Player player;
+	private Enemy enemy;
 
 
 	/* Class only used for testing */
@@ -54,6 +55,8 @@ public class PlayState extends GameState {
 		fontColor = Color.BLUE;
 
 		player = new Player(Constants.playerImg);
+		enemy = new Enemy(Constants.enemyImg);
+		
 
 		try {
 			obstacle = new Image(new FileInputStream(Constants.enemyImg));
@@ -80,12 +83,17 @@ public class PlayState extends GameState {
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
-		if (enemyPosX < 0 - Constants.enemyWidth) {
-			enemyPosX = Constants.screenWidth;
+//		if (enemyPosX < 0 - Constants.enemyWidth) {
+//			enemyPosX = Constants.screenWidth;
+//		}
+		
+		if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
+			enemy.setEnemyX(Constants.screenWidth);
 		}
 
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
-		g.drawImage(obstacle, enemyPosX, enemyPosY, Constants.enemyWidth, Constants.enemyHeight);
+//		g.drawImage(obstacle, enemyPosX, enemyPosY, Constants.enemyWidth, Constants.enemyHeight);
+		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
 	}
 
 	@Override
@@ -106,7 +114,11 @@ public class PlayState extends GameState {
 	@Override
 	public void update() {
 
-		enemyPosX -= 10;
+//		enemyPosX -= 10;
+		
+		enemy.setEnemyX(enemy.getEnemyX()-10);
+		
+		
 
 		if (up) {
 
@@ -116,6 +128,10 @@ public class PlayState extends GameState {
 		if (player.getPlayerY() == 265) {
 			up = false;
 		}
+		
+	}
+	
+	public void checkCollision() {
 		
 	}
 
