@@ -57,15 +57,6 @@ public class PlayState extends GameState {
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
 		
-
-		try {
-			obstacle = new Image(new FileInputStream(Constants.enemyImg));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
 	}
 
 	/**
@@ -83,17 +74,15 @@ public class PlayState extends GameState {
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
-//		if (enemyPosX < 0 - Constants.enemyWidth) {
-//			enemyPosX = Constants.screenWidth;
-//		}
 		
 		if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
 			enemy.setEnemyX(Constants.screenWidth);
 		}
 
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
-//		g.drawImage(obstacle, enemyPosX, enemyPosY, Constants.enemyWidth, Constants.enemyHeight);
 		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
+		
+		
 	}
 
 	@Override
@@ -114,10 +103,9 @@ public class PlayState extends GameState {
 	@Override
 	public void update() {
 
-//		enemyPosX -= 10;
+		checkCollision();
 		
 		enemy.setEnemyX(enemy.getEnemyX()-10);
-		
 		
 
 		if (up) {
@@ -132,6 +120,9 @@ public class PlayState extends GameState {
 	}
 	
 	public void checkCollision() {
+		
+		// rita upp från player samt enemy x och y kordinater + eller - höjd och bredd, då får vi spannen som enemy och player bilderna befinner sig i
+		// nästlade if satser, först kolla om enemy befinner sig i mitten av skärmen på players x position, sen kollar vi om players y är större än enemy
 		
 	}
 

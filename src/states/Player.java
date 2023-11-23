@@ -6,8 +6,10 @@ import java.io.FileNotFoundException;
 
 import constants.Constants;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.Rectangle;
 
 public class Player {
 
@@ -18,16 +20,30 @@ public class Player {
 	private Image image;
 	private boolean down = false;
 	private boolean up = false;
+	private Rectangle rekt;
+	private ImageView playerView;
 
 
 	public Player(String playerImg) {
 
 		try {
 			image = new Image(new FileInputStream(playerImg));
+			playerView = new ImageView(image);
+			playerView.setX(playerX);
+			playerView.setY(playerY);
+			playerView.setFitHeight(Constants.playerHeight);
+			playerView.setFitWidth(Constants.playerWidth);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+	}
+
+
+	public ImageView getPlayerView() {
+		return playerView;
 	}
 
 
@@ -57,17 +73,11 @@ public class Player {
 
 	
 	
-	public void move(KeyEvent key) {
-		
-		if (key.getCode() == KeyCode.UP) {
-			this.jump();
-			up = true;
-		}
-		
-	}
+	
 	
 		
 	public void jump() {
+		
 				
 	if (!down) {
 		
