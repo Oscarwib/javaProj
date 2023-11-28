@@ -37,8 +37,8 @@ public class Player {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 
 
@@ -53,12 +53,14 @@ public class Player {
 
 
 	public int getLives() {
-		return lives;
+		return this.lives;
 	}
 
 
-	public void setLives(int lives) {
-		this.lives = lives;
+	public void decreaseLives() {
+
+		this.lives--;
+		System.out.println(this.lives);
 	}
 
 
@@ -71,30 +73,30 @@ public class Player {
 		return playerY;
 	}
 
-	
-	
-	
-	
-		
-	public void jump() {
-		
-				
-	if (!down) {
-		
-		playerY -= 10;
-		
-		if (playerY <= 110) {
 
-			down = true;
-			
+
+
+
+
+	public void jump() {
+
+
+		if (!down) {
+
+			playerY -= 10;
+
+			if (playerY <= 110) {
+
+				down = true;
+
+			}
+
 		}
 
-	}
-	
 		if (down) {
 
 			playerY += 10;
-			
+
 			if (playerY == 265) {
 				down = false;
 			}
@@ -102,7 +104,7 @@ public class Player {
 		}
 
 	}
-	
+
 
 	public void setPlayerX(double playerX) {
 		this.playerX = playerX;

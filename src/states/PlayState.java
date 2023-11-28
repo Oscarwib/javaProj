@@ -37,9 +37,6 @@ public class PlayState extends GameState {
 	private String informationText;
 	private Color bgColor;
 	private Color fontColor;
-	private Image obstacle;
-	private Double enemyPosX = -100.00;
-	private Double enemyPosY = 250.00;
 	private boolean up = false;
 	private Player player;
 	private Enemy enemy;
@@ -120,6 +117,17 @@ public class PlayState extends GameState {
 	}
 	
 	public void checkCollision() {
+		
+		
+		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
+//			System.out.println("helo");
+			if((player.getPlayerY() + 60) >= enemy.getEnemyY() ) {
+				System.out.println("fäk");
+				player.decreaseLives();
+			}
+		} 
+		
+		
 		
 		// rita upp från player samt enemy x och y kordinater + eller - höjd och bredd, då får vi spannen som enemy och player bilderna befinner sig i
 		// nästlade if satser, först kolla om enemy befinner sig i mitten av skärmen på players x position, sen kollar vi om players y är större än enemy
