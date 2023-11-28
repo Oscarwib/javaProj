@@ -59,8 +59,9 @@ public class Player {
 
 	public void decreaseLives() {
 
+
 		this.lives--;
-		System.out.println(this.lives);
+
 	}
 
 

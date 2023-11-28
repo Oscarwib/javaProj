@@ -40,6 +40,7 @@ public class PlayState extends GameState {
 	private boolean up = false;
 	private Player player;
 	private Enemy enemy;
+	private boolean collided = false;
 
 
 	/* Class only used for testing */
@@ -53,7 +54,7 @@ public class PlayState extends GameState {
 
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
-		
+
 	}
 
 	/**
@@ -71,15 +72,15 @@ public class PlayState extends GameState {
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
-		
+
 		if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
 			enemy.setEnemyX(Constants.screenWidth);
 		}
 
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
 		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
-		
-		
+
+
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class PlayState extends GameState {
 			model.switchState(new MenuState(model));
 		} else if (key.getCode() == KeyCode.UP) {
 			up = true;
-			
+
 		}
 
 
@@ -99,39 +100,63 @@ public class PlayState extends GameState {
 
 	@Override
 	public void update() {
+		//om enemy position är mindre än player och collide är true kollar den inte collision
 
-		checkCollision();
-		
+		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
+			if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
+				checkCollision();
+			}
+		}
+
+		if (collided && enemy.getEnemyX() < player.getPlayerX()) {
+			collided = false;
+		}
+
+
 		enemy.setEnemyX(enemy.getEnemyX()-10);
-		
+
 
 		if (up) {
 
 			player.jump();
 		}
-		
+
 		if (player.getPlayerY() == 265) {
 			up = false;
 		}
-		
+
 	}
-	
+
 	public void checkCollision() {
-		
-		
-		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
-//			System.out.println("helo");
-			if((player.getPlayerY() + 60) >= enemy.getEnemyY() ) {
-				System.out.println("fäk");
-				player.decreaseLives();
-			}
-		} 
-		
-		
-		
-		// rita upp från player samt enemy x och y kordinater + eller - höjd och bredd, då får vi spannen som enemy och player bilderna befinner sig i
-		// nästlade if satser, först kolla om enemy befinner sig i mitten av skärmen på players x position, sen kollar vi om players y är större än enemy
-		
+
+
+		//		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX()) && ((player.getPlayerY() + 60) >= enemy.getEnemyY() )) {
+		//
+		//			collided = true;
+		//			System.out.println("helo");
+		//			//			Sätta någon variabel till något värde. Om denna variabel eller boolean inte är tom nästa update så har en krock skett.
+		//
+		//		} 
+		//
+		//		player.decreaseLives(collided);
+
+
+		//		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
+		//			//			System.out.println("helo");
+		if((player.getPlayerY() + 60) >= enemy.getEnemyY() ) {
+			collided = true;
+			System.out.println("fäk");
+			player.decreaseLives();
+			System.out.println(player.getLives());
+
+		}
+		//				System.out.println("slipped by enemy");
+		//			}
+		//		} 
+
+
+
+
 	}
 
 
