@@ -21,8 +21,8 @@ public interface Constants {
 	/*
 	 * Define the size of the window
 	 */
-	final double screenWidth = 1000;
-	final double screenHeight = 500;
+	final int screenWidth = 1000;
+	final int screenHeight = 500;
 	
 	// Player
 	

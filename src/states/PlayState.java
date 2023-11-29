@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,12 +36,14 @@ public class PlayState extends GameState {
 	 * a way to make this more general and not duplicate variables?
 	 */
 	private String informationText;
+	private String livesleft;
 	private Color bgColor;
 	private Color fontColor;
 	private boolean up = false;
 	private Player player;
 	private Enemy enemy;
 	private boolean collided = false;
+	private MenuState menu;
 
 
 	/* Class only used for testing */
@@ -48,12 +51,15 @@ public class PlayState extends GameState {
 
 	public PlayState(GameModel model) {
 		super(model);
-		informationText = "Press Escape To Return To The Menu";
+		informationText = "Press Escape \nTo Return To The Menu";
+		livesleft = "Lives left: ";
 		bgColor = Color.BEIGE;
 		fontColor = Color.BLUE;
 
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
+		
+//		menu = new MenuState(model);
 
 	}
 
@@ -66,12 +72,13 @@ public class PlayState extends GameState {
 
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
-		g.fillText(informationText, Constants.screenWidth / 3, Constants.screenHeight / 3);
+		g.fillText(livesleft+player.getLives(), 0, 30);
+		g.fillText(informationText, Constants.screenWidth - 300, 30);
+
 		g.setStroke(Color.BLACK);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
-
 
 		if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
 			enemy.setEnemyX(Constants.screenWidth);
@@ -145,9 +152,13 @@ public class PlayState extends GameState {
 		//			//			System.out.println("helo");
 		if((player.getPlayerY() + 60) >= enemy.getEnemyY() ) {
 			collided = true;
-			System.out.println("fäk");
+//			System.out.println("fäk");
+			if (Integer.valueOf(player.getLives()) == 0) {
+				menu = new MenuState(model);
+				model.switchState(menu);
+			}
 			player.decreaseLives();
-			System.out.println(player.getLives());
+//			System.out.println(player.getLives());
 
 		}
 		//				System.out.println("slipped by enemy");

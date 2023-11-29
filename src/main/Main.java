@@ -50,7 +50,9 @@ public class Main extends Application {
 		gameStage.setWidth(Constants.screenWidth);
 		gameStage.setHeight(Constants.screenHeight);
 		GameModel model = new GameModel();
-		GameFrame frame = new GameFrame(model, 1000, 800);
+//		GameFrame frame = new GameFrame(model, 1000, 800);
+		GameFrame frame = new GameFrame(model, Constants.screenWidth, Constants.screenHeight);
+
 		Scene gameScene = new Scene(frame);
 		final double targetFps = 50.0;
 		// Calculate frequency in nano seconds
