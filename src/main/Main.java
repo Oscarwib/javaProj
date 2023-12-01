@@ -1,6 +1,7 @@
 package main;
 
 import states.GameModel;
+
 import constants.Constants;
 
 import javafx.animation.AnimationTimer;

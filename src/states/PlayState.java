@@ -37,13 +37,18 @@ public class PlayState extends GameState {
 	 */
 	private String informationText;
 	private String livesleft;
+	private String gameOverText;
 	private Color bgColor;
 	private Color fontColor;
-	private boolean up = false;
 	private Player player;
 	private Enemy enemy;
 	private boolean collided = false;
+	private boolean up = false;
+	private boolean gameOver = false;
 	private MenuState menu;
+	private HighScore score = new HighScore();
+//	private int clearedEnemies;
+	private String scoreText;
 
 
 	/* Class only used for testing */
@@ -53,13 +58,16 @@ public class PlayState extends GameState {
 		super(model);
 		informationText = "Press Escape \nTo Return To The Menu";
 		livesleft = "Lives left: ";
+		gameOverText = "GAMEOVER\n" + informationText;
 		bgColor = Color.BEIGE;
 		fontColor = Color.BLUE;
+		scoreText = "Highscore: ";
+//		+ Integer.toString(score.getHighScore());
 
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
-		
-//		menu = new MenuState(model);
+
+		//		menu = new MenuState(model);
 
 	}
 
@@ -72,8 +80,17 @@ public class PlayState extends GameState {
 
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
-		g.fillText(livesleft+player.getLives(), 0, 30);
-		g.fillText(informationText, Constants.screenWidth - 300, 30);
+
+
+		if (!gameOver) {
+			g.fillText(livesleft+player.getLives(), 0, 30);
+			g.fillText(informationText, Constants.screenWidth - 300, 30);
+			g.fillText(scoreText, 0, 60);
+		} else {
+			g.fillText(gameOverText, Constants.screenWidth/2, 200);
+		}
+
+
 
 		g.setStroke(Color.BLACK);
 		g.setLineWidth(1);
@@ -109,33 +126,37 @@ public class PlayState extends GameState {
 	public void update() {
 		//om enemy position är mindre än player och collide är true kollar den inte collision
 
-		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
-			if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
-				checkCollision();
-			}
-		}
-
-		if (collided && enemy.getEnemyX() < player.getPlayerX()) {
-			collided = false;
-		}
-
-
 		enemy.setEnemyX(enemy.getEnemyX()-10);
 
+		if (!gameOver) {
 
-		if (up) {
+			if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
+				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
+					checkCollision();
+				}
+//				clearedEnemies ++;
+			}
 
-			player.jump();
-		}
+			if (collided && enemy.getEnemyX() < player.getPlayerX()) {
+				collided = false;
+			}
 
-		if (player.getPlayerY() == 265) {
-			up = false;
+
+			if (up) {
+
+				player.jump();
+			}
+
+			if (player.getPlayerY() == 265) {
+				up = false;
+			}
+
 		}
 
 	}
 
 	public void checkCollision() {
-
+		
 
 		//		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX()) && ((player.getPlayerY() + 60) >= enemy.getEnemyY() )) {
 		//
@@ -152,13 +173,16 @@ public class PlayState extends GameState {
 		//			//			System.out.println("helo");
 		if((player.getPlayerY() + 60) >= enemy.getEnemyY() ) {
 			collided = true;
-//			System.out.println("fäk");
+			//			System.out.println("fäk");
 			if (Integer.valueOf(player.getLives()) == 0) {
-				menu = new MenuState(model);
-				model.switchState(menu);
+//								menu = new MenuState(model);
+				//				model.switchState(menu);
+				gameOver = true;
+//				score.saveScore(clearedEnemies);
+
 			}
 			player.decreaseLives();
-//			System.out.println(player.getLives());
+			//			System.out.println(player.getLives());
 
 		}
 		//				System.out.println("slipped by enemy");

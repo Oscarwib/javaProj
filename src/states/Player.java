@@ -20,19 +20,18 @@ public class Player {
 	private Image image;
 	private boolean down = false;
 	private boolean up = false;
-	private Rectangle rekt;
-	private ImageView playerView;
+//	private ImageView playerView;
 
 
 	public Player(String playerImg) {
 
 		try {
 			image = new Image(new FileInputStream(playerImg));
-			playerView = new ImageView(image);
-			playerView.setX(playerX);
-			playerView.setY(playerY);
-			playerView.setFitHeight(Constants.playerHeight);
-			playerView.setFitWidth(Constants.playerWidth);
+//			playerView = new ImageView(image);
+//			playerView.setX(playerX);
+//			playerView.setY(playerY);
+//			playerView.setFitHeight(Constants.playerHeight);
+//			playerView.setFitWidth(Constants.playerWidth);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,9 +41,9 @@ public class Player {
 	}
 
 
-	public ImageView getPlayerView() {
-		return playerView;
-	}
+//	public ImageView getPlayerView() {
+//		return playerView;
+//	}
 
 
 	public Image getImage() {
