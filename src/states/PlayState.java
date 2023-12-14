@@ -47,7 +47,7 @@ public class PlayState extends GameState {
 	private boolean gameOver = false;
 	private MenuState menu;
 	private HighScore score = new HighScore();
-//	private int clearedEnemies;
+	private int clearedEnemies;
 	private String scoreText;
 
 
@@ -61,7 +61,7 @@ public class PlayState extends GameState {
 		gameOverText = "GAMEOVER\n" + informationText;
 		bgColor = Color.BEIGE;
 		fontColor = Color.BLUE;
-		scoreText = "Highscore: ";
+		scoreText = "Highscore: " + Integer.toString(score.getHighScore());
 //		+ Integer.toString(score.getHighScore());
 
 		player = new Player(Constants.playerImg);
@@ -131,7 +131,8 @@ public class PlayState extends GameState {
 		if (!gameOver) {
 
 			if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
-				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
+//				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
+					if (!collided) {
 					checkCollision();
 				}
 //				clearedEnemies ++;
@@ -139,6 +140,8 @@ public class PlayState extends GameState {
 
 			if (collided && enemy.getEnemyX() < player.getPlayerX()) {
 				collided = false;
+			} else if (!collided && enemy.getEnemyX() < player.getPlayerX()) {
+				clearedEnemies ++;
 			}
 
 
@@ -174,11 +177,11 @@ public class PlayState extends GameState {
 		if((player.getPlayerY() + 60) >= enemy.getEnemyY() ) {
 			collided = true;
 			//			System.out.println("fäk");
-			if (Integer.valueOf(player.getLives()) == 0) {
+			if (Integer.valueOf(player.getLives()) == 1) {
 //								menu = new MenuState(model);
 				//				model.switchState(menu);
 				gameOver = true;
-//				score.saveScore(clearedEnemies);
+				score.saveScore(clearedEnemies);
 
 			}
 			player.decreaseLives();
@@ -190,6 +193,7 @@ public class PlayState extends GameState {
 		//		} 
 
 
+//		clearedEnemies ++;
 
 
 	}
