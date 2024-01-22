@@ -44,6 +44,7 @@ public class PlayState extends GameState {
 	private Enemy enemy;
 	private boolean collided = false;
 	private boolean up = false;
+	private boolean down = false;
 	private boolean gameOver = false;
 	private MenuState menu;
 	private HighScore score = new HighScore();
@@ -52,7 +53,9 @@ public class PlayState extends GameState {
 
 
 	/* Class only used for testing */
-
+	
+//	TODO nästa steg, lägg in en flygande enemy för att testa glid funktionen, ändra boundsen på den glidande bilden!
+// 	TODO kanske ta bort att skicka med image när man instansierar player
 
 	public PlayState(GameModel model) {
 		super(model);
@@ -62,7 +65,7 @@ public class PlayState extends GameState {
 		bgColor = Color.BEIGE;
 		fontColor = Color.BLUE;
 		scoreText = "Highscore: " + Integer.toString(score.getHighScore());
-//		+ Integer.toString(score.getHighScore());
+		//		+ Integer.toString(score.getHighScore());
 
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
@@ -107,18 +110,33 @@ public class PlayState extends GameState {
 
 	}
 
+	
 	@Override
 	public void keyPressed(KeyEvent key) {
-		System.out.println("Trycker på " + key.getCode() + " i PlayState");
 
+//		TODO gör om till case sats för att städa upp det lite, kladdigt atm + kan behöva flytta funktionalitet
+		
 		if (key.getCode() == KeyCode.ESCAPE) {
 
 			model.switchState(new MenuState(model));
 		} else if (key.getCode() == KeyCode.UP) {
-			up = true;
+
+			if (down) {
+
+				player.standUp();
+				down = false;
+
+			} else {
+
+				up = true;
+
+			}
+
+		} else if (key.getCode() == KeyCode.DOWN) {
+
+			down = true;
 
 		}
-
 
 	}
 
@@ -131,17 +149,15 @@ public class PlayState extends GameState {
 		if (!gameOver) {
 
 			if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
-//				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
-					if (!collided) {
+				//				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
+				if (!collided) {
 					checkCollision();
 				}
-//				clearedEnemies ++;
+				//				clearedEnemies ++;
 			}
 
 			if (collided && enemy.getEnemyX() < player.getPlayerX()) {
 				collided = false;
-			} else if (!collided && enemy.getEnemyX() < player.getPlayerX()) {
-				clearedEnemies ++;
 			}
 
 
@@ -154,12 +170,17 @@ public class PlayState extends GameState {
 				up = false;
 			}
 
+			if (down) {
+
+				player.slide();
+			}
+
 		}
 
 	}
 
 	public void checkCollision() {
-		
+
 
 		//		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX()) && ((player.getPlayerY() + 60) >= enemy.getEnemyY() )) {
 		//
@@ -178,7 +199,7 @@ public class PlayState extends GameState {
 			collided = true;
 			//			System.out.println("fäk");
 			if (Integer.valueOf(player.getLives()) == 1) {
-//								menu = new MenuState(model);
+				//								menu = new MenuState(model);
 				//				model.switchState(menu);
 				gameOver = true;
 				score.saveScore(clearedEnemies);
@@ -193,7 +214,7 @@ public class PlayState extends GameState {
 		//		} 
 
 
-//		clearedEnemies ++;
+		//		clearedEnemies ++;
 
 
 	}

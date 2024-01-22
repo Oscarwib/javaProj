@@ -64,6 +64,7 @@ public class Main extends Application {
 		// We set up a setOnKeyPressed, to handle keyboard input,
 		// like we had a onMouseClick in the canvas for the paint lab.
 		gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			
 			@Override
 			public void handle(KeyEvent event) {
 				// We send it on to the model, to handle it in the various
@@ -71,6 +72,8 @@ public class Main extends Application {
 				model.keyPressed(event);
 			}
 		});
+		
+		
 
 		// We set an AnimationTimer, to control the flow of the game.
 		new AnimationTimer() {

@@ -25,7 +25,7 @@ public interface Constants {
 	final int screenHeight = 500;
 	
 	// Player
-	
+	String slidingPlayerImg = "src/Images1/player_sliding.png";
 	String playerImg = "src/Images1/player.png";
 	double playerWidth = 100;
 	double playerHeight = 100;

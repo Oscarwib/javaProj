@@ -12,6 +12,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 
 public class Player {
+	
+//	TODO se över funktioner, kanske lättare att slå samman vissa
 
 	private double playerX = (Constants.screenWidth - Constants.playerWidth) / 2;
 	private double playerY = 265.00;
@@ -20,34 +22,38 @@ public class Player {
 	private Image image;
 	private boolean down = false;
 	private boolean up = false;
-//	private ImageView playerView;
+	private Image slidingImage;
+	private Image currImage = null;
+	//	private ImageView playerView;
 
 
 	public Player(String playerImg) {
 
 		try {
 			image = new Image(new FileInputStream(playerImg));
-//			playerView = new ImageView(image);
-//			playerView.setX(playerX);
-//			playerView.setY(playerY);
-//			playerView.setFitHeight(Constants.playerHeight);
-//			playerView.setFitWidth(Constants.playerWidth);
+			slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
+			//			playerView = new ImageView(image);
+			//			playerView.setX(playerX);
+			//			playerView.setY(playerY);
+			//			playerView.setFitHeight(Constants.playerHeight);
+			//			playerView.setFitWidth(Constants.playerWidth);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		currImage = image;
 
 	}
 
 
-//	public ImageView getPlayerView() {
-//		return playerView;
-//	}
+	//	public ImageView getPlayerView() {
+	//		return playerView;
+	//	}
 
 
 	public Image getImage() {
-		return image;
+		return currImage;
 	}
 
 
@@ -106,6 +112,13 @@ public class Player {
 	}
 
 
+	public void slide() {
+
+		currImage = slidingImage;
+			
+	}
+
+
 	public void setPlayerX(double playerX) {
 		this.playerX = playerX;
 	}
@@ -114,6 +127,15 @@ public class Player {
 	public void setPlayerY(double playerY) {
 		this.playerY = playerY;
 	}
+
+
+	public void standUp() {
+		currImage = image;
+		
+	}
+
+
+
 
 
 }
