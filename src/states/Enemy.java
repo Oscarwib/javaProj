@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Enemy {
-	
+
 	private double enemyX = -100.00;
 	private double enemyY = 250.00;
 	private Image image;
@@ -18,21 +18,39 @@ public class Enemy {
 
 		try {
 			image = new Image(new FileInputStream(enemyImg));
-			enemyView = new ImageView(image);
-			enemyView.setX(enemyX);
-			enemyView.setY(enemyY);
-			enemyView.setFitHeight(Constants.enemyHeight);
-			enemyView.setFitWidth(Constants.enemyWidth);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
+	//	if (collided && enemy.getEnemyX() < player.getPlayerX()) {
+	//		collided = false;
+	//	}
+
+	public boolean playerEnemyCollision(Player player) {
+		boolean hit = false;
+
+		if ((enemyX <= (player.getPlayerX() + 80)) && (enemyX > player.getPlayerX())) {
+			if((player.getPlayerY() + 60) >= enemyY) {
+				hit = true;
+				player.decreaseLives();
+//				if (hit && enemyX < player.getPlayerX()) {
+//					hit = false;
+//				}
+			}
+		}
+
+		return hit;
+	}
+
+
+
 	public void setEnemyX(double pos) {
-		
+
 		this.enemyX = pos;
-		
+
 	}
 
 	public Image getImage() {
@@ -50,7 +68,7 @@ public class Enemy {
 	public double getEnemyY() {
 		return enemyY;
 	}
-	
-	
-	
+
+
+
 }

@@ -39,4 +39,7 @@ public interface Constants {
 	double enemyWidth = 100;
 	double enemyHeight = 100;
 	
+//	powerups
+	String lifeImg = "src/Images1/heart.png";
+	
 }

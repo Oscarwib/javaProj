@@ -50,12 +50,13 @@ public class PlayState extends GameState {
 	private HighScore score = new HighScore();
 	private int clearedEnemies;
 	private String scoreText;
+	private ExtraLifePowerUp extraLife;
 
 
 	/* Class only used for testing */
-	
-//	TODO nästa steg, lägg in en flygande enemy för att testa glid funktionen, ändra boundsen på den glidande bilden!
-// 	TODO kanske ta bort att skicka med image när man instansierar player
+
+	//	TODO nästa steg, lägg in en flygande enemy för att testa glid funktionen, ändra boundsen på den glidande bilden!
+	// 	TODO kanske ta bort att skicka med image när man instansierar player
 
 	public PlayState(GameModel model) {
 		super(model);
@@ -69,6 +70,7 @@ public class PlayState extends GameState {
 
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
 
 		//		menu = new MenuState(model);
 
@@ -84,6 +86,7 @@ public class PlayState extends GameState {
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
 
+		//		ritar liv kvar + nuvarande highscore om det inte är gameover, annars ritar den bara gemaovertexten
 
 		if (!gameOver) {
 			g.fillText(livesleft+player.getLives(), 0, 30);
@@ -93,50 +96,74 @@ public class PlayState extends GameState {
 			g.fillText(gameOverText, Constants.screenWidth/2, 200);
 		}
 
-
+		//		ritar ut marklinjen
 
 		g.setStroke(Color.BLACK);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
+		//		om enemy är ute ur frame, ställer dem om positionen på den så att den börjar om
+
+		
+
+		//		Ritar enemy och player
+		g.drawImage(extraLife.getImage(), extraLife.getPowerUpX(), extraLife.getPowerUpY(), 40, 40);
+		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
+//		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
+		drawEnemy(g);
+		
+//		TODO kanske göra en random här också, som väljer om vi ska rita de olika enemies eller powerupsen. Vid en viss score
+//		TODO kommer möjligheten att ta powerups eller möta flyingenemy
+		
+
+	}
+	
+	public void drawEnemy(GraphicsContext g) {
+		
+//		enemy = new Enemy(Constants.enemyImg);
+		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
 		if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
 			enemy.setEnemyX(Constants.screenWidth);
 		}
 
-		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
-		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
-
-
+		
 	}
 
-	
+
 	@Override
 	public void keyPressed(KeyEvent key) {
 
-//		TODO gör om till case sats för att städa upp det lite, kladdigt atm + kan behöva flytta funktionalitet
-		
-		if (key.getCode() == KeyCode.ESCAPE) {
 
+		switch (key.getCode()) {
+
+		case ESCAPE:
 			model.switchState(new MenuState(model));
-		} else if (key.getCode() == KeyCode.UP) {
+			break;
 
+		case UP:
+			//		Om spelaren duckar kan den inte hoppa, då ställer sig spelaren upp istället
 			if (down) {
-
 				player.standUp();
 				down = false;
-
 			} else {
-
 				up = true;
-
 			}
+			break;
 
-		} else if (key.getCode() == KeyCode.DOWN) {
+		case DOWN:
+			//		Spelaren kan inte ducka om den är mitt i ett hopp
+			if (!up) {
+				down = true;
+			}
+			break;
 
-			down = true;
+		default:
+			break;
 
 		}
+
+
 
 	}
 
@@ -144,21 +171,38 @@ public class PlayState extends GameState {
 	public void update() {
 		//om enemy position är mindre än player och collide är true kollar den inte collision
 
+		clearedEnemies ++;
+
+		//		Enemy hoppar 10 snäpp till vänster för varje update
 		enemy.setEnemyX(enemy.getEnemyX()-10);
 
+		//		Om 
 		if (!gameOver) {
-
-			if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
-				//				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
-				if (!collided) {
-					checkCollision();
+			
+			if (!collided) {
+			collided = enemy.playerEnemyCollision(player);
+				if (Integer.valueOf(player.getLives()) == 0) {
+					gameOver = true;
 				}
-				//				clearedEnemies ++;
 			}
-
 			if (collided && enemy.getEnemyX() < player.getPlayerX()) {
 				collided = false;
 			}
+
+
+
+			////		Så länge enemy och player har överlappande X koordinat(och inte redan har kolliderat), kollar vi om dem kolliderar på Y axeln
+			//			if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
+			//				//				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
+			//				if (!collided) {
+			//					checkCollision();
+			//				}
+			//				//				clearedEnemies ++;
+			//			}
+			//
+			//			if (collided && enemy.getEnemyX() < player.getPlayerX()) {
+			//				collided = false;
+			//			}
 
 
 			if (up) {
@@ -181,6 +225,7 @@ public class PlayState extends GameState {
 
 	public void checkCollision() {
 
+		//		Om vi kolliderar på Y axeln
 
 		//		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX()) && ((player.getPlayerY() + 60) >= enemy.getEnemyY() )) {
 		//
@@ -214,7 +259,7 @@ public class PlayState extends GameState {
 		//		} 
 
 
-		//		clearedEnemies ++;
+		//				clearedEnemies ++;
 
 
 	}

@@ -32,11 +32,7 @@ public class Player {
 		try {
 			image = new Image(new FileInputStream(playerImg));
 			slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
-			//			playerView = new ImageView(image);
-			//			playerView.setX(playerX);
-			//			playerView.setY(playerY);
-			//			playerView.setFitHeight(Constants.playerHeight);
-			//			playerView.setFitWidth(Constants.playerWidth);
+	
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,9 +43,7 @@ public class Player {
 	}
 
 
-	//	public ImageView getPlayerView() {
-	//		return playerView;
-	//	}
+	
 
 
 	public Image getImage() {
