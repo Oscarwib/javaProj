@@ -36,6 +36,7 @@ public interface Constants {
 	
 	//enemies
 	String enemyImg = "src/Images1/tree.png";
+	String flyingEnemyImg = "src/Images1/fly.png";
 	double enemyWidth = 100;
 	double enemyHeight = 100;
 	

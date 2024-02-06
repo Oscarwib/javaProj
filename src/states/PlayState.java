@@ -1,6 +1,7 @@
 package states;
 
 import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -51,6 +52,7 @@ public class PlayState extends GameState {
 	private int clearedEnemies;
 	private String scoreText;
 	private ExtraLifePowerUp extraLife;
+	private FlyingEnemy flyingEnemy;
 
 
 	/* Class only used for testing */
@@ -71,6 +73,7 @@ public class PlayState extends GameState {
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
 
 		//		menu = new MenuState(model);
 
@@ -85,7 +88,6 @@ public class PlayState extends GameState {
 
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
-
 		//		ritar liv kvar + nuvarande highscore om det inte är gameover, annars ritar den bara gemaovertexten
 
 		if (!gameOver) {
@@ -126,6 +128,14 @@ public class PlayState extends GameState {
 		if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
 			enemy.setEnemyX(Constants.screenWidth);
 		}
+		
+		g.drawImage(flyingEnemy.getImage(), Constants.screenWidth/2, Constants.screenHeight/2, Constants.enemyWidth, Constants.enemyHeight);
+		
+		
+		
+		
+		
+		
 
 		
 	}
@@ -175,6 +185,7 @@ public class PlayState extends GameState {
 
 		//		Enemy hoppar 10 snäpp till vänster för varje update
 		enemy.setEnemyX(enemy.getEnemyX()-10);
+		flyingEnemy.setEnemyX(flyingEnemy.getEnemyX() -10);
 
 		//		Om 
 		if (!gameOver) {
