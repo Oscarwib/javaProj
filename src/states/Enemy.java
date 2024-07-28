@@ -1,6 +1,7 @@
 package states;
 
 import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 
 import constants.Constants;
@@ -18,7 +19,7 @@ public class Enemy {
 
 		try {
 			image = new Image(new FileInputStream(enemyImg));
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,15 +33,19 @@ public class Enemy {
 	public boolean playerEnemyCollision(Player player) {
 		boolean hit = false;
 
-		if ((enemyX <= (player.getPlayerX() + 80)) && (enemyX > player.getPlayerX())) {
-			if((player.getPlayerY() + 60) >= enemyY) {
+		if ((enemyX < (player.getPlayerX() + 80.00)) && ((enemyX) > player.getPlayerX())) { //borde vara +80 på enemyx men funkar ej
+//			if((player.getPlayerY() + 60.00) >= enemyY) {
+//			if((player.getPlayerY() + 60.00) >= enemyY) {
+				//			if ((enemyY + 80  > (player.getPlayerY())) && ((player.getPlayerY() + 80) > enemyY))  {
+
 				hit = true;
 				player.decreaseLives();
-//				if (hit && enemyX < player.getPlayerX()) {
+//				if (hit && enemyX < player.getPlayerX() + 100) {
 //					hit = false;
 //				}
+
 			}
-		}
+	
 
 		return hit;
 	}

@@ -24,7 +24,24 @@ public class Player {
 	private boolean up = false;
 	private Image slidingImage;
 	private Image currImage = null;
+	private int passes = 0;
 	//	private ImageView playerView;
+
+
+	public int getPasses() {
+		return passes;
+	}
+
+
+
+
+
+	public void updatePasses(int passes) {
+		this.passes += passes;
+	}
+
+
+
 
 
 	public Player(String playerImg) {

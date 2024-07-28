@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Random;
 
 import constants.Constants;
 
@@ -53,6 +54,8 @@ public class PlayState extends GameState {
 	private String scoreText;
 	private ExtraLifePowerUp extraLife;
 	private FlyingEnemy flyingEnemy;
+	private double tempy;
+	private Random engen;
 
 
 	/* Class only used for testing */
@@ -73,7 +76,7 @@ public class PlayState extends GameState {
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, 800.00, 0.00);
 
 		//		menu = new MenuState(model);
 
@@ -96,6 +99,7 @@ public class PlayState extends GameState {
 			g.fillText(scoreText, 0, 60);
 		} else {
 			g.fillText(gameOverText, Constants.screenWidth/2, 200);
+			score.saveScore(player.getPasses());
 		}
 
 		//		ritar ut marklinjen
@@ -107,37 +111,72 @@ public class PlayState extends GameState {
 
 		//		om enemy är ute ur frame, ställer dem om positionen på den så att den börjar om
 
-		
+
 
 		//		Ritar enemy och player
-		g.drawImage(extraLife.getImage(), extraLife.getPowerUpX(), extraLife.getPowerUpY(), 40, 40);
+//		g.drawImage(extraLife.getImage(), extraLife.getPowerUpX(), extraLife.getPowerUpY(), 40, 40);
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
 //		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
 		drawEnemy(g);
-		
-//		TODO kanske göra en random här också, som väljer om vi ska rita de olika enemies eller powerupsen. Vid en viss score
-//		TODO kommer möjligheten att ta powerups eller möta flyingenemy
-		
+
+		//		TODO kanske göra en random här också, som väljer om vi ska rita de olika enemies eller powerupsen. Vid en viss score
+		//		TODO kommer möjligheten att ta powerups eller möta flyingenemy
+
 
 	}
-	
+
 	public void drawEnemy(GraphicsContext g) {
+		engen = new Random(); 
 		
-//		enemy = new Enemy(Constants.enemyImg);
-		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
-		if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
-			enemy.setEnemyX(Constants.screenWidth);
-		}
+//		
+//		if (player.getPasses() > 5) {
+//			boolean b = engen.nextBoolean();
+//			System.out.println(b);
+//			
+//			if (b) {
+				g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), tempy, 80, 80);
+				if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
+					flyingEnemy.setAntagonistX(Constants.screenWidth);
+					tempy = flyingEnemy.getY();
+					player.updatePasses(1);
+
+				}
+//			} else if (!b){
+//				g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
+//				if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
+//					enemy.setEnemyX(Constants.screenWidth);
+//					player.updatePasses(1);
+//				}
+
+//			}
+//		} else {
+//			g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
+//			if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
+//				enemy.setEnemyX(Constants.screenWidth);
+//				player.updatePasses(1);
+//			}
+
+//		}
 		
-		g.drawImage(flyingEnemy.getImage(), Constants.screenWidth/2, Constants.screenHeight/2, Constants.enemyWidth, Constants.enemyHeight);
-		
-		
-		
-		
-		
-		
+		//		enemy = new Enemy(Constants.enemyImg);
+	
+
+
+
+		//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
+		//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
+
+
+
 
 		
+
+
+
+
+
+
+
 	}
 
 
@@ -184,19 +223,20 @@ public class PlayState extends GameState {
 		clearedEnemies ++;
 
 		//		Enemy hoppar 10 snäpp till vänster för varje update
-		enemy.setEnemyX(enemy.getEnemyX()-10);
-		flyingEnemy.setEnemyX(flyingEnemy.getEnemyX() -10);
+//		enemy.setEnemyX(enemy.getEnemyX()-10);
+		flyingEnemy.setAntagonistX(flyingEnemy.getX() -10);
 
 		//		Om 
 		if (!gameOver) {
-			
+
 			if (!collided) {
-			collided = enemy.playerEnemyCollision(player);
+//				collided = enemy.playerEnemyCollision(player);
+				collided = flyingEnemy.playerAntagonistCollision(player);
 				if (Integer.valueOf(player.getLives()) == 0) {
 					gameOver = true;
 				}
 			}
-			if (collided && enemy.getEnemyX() < player.getPlayerX()) {
+			if (collided && flyingEnemy.getX() < player.getPlayerX()) {
 				collided = false;
 			}
 
