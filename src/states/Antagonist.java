@@ -27,6 +27,18 @@ public abstract class Antagonist {
 		}
 	}
 	
+	public Antagonist(String image) {
+		this.collisionDetected = false;
+
+		try {
+			this.img = new Image(new FileInputStream(image));
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public abstract boolean playerAntagonistCollision(Player player);
 	
 	public void setAntagonistX(double pos) {

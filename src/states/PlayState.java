@@ -41,6 +41,7 @@ public class PlayState extends GameState {
 	private String livesleft;
 	private String gameOverText;
 	private Color bgColor;
+	private Color lineColor;
 	private Color fontColor;
 	private Player player;
 	private Enemy enemy;
@@ -56,6 +57,7 @@ public class PlayState extends GameState {
 	private FlyingEnemy flyingEnemy;
 	private double tempy;
 	private Random engen;
+	private String slidingPlayer;
 
 
 	/* Class only used for testing */
@@ -63,22 +65,49 @@ public class PlayState extends GameState {
 	//	TODO nästa steg, lägg in en flygande enemy för att testa glid funktionen, ändra boundsen på den glidande bilden!
 	// 	TODO kanske ta bort att skicka med image när man instansierar player
 
-	public PlayState(GameModel model) {
+	public PlayState(GameModel model, boolean mode) {
 		super(model);
 		informationText = "Press Escape \nTo Return To The Menu";
 		livesleft = "Lives left: ";
 		gameOverText = "GAMEOVER\n" + informationText;
-		bgColor = Color.BEIGE;
-		fontColor = Color.BLUE;
+		fontColor = Color.BLACK;
 		scoreText = "Highscore: " + Integer.toString(score.getHighScore());
 		//		+ Integer.toString(score.getHighScore());
 
-		player = new Player(Constants.playerImg);
-		enemy = new Enemy(Constants.enemyImg);
-		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, 800.00, 0.00);
+		if (mode) {
+			mode1();
+		} else {
+			mode2();
+		}
 
 		//		menu = new MenuState(model);
+
+	}
+
+	public void mode1() {
+		player = new Player(Constants.playerImg);
+		slidingPlayer = Constants.slidingPlayerImg;
+		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
+		flyingEnemy.setAntagonistX(800.00);
+		tempy = flyingEnemy.getY();
+		bgColor = Color.ROYALBLUE;
+		lineColor = Color.WHITE;
+
+	}
+
+	public void mode2() {
+		player = new Player(Constants.playerImg2);
+		slidingPlayer = Constants.slidingPlayerImg2;
+		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
+		flyingEnemy.setAntagonistX(800.00);
+		tempy = flyingEnemy.getY();
+		bgColor = Color.BEIGE;
+		lineColor = Color.BLACK;
+
 
 	}
 
@@ -104,19 +133,18 @@ public class PlayState extends GameState {
 
 		//		ritar ut marklinjen
 
-		g.setStroke(Color.BLACK);
+		g.setStroke(lineColor);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
-		//		om enemy är ute ur frame, ställer dem om positionen på den så att den börjar om
-
+		//		om enemy är ute ur frame, ställer dem om positionen på den så att1
 
 
 		//		Ritar enemy och player
-//		g.drawImage(extraLife.getImage(), extraLife.getPowerUpX(), extraLife.getPowerUpY(), 40, 40);
+		//		g.drawImage(extraLife.getImage(), extraLife.getPowerUpX(), extraLife.getPowerUpY(), 40, 40);
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
-//		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
+		//		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
 		drawEnemy(g);
 
 		//		TODO kanske göra en random här också, som väljer om vi ska rita de olika enemies eller powerupsen. Vid en viss score
@@ -127,57 +155,35 @@ public class PlayState extends GameState {
 
 	public void drawEnemy(GraphicsContext g) {
 		engen = new Random(); 
-		
-//		
-//		if (player.getPasses() > 5) {
-//			boolean b = engen.nextBoolean();
-//			System.out.println(b);
-//			
-//			if (b) {
-				g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), tempy, 80, 80);
-				if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
-					flyingEnemy.setAntagonistX(Constants.screenWidth);
-					tempy = flyingEnemy.getY();
-					player.updatePasses(1);
-
-				}
-//			} else if (!b){
-//				g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
-//				if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
-//					enemy.setEnemyX(Constants.screenWidth);
-//					player.updatePasses(1);
-//				}
-
-//			}
-//		} else {
-//			g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
-//			if (enemy.getEnemyX() < 0 - Constants.enemyWidth) {
-//				enemy.setEnemyX(Constants.screenWidth);
-//				player.updatePasses(1);
-//			}
-
-//		}
-		
-		//		enemy = new Enemy(Constants.enemyImg);
-	
 
 
-
-		//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
-		//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
-
-
-
-
-		
-
-
-
-
-
-
+		g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
+		if (enemy.getX() < 0 - Constants.enemyWidth) {
+			enemy.setAntagonistX(Constants.screenWidth);
+			player.updatePasses(1);
+		}
 
 	}
+
+
+
+
+
+	//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
+	//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	@Override
@@ -220,41 +226,28 @@ public class PlayState extends GameState {
 	public void update() {
 		//om enemy position är mindre än player och collide är true kollar den inte collision
 
-		clearedEnemies ++;
-
 		//		Enemy hoppar 10 snäpp till vänster för varje update
-//		enemy.setEnemyX(enemy.getEnemyX()-10);
-		flyingEnemy.setAntagonistX(flyingEnemy.getX() -10);
+		enemy.setAntagonistX(enemy.getX()-10);
+		//		flyingEnemy.setAntagonistX(flyingEnemy.getX() -10);
 
 		//		Om 
 		if (!gameOver) {
 
 			if (!collided) {
-//				collided = enemy.playerEnemyCollision(player);
-				collided = flyingEnemy.playerAntagonistCollision(player);
+				collided = enemy.playerAntagonistCollision(player);
+
+
 				if (Integer.valueOf(player.getLives()) == 0) {
 					gameOver = true;
-				}
+				} 
 			}
-			if (collided && flyingEnemy.getX() < player.getPlayerX()) {
+			if (collided && enemy.getX() < player.getPlayerX()) {
 				collided = false;
 			}
 
 
 
-			////		Så länge enemy och player har överlappande X koordinat(och inte redan har kolliderat), kollar vi om dem kolliderar på Y axeln
-			//			if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
-			//				//				if (!collided && enemy.getEnemyX() > player.getPlayerX()) {
-			//				if (!collided) {
-			//					checkCollision();
-			//				}
-			//				//				clearedEnemies ++;
-			//			}
-			//
-			//			if (collided && enemy.getEnemyX() < player.getPlayerX()) {
-			//				collided = false;
-			//			}
-
+			
 
 			if (up) {
 
@@ -267,53 +260,14 @@ public class PlayState extends GameState {
 
 			if (down) {
 
-				player.slide();
+				player.slide(slidingPlayer);
 			}
 
 		}
 
 	}
 
-	public void checkCollision() {
 
-		//		Om vi kolliderar på Y axeln
-
-		//		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX()) && ((player.getPlayerY() + 60) >= enemy.getEnemyY() )) {
-		//
-		//			collided = true;
-		//			System.out.println("helo");
-		//			//			Sätta någon variabel till något värde. Om denna variabel eller boolean inte är tom nästa update så har en krock skett.
-		//
-		//		} 
-		//
-		//		player.decreaseLives(collided);
-
-
-		//		if ((enemy.getEnemyX() <= (player.getPlayerX() + 80)) && (enemy.getEnemyX() > player.getPlayerX())) {
-		//			//			System.out.println("helo");
-		if((player.getPlayerY() + 60) >= enemy.getEnemyY() ) {
-			collided = true;
-			//			System.out.println("fäk");
-			if (Integer.valueOf(player.getLives()) == 1) {
-				//								menu = new MenuState(model);
-				//				model.switchState(menu);
-				gameOver = true;
-				score.saveScore(clearedEnemies);
-
-			}
-			player.decreaseLives();
-			//			System.out.println(player.getLives());
-
-		}
-		//				System.out.println("slipped by enemy");
-		//			}
-		//		} 
-
-
-		//				clearedEnemies ++;
-
-
-	}
 
 
 

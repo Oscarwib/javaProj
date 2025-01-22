@@ -28,6 +28,14 @@ public class Player {
 	//	private ImageView playerView;
 
 
+//	public double getPlayerHeight() {
+//		return playerHeight;
+//	}
+
+
+
+
+
 	public int getPasses() {
 		return passes;
 	}
@@ -48,7 +56,7 @@ public class Player {
 
 		try {
 			image = new Image(new FileInputStream(playerImg));
-			slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
+			//slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
 	
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -123,9 +131,19 @@ public class Player {
 	}
 
 
-	public void slide() {
+	public void slide(String img) {
+		try {
+			slidingImage = new Image(new FileInputStream(img));
+			//slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
+	
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	
 		currImage = slidingImage;
+		
 			
 	}
 

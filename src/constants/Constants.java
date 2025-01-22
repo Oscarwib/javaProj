@@ -27,6 +27,8 @@ public interface Constants {
 	// Player
 	String slidingPlayerImg = "src/Images1/player_sliding.png";
 	String playerImg = "src/Images1/player.png";
+	String slidingPlayerImg2 = "src/Images1/player2_sliding.png";
+	String playerImg2 = "src/Images1/player2.png";
 	double playerWidth = 100;
 	double playerHeight = 100;
 	

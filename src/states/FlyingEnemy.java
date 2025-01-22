@@ -64,6 +64,15 @@ public class FlyingEnemy extends Antagonist{
 //		//		
 //	}
 
+	public FlyingEnemy(String enemyImg) {
+		super(enemyImg);
+		this.enemyY = new ArrayList<Double>();
+//		this.enemyY.add(200.00);
+		this.enemyY.add(210.00);
+//		this.enemyY.add(220.00);
+		this.enemyY.add(250.00);
+	}
+
 	@Override
 	public boolean playerAntagonistCollision(Player player) {
 //		boolean hit = false;
@@ -73,10 +82,10 @@ public class FlyingEnemy extends Antagonist{
 //	    // Check for collision on the y-axis
 //	    boolean collisionY = player.getPlayerY() < (currY + Constants.enemyHeight) && (player.getPlayerY() + Constants.playerHeight) > currY;
 		
-		boolean collisionX = player.getPlayerX() < (x + 60) && (player.getPlayerX() + 60) > x;
+		boolean collisionX = player.getPlayerX() < (x + 60.00) && (player.getPlayerX() + 60.00) > x;
 
 	    // Check for collision on the y-axis
-	    boolean collisionY = player.getPlayerY() < (currY + 60) && (player.getPlayerY() + 60) > currY;
+	    boolean collisionY = player.getPlayerY() < (currY + 45.00) && (player.getPlayerY() + 60.00) > currY;
 
 
 	    if (collisionX && collisionY && !collisionDetected) {

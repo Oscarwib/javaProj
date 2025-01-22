@@ -31,11 +31,11 @@ public class MenuState extends GameState {
 	// A PlayState, so we can change to the PlayState from the menu.
 	private PlayState playState;
 	private Image dinosaur;
+	private boolean mode1;
 
 	public MenuState(GameModel model) {
 		super(model);
-		playState = new PlayState(model);
-		informationText = "Welcome to the Dino game!\nTo play, press ENTER for mode 1 or SPACE for mode 2\nEscape to exit game";
+		informationText = "Welcome to the Dino game!\nTo play, press 1 for mode 1 or 2 for mode 2\nEscape to exit game";
 		bgColor = Color.GREY;
 		fontColor = Color.LIGHTBLUE;
 		
@@ -70,11 +70,18 @@ public class MenuState extends GameState {
 	public void keyPressed(KeyEvent key) {
 		System.out.println("Trycker på " + key.getText() + " i MenuState");
 
-		if (key.getCode() == KeyCode.ENTER) {
+		if (key.getCode() == KeyCode.DIGIT1) {
+			mode1 = true;
+			playState = new PlayState(model, mode1);
+			model.switchState(playState);
+		} else if (key.getCode() == KeyCode.DIGIT2) {
+			mode1 = false;
+			playState = new PlayState(model, mode1);
 			model.switchState(playState);
 		} else if (key.getCode() == KeyCode.ESCAPE) {
 			System.exit(0);
 		}
+		
 	}
 
 	@Override
