@@ -2,6 +2,7 @@ package states;
 
 import java.io.FileInputStream;
 
+
 import java.io.FileNotFoundException;
 
 import constants.Constants;
@@ -25,12 +26,8 @@ public class Player {
 	private Image slidingImage;
 	private Image currImage = null;
 	private int passes = 0;
-	//	private ImageView playerView;
-
-
-//	public double getPlayerHeight() {
-//		return playerHeight;
-//	}
+	private Rectangle bounds;
+	private double topPos = playerY;
 
 
 
@@ -54,6 +51,8 @@ public class Player {
 
 	public Player(String playerImg) {
 
+		bounds = new Rectangle(playerX, topPos, Constants.playerWidth, Constants.playerHeight);
+
 		try {
 			image = new Image(new FileInputStream(playerImg));
 			//slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
@@ -68,7 +67,9 @@ public class Player {
 	}
 
 
-	
+	public double getRect() {
+		return topPos;
+	}
 
 
 	public Image getImage() {
@@ -143,6 +144,7 @@ public class Player {
 
 	
 		currImage = slidingImage;
+		topPos = 305.00;
 		
 			
 	}
@@ -160,6 +162,7 @@ public class Player {
 
 	public void standUp() {
 		currImage = image;
+		topPos = playerY;
 		
 	}
 

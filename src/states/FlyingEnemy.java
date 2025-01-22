@@ -70,22 +70,16 @@ public class FlyingEnemy extends Antagonist{
 //		this.enemyY.add(200.00);
 		this.enemyY.add(210.00);
 //		this.enemyY.add(220.00);
-		this.enemyY.add(250.00);
+//		this.enemyY.add(250.00);
 	}
 
 	@Override
 	public boolean playerAntagonistCollision(Player player) {
-//		boolean hit = false;
-		
-//		boolean collisionX = player.getPlayerX() < (x + Constants.enemyWidth) && (player.getPlayerX() + Constants.playerWidth) > x;
-//
-//	    // Check for collision on the y-axis
-//	    boolean collisionY = player.getPlayerY() < (currY + Constants.enemyHeight) && (player.getPlayerY() + Constants.playerHeight) > currY;
-		
+
 		boolean collisionX = player.getPlayerX() < (x + 60.00) && (player.getPlayerX() + 60.00) > x;
 
 	    // Check for collision on the y-axis
-	    boolean collisionY = player.getPlayerY() < (currY + 45.00) && (player.getPlayerY() + 60.00) > currY;
+	    boolean collisionY = player.getRect() < (currY + 60.00) && (player.getRect() + 60.00) > currY;
 
 
 	    if (collisionX && collisionY && !collisionDetected) {
@@ -98,26 +92,9 @@ public class FlyingEnemy extends Antagonist{
             collisionDetected = false;
         }
 	    
-//		if ((x < (player.getPlayerX() + 80.00)) && ((x) > player.getPlayerX())) { //borde vara +80 på enemyx men funkar ej
-//			//			if((player.getPlayerY() + 60.00) >= enemyY) {
-//			if((player.getPlayerY() > currY +80)) {
-//				//			if ((enemyY + 80  > (player.getPlayerY())) && ((player.getPlayerY() + 80) > enemyY))  {
-//
-//				hit = false;
-//				player.decreaseLives();
-//				//				if (hit && enemyX < player.getPlayerX() + 100) {
-//				//					hit = false;
-//				//				}
-//
-//			}
-//
-//		}
 
 		return false;
-
-		//	public void setEnemyY() {
-		//		enemyY = 0.0;
-		//		
+	
 	}
 
 	@Override

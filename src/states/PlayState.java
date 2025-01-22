@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -74,11 +75,13 @@ public class PlayState extends GameState {
 		scoreText = "Highscore: " + Integer.toString(score.getHighScore());
 		//		+ Integer.toString(score.getHighScore());
 
+
 		if (mode) {
 			mode1();
 		} else {
 			mode2();
 		}
+
 
 		//		menu = new MenuState(model);
 
@@ -144,6 +147,13 @@ public class PlayState extends GameState {
 		//		Ritar enemy och player
 		//		g.drawImage(extraLife.getImage(), extraLife.getPowerUpX(), extraLife.getPowerUpY(), 40, 40);
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
+		g.setStroke(Color.BLACK); // Set the rectangle's border color
+		g.setLineWidth(2); // Set the border width
+		if (!down) {
+			g.strokeRect(player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
+		} else {
+			g.strokeRect(player.getPlayerX(), player.getPlayerY() + 40, Constants.playerWidth, Constants.playerHeight);
+		}
 		//		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
 		drawEnemy(g);
 
@@ -157,9 +167,19 @@ public class PlayState extends GameState {
 		engen = new Random(); 
 
 
-		g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
-		if (enemy.getX() < 0 - Constants.enemyWidth) {
-			enemy.setAntagonistX(Constants.screenWidth);
+		//		g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
+		//		if (enemy.getX() < 0 - Constants.enemyWidth) {
+		//			enemy.setAntagonistX(Constants.screenWidth);
+		//			player.updatePasses(1);
+		//		}
+
+		g.strokeRect(flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
+
+
+
+		g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
+		if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
+			flyingEnemy.setAntagonistX(Constants.screenWidth);
 			player.updatePasses(1);
 		}
 
@@ -210,6 +230,7 @@ public class PlayState extends GameState {
 			//		Spelaren kan inte ducka om den är mitt i ett hopp
 			if (!up) {
 				down = true;
+
 			}
 			break;
 
@@ -227,27 +248,29 @@ public class PlayState extends GameState {
 		//om enemy position är mindre än player och collide är true kollar den inte collision
 
 		//		Enemy hoppar 10 snäpp till vänster för varje update
-		enemy.setAntagonistX(enemy.getX()-10);
+		//		enemy.setAntagonistX(enemy.getX()-10);
+		flyingEnemy.setAntagonistX(flyingEnemy.getX()-10);
 		//		flyingEnemy.setAntagonistX(flyingEnemy.getX() -10);
 
 		//		Om 
 		if (!gameOver) {
 
 			if (!collided) {
-				collided = enemy.playerAntagonistCollision(player);
+				//				collided = enemy.playerAntagonistCollision(player);
+				collided = flyingEnemy.playerAntagonistCollision(player);
 
 
 				if (Integer.valueOf(player.getLives()) == 0) {
 					gameOver = true;
 				} 
 			}
-			if (collided && enemy.getX() < player.getPlayerX()) {
+			if (collided && flyingEnemy.getX() < player.getPlayerX()) {
 				collided = false;
 			}
 
 
 
-			
+
 
 			if (up) {
 
@@ -261,13 +284,34 @@ public class PlayState extends GameState {
 			if (down) {
 
 				player.slide(slidingPlayer);
+
 			}
 
 		}
 
 	}
 
+	public void checkCollision() {
 
+
+		if((player.getPlayerY() + 60) >= enemy.getY() ) {
+			collided = true;
+			//			System.out.println("fäk");
+			if (Integer.valueOf(player.getLives()) == 1) {
+				//								menu = new MenuState(model);
+				//				model.switchState(menu);
+				gameOver = true;
+				score.saveScore(clearedEnemies);
+
+			}
+			player.decreaseLives();
+			//			System.out.println(player.getLives());
+
+		}
+
+
+
+	}
 
 
 

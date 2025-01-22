@@ -60,9 +60,7 @@ public class MenuState extends GameState {
 		// Print the information text, centered on the canvas
 		g.fillText(informationText, Constants.screenWidth/4, Constants.screenHeight / 4);
 		g.drawImage(dinosaur, Constants.screenWidth/2, Constants.screenHeight/2, 200, 200);
-		// Can also use:
-		// g.setStroke(fontColor);
-		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	
 	}
 
 	

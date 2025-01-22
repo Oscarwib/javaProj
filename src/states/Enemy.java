@@ -45,21 +45,7 @@ public class Enemy extends Antagonist{
 	        }
 		
 		return false;
-		//		if ((enemyX < (player.getPlayerX() + 80.00)) && ((enemyX) > player.getPlayerX())) { //borde vara +80 på enemyx men funkar ej
-		////			if((player.getPlayerY() + 60.00) >= enemyY) {
-		////			if((player.getPlayerY() + 60.00) >= enemyY) {
-		//				//			if ((enemyY + 80  > (player.getPlayerY())) && ((player.getPlayerY() + 80) > enemyY))  {
-		//				hit = true;
-		//				player.decreaseLives();
-		////				if (hit && enemyX < player.getPlayerX() + 100) {
-		////					hit = false;
-		////				}
-		//
-		//			}
-		//	
-		//		System.out.println("helooooooooo");
-		//
-		//		return hit;
+	
 	}  
 
 
