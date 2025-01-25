@@ -61,6 +61,7 @@ public class PlayState extends GameState {
 	private String slidingPlayer;
 	private int movingSpeed = 10;
 	private Bomb bomb;
+	private boolean isFlyingEnemyActive = false;
 
 
 
@@ -95,7 +96,7 @@ public class PlayState extends GameState {
 		slidingPlayer = Constants.slidingPlayerImg;
 		enemy = new Enemy(Constants.enemyImg, 800.00, 270.00);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 100.00);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00);
 		//		flyingEnemy.setAntagonistX(800.00);
 		//		tempy = flyingEnemy.getY();
 		bgColor = Color.ROYALBLUE;
@@ -108,7 +109,7 @@ public class PlayState extends GameState {
 		slidingPlayer = Constants.slidingPlayerImg2;
 		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 100.00);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00);
 		//		flyingEnemy.setAntagonistX(800.00);
 		//		tempy = flyingEnemy.getY();
 		bgColor = Color.BEIGE;
@@ -150,10 +151,10 @@ public class PlayState extends GameState {
 
 
 		//		Detta block används för att rita ut rectanglarna runt spelare och enemy
-		g.setStroke(Color.BLACK); // Set the rectangle's border color
-		g.setLineWidth(2); // Set the border width
-		//		g.strokeRect(flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
-		g.strokeRect(player.getPlayerX(), player.getRect(), Constants.playerWidth, Constants.playerHeight);
+		//		g.setStroke(Color.BLACK); // Set the rectangle's border color
+		//		g.setLineWidth(2); // Set the border width
+		//		//		g.strokeRect(flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
+		//		g.strokeRect(player.getPlayerX(), player.getRect(), Constants.playerWidth, Constants.playerHeight);
 
 
 
@@ -167,38 +168,43 @@ public class PlayState extends GameState {
 	public void drawEnemy(GraphicsContext g) {
 		engen = new Random(); 
 
-		//
-		//		g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
-		//		if (enemy.getX() < 0 - Constants.enemyWidth) {
-		//			enemy.setAntagonistX(Constants.screenWidth);
-		//			player.updatePasses(1);
-		//
-		//			if (player.getPasses() % 5 == 0) {
-		//				movingSpeed += 4;
-		//			}
-		//		}
+		if (!isFlyingEnemyActive) {
 
+			g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
+			if (enemy.getX() < 0 - Constants.enemyWidth) {
+				enemy.setAntagonistX(Constants.screenWidth);
+				player.updatePasses(1);
 
-		 g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
+				if (engen.nextInt(2) == 1) {  // 50% chance
+					isFlyingEnemyActive = true;
+					flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset position
+				}
+			}
 
-		    if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
-		        flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset the enemy's position
-		        player.updatePasses(1);
+		} else {
 
-		        // Reset bomb drop flag to allow the next bomb drop
-		        flyingEnemy.resetBombDrop();
+			g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
-		        if (player.getPasses() % 5 == 0) {
-		            movingSpeed += 2;
-		        }
-		    }
+			if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
+				isFlyingEnemyActive = false;
+				//				flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset the enemy's position
+				//				player.updatePasses(1);
 
-		    // Render the bomb if it exists
-		    if (bomb != null) {
-		        g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), Constants.bombWidth, Constants.bombHeight);
-		    }
+				// Reset bomb drop flag to allow the next bomb drop
+				flyingEnemy.resetBombDrop();
+
+				//				if (player.getPasses() % 5 == 0) {
+				//					movingSpeed += 2;
+				//				}
+			}
 		}
+
+		// Render the bomb if it exists
+		if (bomb != null) {
+			g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), Constants.bombWidth, Constants.bombHeight);
+		}
+	}
 
 
 
@@ -274,19 +280,28 @@ public class PlayState extends GameState {
 		//		Enemy hoppar 10 snäpp till vänster för varje update
 		//		enemy.setAntagonistX(enemy.getX()-10);
 		//		enemy.setAntagonistX(enemy.getX()-movingSpeed);
-		flyingEnemy.setAntagonistX(flyingEnemy.getX() -movingSpeed);
-		
-		Bomb droppedBomb = flyingEnemy.dropBomb();
+		if (isFlyingEnemyActive) {
 
-		if (droppedBomb != null) {
-			bomb = droppedBomb;
+			flyingEnemy.setAntagonistX(flyingEnemy.getX() -movingSpeed);
+
+			Bomb droppedBomb = flyingEnemy.dropBomb();
+
+			if (droppedBomb != null) {
+				bomb = droppedBomb;
+			}
+		} else {
+			enemy.setAntagonistX(enemy.getX() - movingSpeed);
 		}
 
 		if (bomb != null) {
 			bomb.render(movingSpeed);
 
-			// If the bomb goes off-screen, remove it
-			if (bomb.getY() > Constants.screenHeight) {
+			if (bomb.getBoundingBox().intersects(player.getBoundingBox())) {
+				System.out.println("Bomb hit the player!");
+				player.decreaseLives();  // Assume there's a method to decrement player lives
+				bomb = null;  // Destroy the bomb after collision
+
+			}	else if (bomb.getY() > Constants.screenHeight) {
 				bomb = null;  // Destroy the bomb if it goes off-screen
 				System.out.println("Bomb went off-screen and was destroyed");
 			}

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import constants.Constants;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -64,6 +65,11 @@ public class Player {
 
 		currImage = image;
 
+	}
+	
+	
+	public Bounds getBoundingBox() {
+	    return new Rectangle(playerX, playerY, Constants.playerWidth, Constants.playerHeight).getBoundsInParent();
 	}
 
 

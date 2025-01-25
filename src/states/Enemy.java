@@ -5,8 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import constants.Constants;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 public class Enemy extends Antagonist{
 
@@ -45,7 +47,9 @@ public class Enemy extends Antagonist{
 	
 	}  
 
-
+	public Bounds getBoundingBox() {
+	    return new Rectangle(x, y, Constants.enemyWidth, Constants.enemyHeight).getBoundsInParent();
+	}
 	
 
 	@Override

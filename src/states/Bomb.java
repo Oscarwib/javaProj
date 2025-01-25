@@ -3,7 +3,10 @@ package states;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import constants.Constants;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 public class Bomb {
 
@@ -27,7 +30,10 @@ public class Bomb {
 		
 	}
 	
-	
+	public Bounds getBoundingBox() {
+	    return new Rectangle( startX, posY, Constants.bombWidth, Constants.bombHeight).getBoundsInParent();
+	}
+
 	
 	
 	public double getX() {

@@ -49,7 +49,9 @@ public abstract class Antagonist {
 		return x;
 	}
 
-	public abstract double getY();
+	public double getY() {
+		return y;
+	}
 
 	
 	public Image getImage() {

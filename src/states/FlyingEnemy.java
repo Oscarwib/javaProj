@@ -35,23 +35,23 @@ public class FlyingEnemy extends Antagonist{
 
 
 	public Bomb dropBomb() {
-		
-		if (!bombDropped && this.getX() >= bombDropX - 50 && this.getX() <= bombDropX + 50) {
-            Bomb bomb = new Bomb(bombDropX, Constants.bombImg);  // Drop the bomb at bombDropX
-            System.out.println("Bomb dropped at: " + bombDropX);
-            bombDropped = true;  // Mark that the bomb has been dropped
 
-            // Optionally, reset bombDropX to a new random location after dropping the bomb
-            bombDropX = dropNextBombX();
-            return bomb;
-        }
-        
-        return null;
+		if (!bombDropped && this.getX() >= bombDropX - 50 && this.getX() <= bombDropX + 50) {
+			Bomb bomb = new Bomb(bombDropX, Constants.bombImg);  // Drop the bomb at bombDropX
+			System.out.println("Bomb dropped at: " + bombDropX);
+			bombDropped = true;  // Mark that the bomb has been dropped
+
+			// Optionally, reset bombDropX to a new random location after dropping the bomb
+			bombDropX = dropNextBombX();
+			return bomb;
+		}
+
+		return null;
 	}
-	
-	 public void resetBombDrop() {
-	        bombDropped = false;
-	    }
+
+	public void resetBombDrop() {
+		bombDropped = false;
+	}
 
 	@Override
 	public boolean playerAntagonistCollision(Player player) {
@@ -60,11 +60,6 @@ public class FlyingEnemy extends Antagonist{
 	}
 
 
-	@Override
-	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 
 
