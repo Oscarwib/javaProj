@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 public class Bomb {
 
 	private double startX;
-	private double posY = 100;
+	private double posY = 50;
 	private Image image;
 	
 	public Bomb(double bombDropX, String bombImg) {

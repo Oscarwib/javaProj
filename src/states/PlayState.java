@@ -180,34 +180,25 @@ public class PlayState extends GameState {
 
 
 
-		g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
+		 g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
-		// If the flying enemy has passed the screen, drop a bomb (now always drops on the first pass)
-		if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
-			flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset the enemy's position
-			player.updatePasses(1);
-			System.out.println("Before dropBomb, bomb is: " + bomb);
+		    if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
+		        flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset the enemy's position
+		        player.updatePasses(1);
 
-			// Drop the bomb if it hasn't been dropped already
-			if (bomb == null) {
-				bomb = flyingEnemy.dropBomb();  // Call the method in FlyingEnemy to drop the bomb
-				//				System.out.println("Bomb dropped at X: " + bomb.getX() + ", Y: " + bomb.getY());
-			}
+		        // Reset bomb drop flag to allow the next bomb drop
+		        flyingEnemy.resetBombDrop();
 
-			if (player.getPasses() % 5 == 0) {
-				movingSpeed += 2;
-			}
+		        if (player.getPasses() % 5 == 0) {
+		            movingSpeed += 2;
+		        }
+		    }
+
+		    // Render the bomb if it exists
+		    if (bomb != null) {
+		        g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), Constants.bombWidth, Constants.bombHeight);
+		    }
 		}
-
-		// Render the bomb if it exists
-		if (bomb != null) {
-
-			g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), Constants.bombWidth, Constants.bombHeight);
-
-		}
-
-	}
-
 
 
 
@@ -284,6 +275,7 @@ public class PlayState extends GameState {
 		//		enemy.setAntagonistX(enemy.getX()-10);
 		//		enemy.setAntagonistX(enemy.getX()-movingSpeed);
 		flyingEnemy.setAntagonistX(flyingEnemy.getX() -movingSpeed);
+		
 		Bomb droppedBomb = flyingEnemy.dropBomb();
 
 		if (droppedBomb != null) {

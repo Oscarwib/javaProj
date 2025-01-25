@@ -48,6 +48,10 @@ public class FlyingEnemy extends Antagonist{
         
         return null;
 	}
+	
+	 public void resetBombDrop() {
+	        bombDropped = false;
+	    }
 
 	@Override
 	public boolean playerAntagonistCollision(Player player) {
