@@ -56,10 +56,12 @@ public class PlayState extends GameState {
 	private String scoreText;
 	private ExtraLifePowerUp extraLife;
 	private FlyingEnemy flyingEnemy;
-	private double tempy;
+	//	private double tempy;
 	private Random engen;
 	private String slidingPlayer;
 	private int movingSpeed = 10;
+	private Bomb bomb;
+
 
 
 	/* Class only used for testing */
@@ -91,11 +93,11 @@ public class PlayState extends GameState {
 	public void mode1() {
 		player = new Player(Constants.playerImg);
 		slidingPlayer = Constants.slidingPlayerImg;
-		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
+		enemy = new Enemy(Constants.enemyImg, 800.00, 270.00);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
-		flyingEnemy.setAntagonistX(800.00);
-		tempy = flyingEnemy.getY();
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 100.00);
+		//		flyingEnemy.setAntagonistX(800.00);
+		//		tempy = flyingEnemy.getY();
 		bgColor = Color.ROYALBLUE;
 		lineColor = Color.WHITE;
 
@@ -106,9 +108,9 @@ public class PlayState extends GameState {
 		slidingPlayer = Constants.slidingPlayerImg2;
 		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
-		flyingEnemy.setAntagonistX(800.00);
-		tempy = flyingEnemy.getY();
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 100.00);
+		//		flyingEnemy.setAntagonistX(800.00);
+		//		tempy = flyingEnemy.getY();
 		bgColor = Color.BEIGE;
 		lineColor = Color.BLACK;
 
@@ -135,29 +137,29 @@ public class PlayState extends GameState {
 			score.saveScore(player.getPasses());
 		}
 
-	
+
 
 		g.setStroke(lineColor);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
-		
+
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
-		
-		
-		
-//		Detta block används för att rita ut rectanglarna runt spelare och enemy
+
+
+
+		//		Detta block används för att rita ut rectanglarna runt spelare och enemy
 		g.setStroke(Color.BLACK); // Set the rectangle's border color
 		g.setLineWidth(2); // Set the border width
-		g.strokeRect(flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
+		//		g.strokeRect(flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
 		g.strokeRect(player.getPlayerX(), player.getRect(), Constants.playerWidth, Constants.playerHeight);
 
-		
-		
+
+
 		drawEnemy(g);
 
-	
+
 
 
 	}
@@ -165,25 +167,42 @@ public class PlayState extends GameState {
 	public void drawEnemy(GraphicsContext g) {
 		engen = new Random(); 
 
-
+		//
 		//		g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 		//		if (enemy.getX() < 0 - Constants.enemyWidth) {
 		//			enemy.setAntagonistX(Constants.screenWidth);
 		//			player.updatePasses(1);
+		//
+		//			if (player.getPasses() % 5 == 0) {
+		//				movingSpeed += 4;
+		//			}
 		//		}
 
 
 
+		g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
-		g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
+		// If the flying enemy has passed the screen, drop a bomb (now always drops on the first pass)
 		if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
-			flyingEnemy.setAntagonistX(Constants.screenWidth);
+			flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset the enemy's position
 			player.updatePasses(1);
-			tempy = flyingEnemy.getY();
-			
-			if (player.getPasses() % 5 == 0) {
-				movingSpeed += 4;
+			System.out.println("Before dropBomb, bomb is: " + bomb);
+
+			// Drop the bomb if it hasn't been dropped already
+			if (bomb == null) {
+				bomb = flyingEnemy.dropBomb();  // Call the method in FlyingEnemy to drop the bomb
+				//				System.out.println("Bomb dropped at X: " + bomb.getX() + ", Y: " + bomb.getY());
 			}
+
+			if (player.getPasses() % 5 == 0) {
+				movingSpeed += 2;
+			}
+		}
+
+		// Render the bomb if it exists
+		if (bomb != null) {
+
+			g.drawImage(bomb.getImage(), bomb.getX(), bomb.getY(), Constants.bombWidth, Constants.bombHeight);
 
 		}
 
@@ -238,6 +257,16 @@ public class PlayState extends GameState {
 			}
 			break;
 
+		case LEFT:
+			player.moveLeft(movingSpeed);
+
+			break;
+
+		case RIGHT:
+			player.moveRight(movingSpeed);
+
+			break;
+
 		default:
 			break;
 
@@ -253,24 +282,40 @@ public class PlayState extends GameState {
 
 		//		Enemy hoppar 10 snäpp till vänster för varje update
 		//		enemy.setAntagonistX(enemy.getX()-10);
-		flyingEnemy.setAntagonistX(flyingEnemy.getX()-movingSpeed);
-		//		flyingEnemy.setAntagonistX(flyingEnemy.getX() -10);
+		//		enemy.setAntagonistX(enemy.getX()-movingSpeed);
+		flyingEnemy.setAntagonistX(flyingEnemy.getX() -movingSpeed);
+		Bomb droppedBomb = flyingEnemy.dropBomb();
+
+		if (droppedBomb != null) {
+			bomb = droppedBomb;
+		}
+
+		if (bomb != null) {
+			bomb.render(movingSpeed);
+
+			// If the bomb goes off-screen, remove it
+			if (bomb.getY() > Constants.screenHeight) {
+				bomb = null;  // Destroy the bomb if it goes off-screen
+				System.out.println("Bomb went off-screen and was destroyed");
+			}
+		}
+
 
 		//		Om 
 		if (!gameOver) {
 
 			if (!collided) {
 				//				collided = enemy.playerAntagonistCollision(player);
-				collided = flyingEnemy.playerAntagonistCollision(player);
+				collided = enemy.playerAntagonistCollision(player);
 
 
 				if (Integer.valueOf(player.getLives()) == 0) {
 					gameOver = true;
 				} 
 			}
-			
+
 			//återställer boolean när enemy passerat
-			if (collided && flyingEnemy.getX() < player.getPlayerX()) {
+			if (collided && enemy.getX() < player.getPlayerX()) {
 				collided = false;
 			}
 

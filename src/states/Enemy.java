@@ -10,10 +10,7 @@ import javafx.scene.image.ImageView;
 
 public class Enemy extends Antagonist{
 
-	private double enemyX = -100.00;
-	private double enemyY = 250.00;
-	private Image image;
-	private ImageView enemyView;
+	
 
 	public Enemy(String enemyImg, double x, double y) {
 		super(enemyImg, x, y);

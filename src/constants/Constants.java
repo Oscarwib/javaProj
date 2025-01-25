@@ -41,11 +41,14 @@ public interface Constants {
 	//enemies
 	String enemyImg = "src/Images1/lorry.png";
 	String flyingEnemyImg = "src/Images1/saucer.png";
-	double enemyWidth = 100;
-	double enemyHeight = 100;
+	double enemyWidth = 80;
+	double enemyHeight = 80;
 	
 //	powerups
 	String lifeImg = "src/Images1/heart2.png";
-	String powerImge = "src/Images1/blixt.png";
+	String powerImg = "src/Images1/blixt.png";
 	
+	String bombImg = "src/Images1/bomb.png";
+	double bombWidth = 50;
+	double bombHeight = 50;
 }

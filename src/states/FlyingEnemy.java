@@ -8,100 +8,66 @@ import javafx.scene.image.Image;
 
 public class FlyingEnemy extends Antagonist{
 
-//	private double enemyX = 800.00;
-	private ArrayList<Double> enemyY;
-	private double currY;
-	private Random rnd = new Random();
+
+	private Random drop;
+	private int margin = 50;
+	private Bomb bomb;
+	private double bombDropX;
+	private boolean bombDropped = false;
 
 
 	public FlyingEnemy(String enemyImg, double x, double y) {
 		super(enemyImg, x, y);	
-		this.enemyY = new ArrayList<Double>();
-		this.enemyY.add(150.0);
-		this.enemyY.add(180.0);
-		this.enemyY.add(200.0);
-		this.enemyY.add(250.0);
-		//		enemyY.add(265.00);
-		//		enemyY.add(265.00);
-		//		enemyY.add(265.00);
-		//		enemyY.add(265.00);
 
-
-		//		double[] enemyY = {250, 200, 150,100};
-		//		enemyY[0] = 100.0;
-		//		enemyY[1] = 150.0;
-		//		enemyY[2] = 200.0;
-		//		enemyY[3] = 250.0;
+		this.drop = new Random();
+		this.bombDropX = dropNextBombX();
 
 	}
 
-	//	System.out.println(weather.get(rnd.nextInt(weather.size())));
+
+
+	private double dropNextBombX() {
+		int minX = margin;
+		int maxX = Constants.screenWidth - margin;
+		return drop.nextInt(maxX - minX + 1) + minX;
+	}
 
 
 
-//	public boolean playerFlyingEnemyCollision(Player player) {
-//		boolean hit = false;
-//
-//		if ((enemyX < (player.getPlayerX() + 80.00)) && ((enemyX) > player.getPlayerX())) { //borde vara +80 på enemyx men funkar ej
-//			//			if((player.getPlayerY() + 60.00) >= enemyY) {
-//			if((player.getPlayerY() + 60.00) >= currY) {
-//				//			if ((enemyY + 80  > (player.getPlayerY())) && ((player.getPlayerY() + 80) > enemyY))  {
-//
-//				hit = true;
-//				player.decreaseLives();
-//				//				if (hit && enemyX < player.getPlayerX() + 100) {
-//				//					hit = false;
-//				//				}
-//
-//			}
-//
-//		}
-//
-//		return hit;
-//
-//		//	public void setEnemyY() {
-//		//		enemyY = 0.0;
-//		//		
-//	}
+	public Bomb dropBomb() {
+		
+		if (!bombDropped && this.getX() >= bombDropX - 50 && this.getX() <= bombDropX + 50) {
+            Bomb bomb = new Bomb(bombDropX, Constants.bombImg);  // Drop the bomb at bombDropX
+            System.out.println("Bomb dropped at: " + bombDropX);
+            bombDropped = true;  // Mark that the bomb has been dropped
 
-	public FlyingEnemy(String enemyImg) {
-		super(enemyImg);
-		this.enemyY = new ArrayList<Double>();
-		this.enemyY.add(200.00); //går att stå under
-		this.enemyY.add(210.00); //behöver ducka
-		this.enemyY.add(220.00); //behöver ducka
-		this.enemyY.add(250.00); //behöver hoppa
+            // Optionally, reset bombDropX to a new random location after dropping the bomb
+            bombDropX = dropNextBombX();
+            return bomb;
+        }
+        
+        return null;
 	}
 
 	@Override
 	public boolean playerAntagonistCollision(Player player) {
-
-		boolean collisionX = player.getPlayerX() < (x + 60.00) && (player.getPlayerX() + 60.00) > x;
-
-	    // Check for collision on the y-axis
-	    boolean collisionY = player.getRect() < (currY + 60.00) && (player.getRect() + 60.00) > currY;
-
-
-	    if (collisionX && collisionY && !collisionDetected) {
-	        player.decreaseLives();
-	        collisionDetected = true;
-	        return true;
-	    }
-	    
-	    if (!collisionX) {
-            collisionDetected = false;
-        }
-	    
-
+		// TODO Auto-generated method stub
 		return false;
-	
 	}
+
 
 	@Override
 	public double getY() {
-
-		currY = enemyY.get(rnd.nextInt(enemyY.size()));
-		return currY;
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
+
+
+
+
+
+
+
 
 }

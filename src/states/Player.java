@@ -172,4 +172,21 @@ public class Player {
 
 
 
+	public void moveLeft(int movingSpeed) {
+		playerX -= movingSpeed;
+		
+	}
+
+
+
+
+	public void moveRight(int movingSpeed) {
+		playerX += movingSpeed;
+		
+	}
+
+
+
+
+
 }
