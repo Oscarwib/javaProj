@@ -67,10 +67,10 @@ public class FlyingEnemy extends Antagonist{
 	public FlyingEnemy(String enemyImg) {
 		super(enemyImg);
 		this.enemyY = new ArrayList<Double>();
-//		this.enemyY.add(200.00);
-		this.enemyY.add(210.00);
-//		this.enemyY.add(220.00);
-//		this.enemyY.add(250.00);
+		this.enemyY.add(200.00); //går att stå under
+		this.enemyY.add(210.00); //behöver ducka
+		this.enemyY.add(220.00); //behöver ducka
+		this.enemyY.add(250.00); //behöver hoppa
 	}
 
 	@Override

@@ -26,8 +26,10 @@ public interface Constants {
 	
 	// Player
 	String slidingPlayerImg = "src/Images1/player_sliding.png";
+//	String playerImg = "src/Images1/runner.png";
 	String playerImg = "src/Images1/player.png";
 	String slidingPlayerImg2 = "src/Images1/player2_sliding.png";
+//	String playerImg2 = "src/Images1/woman-running.png";
 	String playerImg2 = "src/Images1/player2.png";
 	double playerWidth = 100;
 	double playerHeight = 100;
@@ -37,12 +39,13 @@ public interface Constants {
 	String Blackbackground = "-fx-background-color: #111111;";
 	
 	//enemies
-	String enemyImg = "src/Images1/tree.png";
-	String flyingEnemyImg = "src/Images1/fly.png";
+	String enemyImg = "src/Images1/lorry.png";
+	String flyingEnemyImg = "src/Images1/saucer.png";
 	double enemyWidth = 100;
 	double enemyHeight = 100;
 	
 //	powerups
-	String lifeImg = "src/Images1/heart.png";
+	String lifeImg = "src/Images1/heart2.png";
+	String powerImge = "src/Images1/blixt.png";
 	
 }

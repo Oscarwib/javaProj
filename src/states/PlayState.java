@@ -59,6 +59,7 @@ public class PlayState extends GameState {
 	private double tempy;
 	private Random engen;
 	private String slidingPlayer;
+	private int movingSpeed = 10;
 
 
 	/* Class only used for testing */
@@ -134,31 +135,29 @@ public class PlayState extends GameState {
 			score.saveScore(player.getPasses());
 		}
 
-		//		ritar ut marklinjen
+	
 
 		g.setStroke(lineColor);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
-		//		om enemy är ute ur frame, ställer dem om positionen på den så att1
-
-
-		//		Ritar enemy och player
-		//		g.drawImage(extraLife.getImage(), extraLife.getPowerUpX(), extraLife.getPowerUpY(), 40, 40);
+		
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
+		
+		
+		
+//		Detta block används för att rita ut rectanglarna runt spelare och enemy
 		g.setStroke(Color.BLACK); // Set the rectangle's border color
 		g.setLineWidth(2); // Set the border width
-		if (!down) {
-			g.strokeRect(player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
-		} else {
-			g.strokeRect(player.getPlayerX(), player.getPlayerY() + 40, Constants.playerWidth, Constants.playerHeight);
-		}
-		//		g.drawImage(enemy.getImage(), enemy.getEnemyX(), enemy.getEnemyY(), Constants.enemyWidth, Constants.enemyHeight);
+		g.strokeRect(flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
+		g.strokeRect(player.getPlayerX(), player.getRect(), Constants.playerWidth, Constants.playerHeight);
+
+		
+		
 		drawEnemy(g);
 
-		//		TODO kanske göra en random här också, som väljer om vi ska rita de olika enemies eller powerupsen. Vid en viss score
-		//		TODO kommer möjligheten att ta powerups eller möta flyingenemy
+	
 
 
 	}
@@ -173,7 +172,6 @@ public class PlayState extends GameState {
 		//			player.updatePasses(1);
 		//		}
 
-		g.strokeRect(flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
 
 
@@ -181,6 +179,12 @@ public class PlayState extends GameState {
 		if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
 			flyingEnemy.setAntagonistX(Constants.screenWidth);
 			player.updatePasses(1);
+			tempy = flyingEnemy.getY();
+			
+			if (player.getPasses() % 5 == 0) {
+				movingSpeed += 4;
+			}
+
 		}
 
 	}
@@ -249,7 +253,7 @@ public class PlayState extends GameState {
 
 		//		Enemy hoppar 10 snäpp till vänster för varje update
 		//		enemy.setAntagonistX(enemy.getX()-10);
-		flyingEnemy.setAntagonistX(flyingEnemy.getX()-10);
+		flyingEnemy.setAntagonistX(flyingEnemy.getX()-movingSpeed);
 		//		flyingEnemy.setAntagonistX(flyingEnemy.getX() -10);
 
 		//		Om 
@@ -264,6 +268,8 @@ public class PlayState extends GameState {
 					gameOver = true;
 				} 
 			}
+			
+			//återställer boolean när enemy passerat
 			if (collided && flyingEnemy.getX() < player.getPlayerX()) {
 				collided = false;
 			}
@@ -274,7 +280,7 @@ public class PlayState extends GameState {
 
 			if (up) {
 
-				player.jump();
+				player.jump(movingSpeed);
 			}
 
 			if (player.getPlayerY() == 265) {
@@ -288,28 +294,6 @@ public class PlayState extends GameState {
 			}
 
 		}
-
-	}
-
-	public void checkCollision() {
-
-
-		if((player.getPlayerY() + 60) >= enemy.getY() ) {
-			collided = true;
-			//			System.out.println("fäk");
-			if (Integer.valueOf(player.getLives()) == 1) {
-				//								menu = new MenuState(model);
-				//				model.switchState(menu);
-				gameOver = true;
-				score.saveScore(clearedEnemies);
-
-			}
-			player.decreaseLives();
-			//			System.out.println(player.getLives());
-
-		}
-
-
 
 	}
 

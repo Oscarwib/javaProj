@@ -104,12 +104,13 @@ public class Player {
 
 
 
-	public void jump() {
+	public void jump(int movingSpeed) {
 
 
 		if (!down) {
 
-			playerY -= 10;
+			playerY -= movingSpeed;
+			topPos -= movingSpeed;
 
 			if (playerY <= 110) {
 
@@ -121,7 +122,8 @@ public class Player {
 
 		if (down) {
 
-			playerY += 10;
+			playerY += movingSpeed;
+			topPos += movingSpeed;
 
 			if (playerY == 265) {
 				down = false;
