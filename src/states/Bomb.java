@@ -31,7 +31,7 @@ public class Bomb {
 	}
 	
 	public Bounds getBoundingBox() {
-	    return new Rectangle( startX, posY, Constants.bombWidth, Constants.bombHeight).getBoundsInParent();
+	    return new Rectangle(startX, posY, Constants.bombWidth, Constants.bombHeight).getBoundsInParent();
 	}
 
 	

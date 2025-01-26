@@ -10,51 +10,24 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
-public class Enemy extends Antagonist{
+public class Enemy extends Object{
 
 	
 
-	public Enemy(String enemyImg, double x, double y) {
-		super(enemyImg, x, y);
+	public Enemy(String enemyImg, double x, double y, double h, double w) {
+		super(enemyImg, x, y, h, w);
 
 	}
 
-	//	if (collided && enemy.getEnemyX() < player.getPlayerX()) {
-	//		collided = false;
-	//	}
+	
+	
+
+	
 
 	@Override
-	public boolean playerAntagonistCollision(Player player) {
-//		boolean hit = false;
-
-		boolean collisionX = player.getPlayerX() < (x + 60.00) && (player.getPlayerX() + 60.00) > x;
-
-		// Check for collision on the y-axis
-		boolean collisionY = player.getPlayerY() < (y + 45.00) && (player.getPlayerY() + 60.00) > y;
-
-		if (collisionY && collisionX && !collisionDetected) {
-			player.decreaseLives();
-
-			 collisionDetected = true;
-		        return true;
-		    }
-		    
-		    if (!collisionX) {
-	            collisionDetected = false;
-	        }
+	public void use(Player player) {
+		// TODO Auto-generated method stub
 		
-		return false;
-	
-	}  
-
-	public Bounds getBoundingBox() {
-	    return new Rectangle(x, y, Constants.enemyWidth, Constants.enemyHeight).getBoundsInParent();
-	}
-	
-
-	@Override
-	public double getY() {
-		return y;
 	}
 
 

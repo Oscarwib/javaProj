@@ -45,8 +45,8 @@ public interface Constants {
 	double enemyHeight = 80;
 	
 //	powerups
-	String lifeImg = "src/Images1/heart2.png";
-	String powerImg = "src/Images1/blixt.png";
+	String lifeImg = "src/Images1/apple.png";
+	String powerImg = "src/Images1/zap.png";
 	
 	String bombImg = "src/Images1/bomb.png";
 	double bombWidth = 50;

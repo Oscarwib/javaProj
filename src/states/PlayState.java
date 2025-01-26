@@ -62,6 +62,8 @@ public class PlayState extends GameState {
 	private int movingSpeed = 10;
 	private Bomb bomb;
 	private boolean isFlyingEnemyActive = false;
+	private String currScore;
+	private double collisionX = -1.00;
 
 
 
@@ -94,9 +96,9 @@ public class PlayState extends GameState {
 	public void mode1() {
 		player = new Player(Constants.playerImg);
 		slidingPlayer = Constants.slidingPlayerImg;
-		enemy = new Enemy(Constants.enemyImg, 800.00, 270.00);
-		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00);
+		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
+		//		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
 		//		flyingEnemy.setAntagonistX(800.00);
 		//		tempy = flyingEnemy.getY();
 		bgColor = Color.ROYALBLUE;
@@ -107,9 +109,9 @@ public class PlayState extends GameState {
 	public void mode2() {
 		player = new Player(Constants.playerImg2);
 		slidingPlayer = Constants.slidingPlayerImg2;
-		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
-		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00);
+		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
+		//		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
 		//		flyingEnemy.setAntagonistX(800.00);
 		//		tempy = flyingEnemy.getY();
 		bgColor = Color.BEIGE;
@@ -123,6 +125,8 @@ public class PlayState extends GameState {
 	 */
 	@Override
 	public void draw(GraphicsContext g) {
+		currScore = "Currently: " + Integer.toString(player.getPasses());
+
 		drawBg(g, bgColor);
 
 		g.setFill(fontColor);
@@ -133,6 +137,7 @@ public class PlayState extends GameState {
 			g.fillText(livesleft+player.getLives(), 0, 30);
 			g.fillText(informationText, Constants.screenWidth - 300, 30);
 			g.fillText(scoreText, 0, 60);
+			g.fillText(currScore, 0, 90);
 		} else {
 			g.fillText(gameOverText, Constants.screenWidth/2, 200);
 			score.saveScore(player.getPasses());
@@ -150,12 +155,6 @@ public class PlayState extends GameState {
 
 
 
-		//		Detta block används för att rita ut rectanglarna runt spelare och enemy
-		//		g.setStroke(Color.BLACK); // Set the rectangle's border color
-		//		g.setLineWidth(2); // Set the border width
-		//		//		g.strokeRect(flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
-		//		g.strokeRect(player.getPlayerX(), player.getRect(), Constants.playerWidth, Constants.playerHeight);
-
 
 
 		drawEnemy(g);
@@ -168,17 +167,22 @@ public class PlayState extends GameState {
 	public void drawEnemy(GraphicsContext g) {
 		engen = new Random(); 
 
+
+
+
 		if (!isFlyingEnemyActive) {
 
 			g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
 			if (enemy.getX() < 0 - Constants.enemyWidth) {
-				enemy.setAntagonistX(Constants.screenWidth);
+				enemy.setX(Constants.screenWidth);
+				collided = false;
+				collisionX = -1.00;
 				player.updatePasses(1);
 
-				if (engen.nextInt(2) == 1) {  // 50% chance
+				if (engen.nextInt(2) == 1 && player.getPasses() > 2) {  // 50% chance after player hase passed 
 					isFlyingEnemyActive = true;
-					flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset position
+					flyingEnemy.setX(Constants.screenWidth);  // Reset position
 				}
 			}
 
@@ -188,8 +192,8 @@ public class PlayState extends GameState {
 
 			if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
 				isFlyingEnemyActive = false;
-				//				flyingEnemy.setAntagonistX(Constants.screenWidth);  // Reset the enemy's position
-				//				player.updatePasses(1);
+				player.updatePasses(1);
+
 
 				// Reset bomb drop flag to allow the next bomb drop
 				flyingEnemy.resetBombDrop();
@@ -275,14 +279,11 @@ public class PlayState extends GameState {
 
 	@Override
 	public void update() {
-		//om enemy position är mindre än player och collide är true kollar den inte collision
 
-		//		Enemy hoppar 10 snäpp till vänster för varje update
-		//		enemy.setAntagonistX(enemy.getX()-10);
-		//		enemy.setAntagonistX(enemy.getX()-movingSpeed);
+
 		if (isFlyingEnemyActive) {
 
-			flyingEnemy.setAntagonistX(flyingEnemy.getX() -movingSpeed);
+			flyingEnemy.setX(flyingEnemy.getX() -movingSpeed);
 
 			Bomb droppedBomb = flyingEnemy.dropBomb();
 
@@ -290,7 +291,10 @@ public class PlayState extends GameState {
 				bomb = droppedBomb;
 			}
 		} else {
-			enemy.setAntagonistX(enemy.getX() - movingSpeed);
+			enemy.setX(enemy.getX() - movingSpeed);
+
+
+
 		}
 
 		if (bomb != null) {
@@ -311,43 +315,52 @@ public class PlayState extends GameState {
 		//		Om 
 		if (!gameOver) {
 
-			if (!collided) {
-				//				collided = enemy.playerAntagonistCollision(player);
-				collided = enemy.playerAntagonistCollision(player);
+			if (!collided && enemy.playerObjectCollision(player)) {
 
+				collided = true;
 
-				if (Integer.valueOf(player.getLives()) == 0) {
-					gameOver = true;
-				} 
-			}
+				if (collisionX == -1.00) {
+					collisionX = enemy.getX();
+					System.out.println("Player-Enemy Collision X Coordinate: " + collisionX);
+				}
 
-			//återställer boolean när enemy passerat
-			if (collided && enemy.getX() < player.getPlayerX()) {
-				collided = false;
-			}
-
-
-
-
-
-			if (up) {
-
-				player.jump(movingSpeed);
-			}
-
-			if (player.getPlayerY() == 265) {
-				up = false;
-			}
-
-			if (down) {
-
-				player.slide(slidingPlayer);
+				player.decreaseLives();
 
 			}
+
+			if (Integer.valueOf(player.getLives()) == 0) {
+				gameOver = true;
+			} 
+
+
+
+//			if (collided && enemy.getX() < collisionX) {
+//				collided = false;
+//			}
+		}
+
+
+
+
+
+		if (up) {
+
+			player.jump(movingSpeed);
+		}
+
+		if (player.getPlayerY() == 265) {
+			up = false;
+		}
+
+		if (down) {
+
+			player.slide(slidingPlayer);
 
 		}
 
 	}
+
+
 
 
 

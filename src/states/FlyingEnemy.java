@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javafx.scene.image.Image;
 
-public class FlyingEnemy extends Antagonist{
+public class FlyingEnemy extends Object{
 
 
 	private Random drop;
@@ -16,8 +16,8 @@ public class FlyingEnemy extends Antagonist{
 	private boolean bombDropped = false;
 
 
-	public FlyingEnemy(String enemyImg, double x, double y) {
-		super(enemyImg, x, y);	
+	public FlyingEnemy(String enemyImg, double x, double y, double h, double w) {
+		super(enemyImg, x, y, h, w);	
 
 		this.drop = new Random();
 		this.bombDropX = dropNextBombX();
@@ -53,12 +53,15 @@ public class FlyingEnemy extends Antagonist{
 		bombDropped = false;
 	}
 
+
+
 	@Override
-	public boolean playerAntagonistCollision(Player player) {
+	public void use(Player player) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
+	
 
 
 
