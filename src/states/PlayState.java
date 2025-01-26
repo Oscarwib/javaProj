@@ -64,6 +64,7 @@ public class PlayState extends GameState {
 	private boolean isFlyingEnemyActive = false;
 	private String currScore;
 	private double collisionX = -1.00;
+	private SpeedPowerUp speedUp;
 
 
 
@@ -97,7 +98,8 @@ public class PlayState extends GameState {
 		player = new Player(Constants.playerImg);
 		slidingPlayer = Constants.slidingPlayerImg;
 		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
-		//		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 800.00, 170, Constants.powerHeight, Constants.powerWidth);
+		speedUp = new SpeedPowerUp(Constants.powerImg, 800.00, 265.00, Constants.powerHeight, Constants.powerWidth);
 		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
 		//		flyingEnemy.setAntagonistX(800.00);
 		//		tempy = flyingEnemy.getY();
@@ -110,7 +112,7 @@ public class PlayState extends GameState {
 		player = new Player(Constants.playerImg2);
 		slidingPlayer = Constants.slidingPlayerImg2;
 		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
-		//		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 800.00, 270, Constants.powerHeight, Constants.powerWidth);
 		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
 		//		flyingEnemy.setAntagonistX(800.00);
 		//		tempy = flyingEnemy.getY();
@@ -158,10 +160,18 @@ public class PlayState extends GameState {
 
 
 		drawEnemy(g);
+		
+		drawPowerUps(g);
 
 
 
 
+	}
+
+	private void drawPowerUps(GraphicsContext g) {
+		g.drawImage(speedUp.getImage(), speedUp.getX(), speedUp.getY(), Constants.powerWidth, Constants.powerHeight);
+//		g.drawImage(extraLife.getImage(), extraLife.getX(), extraLife.getY(), Constants.powerWidth, Constants.powerHeight);
+		
 	}
 
 	public void drawEnemy(GraphicsContext g) {
@@ -216,8 +226,14 @@ public class PlayState extends GameState {
 	//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
 	//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
 
-
-
+	public int getSpeed() {
+		return movingSpeed;
+	}
+	
+	
+	public void setSpeed(int s) {
+		movingSpeed = s;
+	}
 
 
 
@@ -280,6 +296,11 @@ public class PlayState extends GameState {
 	@Override
 	public void update() {
 
+		speedUp.setX(speedUp.getX() - movingSpeed);
+		speedUp.handle(player, this);
+		
+//		extraLife.setX(extraLife.getX() - movingSpeed);
+//		extraLife.checkCollision(player);
 
 		if (isFlyingEnemyActive) {
 
@@ -332,11 +353,6 @@ public class PlayState extends GameState {
 				gameOver = true;
 			} 
 
-
-
-//			if (collided && enemy.getX() < collisionX) {
-//				collided = false;
-//			}
 		}
 
 
@@ -352,11 +368,7 @@ public class PlayState extends GameState {
 			up = false;
 		}
 
-		if (down) {
-
-			player.slide(slidingPlayer);
-
-		}
+		
 
 	}
 

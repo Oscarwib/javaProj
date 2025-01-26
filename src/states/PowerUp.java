@@ -13,14 +13,17 @@ public abstract class PowerUp extends Object{
 		// TODO Auto-generated constructor stub
 	}
 
+	protected int getScoreSinceActive() {
+		return scoreSinceActive;
+	}
 	
-	public void checkCollision(Player player) {
+	public void checkCollision(Player player, PlayState playState) {
 		if (this.playerObjectCollision(player)) {
-			use(player);
+			use(player, playState);
 			scoreSinceActive = player.getPasses();
 		}	
 	}
 	
-	public abstract void use(Player player);
+	public abstract void use(Player player, PlayState playState);
 
 }

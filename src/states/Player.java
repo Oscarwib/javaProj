@@ -14,8 +14,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 
 public class Player {
-	
-//	TODO se över funktioner, kanske lättare att slå samman vissa
+
+	//	TODO se över funktioner, kanske lättare att slå samman vissa
 
 	private double playerX = (Constants.screenWidth - Constants.playerWidth) / 2;
 	private double playerY = 265.00;
@@ -24,11 +24,28 @@ public class Player {
 	private Image image;
 	private boolean down = false;
 	private boolean up = false;
-	private Image slidingImage;
+
 	private Image currImage = null;
 	private int passes = 0;
-	private Rectangle bounds;
-	private double topPos = playerY;
+
+	private boolean livesLocked = false;
+
+
+	public Player(String playerImg) {
+
+
+		try {
+			image = new Image(new FileInputStream(playerImg));
+			//slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		currImage = image;
+
+	}
 
 
 
@@ -39,43 +56,10 @@ public class Player {
 	}
 
 
-
-
-
 	public void updatePasses(int passes) {
 		this.passes += passes;
 	}
 
-
-
-
-
-	public Player(String playerImg) {
-
-		bounds = new Rectangle(playerX, topPos, Constants.playerWidth, Constants.playerHeight);
-
-		try {
-			image = new Image(new FileInputStream(playerImg));
-			//slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
-	
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		currImage = image;
-
-	}
-	
-	
-	public Bounds getBoundingBox() {
-	    return new Rectangle(playerX, playerY, Constants.playerWidth, Constants.playerHeight).getBoundsInParent();
-	}
-
-
-	public double getRect() {
-		return topPos;
-	}
 
 
 	public Image getImage() {
@@ -90,9 +74,14 @@ public class Player {
 
 	public void decreaseLives() {
 
+		if (!livesLocked) {
+			this.lives--;
+		}
 
-		this.lives--;
+	}
 
+	public void resetLives() {
+		this.lives = 3;
 	}
 
 
@@ -116,7 +105,6 @@ public class Player {
 		if (!down) {
 
 			playerY -= movingSpeed;
-			topPos -= movingSpeed;
 
 			if (playerY <= 110) {
 
@@ -129,7 +117,6 @@ public class Player {
 		if (down) {
 
 			playerY += movingSpeed;
-			topPos += movingSpeed;
 
 			if (playerY == 265) {
 				down = false;
@@ -140,22 +127,12 @@ public class Player {
 	}
 
 
-	public void slide(String img) {
-		try {
-			slidingImage = new Image(new FileInputStream(img));
-			//slidingImage = new Image(new FileInputStream(Constants.slidingPlayerImg));
 	
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+
+
 
 	
-		currImage = slidingImage;
-		topPos = 305.00;
-		
-			
-	}
 
 
 	public void setPlayerX(double playerX) {
@@ -170,8 +147,8 @@ public class Player {
 
 	public void standUp() {
 		currImage = image;
-		topPos = playerY;
-		
+
+
 	}
 
 
@@ -180,7 +157,7 @@ public class Player {
 
 	public void moveLeft(int movingSpeed) {
 		playerX -= movingSpeed;
-		
+
 	}
 
 
@@ -188,7 +165,16 @@ public class Player {
 
 	public void moveRight(int movingSpeed) {
 		playerX += movingSpeed;
-		
+
+	}
+
+
+
+
+
+	public void lockLives(boolean b) {
+		livesLocked = b;
+
 	}
 
 

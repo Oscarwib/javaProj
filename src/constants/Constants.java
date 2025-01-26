@@ -47,6 +47,8 @@ public interface Constants {
 //	powerups
 	String lifeImg = "src/Images1/apple.png";
 	String powerImg = "src/Images1/zap.png";
+	double powerWidth = 40;
+	double powerHeight = 40;
 	
 	String bombImg = "src/Images1/bomb.png";
 	double bombWidth = 50;
