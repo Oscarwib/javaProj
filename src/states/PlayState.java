@@ -298,9 +298,9 @@ public class PlayState extends GameState {
 		}
 
 		if (bomb != null) {
-			bomb.render(movingSpeed);
+			bomb.setY(bomb.getY() + movingSpeed);
 
-			if (bomb.getBoundingBox().intersects(player.getBoundingBox())) {
+			if (bomb.playerObjectCollision(player)) {
 				System.out.println("Bomb hit the player!");
 				player.decreaseLives();  // Assume there's a method to decrement player lives
 				bomb = null;  // Destroy the bomb after collision

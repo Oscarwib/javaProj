@@ -37,7 +37,7 @@ public class FlyingEnemy extends Object{
 	public Bomb dropBomb() {
 
 		if (!bombDropped && this.getX() >= bombDropX - 50 && this.getX() <= bombDropX + 50) {
-			Bomb bomb = new Bomb(bombDropX, Constants.bombImg);  // Drop the bomb at bombDropX
+			Bomb bomb = new Bomb(Constants.bombImg, bombDropX, 50, Constants.bombHeight, Constants.bombWidth);  // Drop the bomb at bombDropX
 			System.out.println("Bomb dropped at: " + bombDropX);
 			bombDropped = true;  // Mark that the bomb has been dropped
 
@@ -55,11 +55,6 @@ public class FlyingEnemy extends Object{
 
 
 
-	@Override
-	public void use(Player player) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
 

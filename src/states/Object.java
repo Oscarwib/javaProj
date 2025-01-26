@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 public abstract class Object {
 	
 	private double posX;
-	private double posY; 
+	protected double posY; 
 	private double height;
 	private double width;
 	private Image img;
@@ -88,7 +88,7 @@ public abstract class Object {
 		return hit;
 	}
 	
-	public abstract void use(Player player);
+	
 	
 //	här kommer de två olika powerupsen avgöra vad som händer när ma ta den, denna klass kallar på kollisionen
 	

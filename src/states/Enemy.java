@@ -22,13 +22,6 @@ public class Enemy extends Object{
 	
 	
 
-	
-
-	@Override
-	public void use(Player player) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 
