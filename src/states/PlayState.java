@@ -48,17 +48,13 @@ public class PlayState extends GameState {
 	private Enemy enemy;
 	private boolean collided = false;
 	private boolean up = false;
-	private boolean down = false;
 	private boolean gameOver = false;
-	private MenuState menu;
 	private HighScore score = new HighScore();
-	private int clearedEnemies;
 	private String scoreText;
 	private ExtraLifePowerUp extraLife;
 	private FlyingEnemy flyingEnemy;
 	//	private double tempy;
 	private Random engen;
-	private String slidingPlayer;
 	private int movingSpeed = 10;
 	private Bomb bomb;
 	private boolean isFlyingEnemyActive = false;
@@ -96,7 +92,6 @@ public class PlayState extends GameState {
 
 	public void mode1() {
 		player = new Player(Constants.playerImg);
-		slidingPlayer = Constants.slidingPlayerImg;
 		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 800.00, 170, Constants.powerHeight, Constants.powerWidth);
 		speedUp = new SpeedPowerUp(Constants.powerImg, 800.00, 265.00, Constants.powerHeight, Constants.powerWidth);
@@ -110,7 +105,6 @@ public class PlayState extends GameState {
 
 	public void mode2() {
 		player = new Player(Constants.playerImg2);
-		slidingPlayer = Constants.slidingPlayerImg2;
 		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 800.00, 270, Constants.powerHeight, Constants.powerWidth);
 		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
@@ -160,7 +154,7 @@ public class PlayState extends GameState {
 
 
 		drawEnemy(g);
-		
+
 		drawPowerUps(g);
 
 
@@ -170,8 +164,8 @@ public class PlayState extends GameState {
 
 	private void drawPowerUps(GraphicsContext g) {
 		g.drawImage(speedUp.getImage(), speedUp.getX(), speedUp.getY(), Constants.powerWidth, Constants.powerHeight);
-//		g.drawImage(extraLife.getImage(), extraLife.getX(), extraLife.getY(), Constants.powerWidth, Constants.powerHeight);
-		
+		g.drawImage(extraLife.getImage(), extraLife.getX(), extraLife.getY(), Constants.powerWidth, Constants.powerHeight);
+
 	}
 
 	public void drawEnemy(GraphicsContext g) {
@@ -229,8 +223,8 @@ public class PlayState extends GameState {
 	public int getSpeed() {
 		return movingSpeed;
 	}
-	
-	
+
+
 	public void setSpeed(int s) {
 		movingSpeed = s;
 	}
@@ -258,20 +252,7 @@ public class PlayState extends GameState {
 
 		case UP:
 			//		Om spelaren duckar kan den inte hoppa, då ställer sig spelaren upp istället
-			if (down) {
-				player.standUp();
-				down = false;
-			} else {
-				up = true;
-			}
-			break;
-
-		case DOWN:
-			//		Spelaren kan inte ducka om den är mitt i ett hopp
-			if (!up) {
-				down = true;
-
-			}
+			up = true;
 			break;
 
 		case LEFT:
@@ -297,10 +278,10 @@ public class PlayState extends GameState {
 	public void update() {
 
 		speedUp.setX(speedUp.getX() - movingSpeed);
-		speedUp.handle(player, this);
-		
-//		extraLife.setX(extraLife.getX() - movingSpeed);
-//		extraLife.checkCollision(player);
+//		speedUp.handle(player, this);
+
+				extraLife.setX(extraLife.getX() - movingSpeed);
+//				extraLife.checkCollision(player, this);
 
 		if (isFlyingEnemyActive) {
 
@@ -368,7 +349,7 @@ public class PlayState extends GameState {
 			up = false;
 		}
 
-		
+
 
 	}
 

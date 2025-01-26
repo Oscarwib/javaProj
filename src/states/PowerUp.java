@@ -7,12 +7,20 @@ public abstract class PowerUp extends Object{
 	private Boolean active = false;
 	private int scoreSinceActive = 0;
 	private Random random = new Random();
+	private int maxH = 110;
+	private int minH = 265;
 
 	public PowerUp(String image, double x, double y, double h, double w) {
 		super(image, x, y, h, w);
-		// TODO Auto-generated constructor stub
+		this.posY = spawn();
 	}
 
+
+	public double spawn() {
+		int x = random.nextInt(minH - maxH + 1) + maxH;
+		return (double) x;
+	}
+	
 	protected int getScoreSinceActive() {
 		return scoreSinceActive;
 	}
@@ -24,6 +32,7 @@ public abstract class PowerUp extends Object{
 		}	
 	}
 	
+	
 	public abstract void use(Player player, PlayState playState);
 
-}
+	}

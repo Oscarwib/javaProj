@@ -1,17 +1,10 @@
 package states;
 
 import java.io.FileInputStream;
-
-
 import java.io.FileNotFoundException;
-
 import constants.Constants;
-import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.shape.Rectangle;
+
 
 public class Player {
 
@@ -19,13 +12,10 @@ public class Player {
 
 	private double playerX = (Constants.screenWidth - Constants.playerWidth) / 2;
 	private double playerY = 265.00;
-	private int score = 0; 
 	private int lives = 3;
 	private Image image;
 	private boolean down = false;
-	private boolean up = false;
 
-	private Image currImage = null;
 	private int passes = 0;
 
 	private boolean livesLocked = false;
@@ -43,7 +33,7 @@ public class Player {
 			e.printStackTrace();
 		}
 
-		currImage = image;
+
 
 	}
 
@@ -63,7 +53,7 @@ public class Player {
 
 
 	public Image getImage() {
-		return currImage;
+		return image;
 	}
 
 
@@ -143,14 +133,6 @@ public class Player {
 	public void setPlayerY(double playerY) {
 		this.playerY = playerY;
 	}
-
-
-	public void standUp() {
-		currImage = image;
-
-
-	}
-
 
 
 

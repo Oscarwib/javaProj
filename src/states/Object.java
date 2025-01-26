@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Object {
 	
-	private double posX;
+	protected double posX;
 	protected double posY; 
 	private double height;
 	private double width;
