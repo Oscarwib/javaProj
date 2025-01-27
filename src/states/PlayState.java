@@ -389,7 +389,7 @@ public class PlayState extends GameState {
 
 			flyingEnemy.setX(flyingEnemy.getX() -movingSpeed);
 
-			Bomb droppedBomb = flyingEnemy.dropBomb();
+			Bomb droppedBomb = flyingEnemy.dropBomb(player);
 
 			if (droppedBomb != null) {
 				bomb = droppedBomb;

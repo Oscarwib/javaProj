@@ -118,12 +118,12 @@ public class Player {
 	}
 
 
-	
 
 
 
 
-	
+
+
 
 
 	public void setPlayerX(double playerX) {
@@ -139,7 +139,12 @@ public class Player {
 
 
 	public void moveLeft(int movingSpeed) {
-		playerX -= movingSpeed;
+
+		if (playerX > 0) {
+
+			playerX -= movingSpeed;
+		}
+
 
 	}
 
@@ -147,7 +152,12 @@ public class Player {
 
 
 	public void moveRight(int movingSpeed) {
-		playerX += movingSpeed;
+
+		if (playerX < Constants.screenWidth - Constants.playerWidth) {
+
+			playerX += movingSpeed;
+
+		}
 
 	}
 
