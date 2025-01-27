@@ -108,7 +108,8 @@ public class Player {
 
 			playerY += movingSpeed;
 
-			if (playerY == 265) {
+			if (playerY >= 265) {
+				playerY = 265;
 				down = false;
 			}
 
