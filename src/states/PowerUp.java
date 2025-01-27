@@ -29,6 +29,7 @@ public abstract class PowerUp extends Object{
 		if (this.playerObjectCollision(player)) {
 			use(player, playState);
 			scoreSinceActive = player.getPasses();
+		
 		}	
 	}
 	

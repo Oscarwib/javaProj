@@ -15,7 +15,6 @@ public class FlyingEnemy extends Object{
 	private double bombDropX;
 	private boolean bombDropped = false;
 
-
 	public FlyingEnemy(String enemyImg, double x, double y, double h, double w) {
 		super(enemyImg, x, y, h, w);	
 
@@ -39,6 +38,7 @@ public class FlyingEnemy extends Object{
 		if (!bombDropped && this.getX() >= bombDropX - 50 && this.getX() <= bombDropX + 50) {
 			Bomb bomb = new Bomb(Constants.bombImg, bombDropX, 50, Constants.bombHeight, Constants.bombWidth);  // Drop the bomb at bombDropX
 			System.out.println("Bomb dropped at: " + bombDropX);
+
 			bombDropped = true;  // Mark that the bomb has been dropped
 
 			// Optionally, reset bombDropX to a new random location after dropping the bomb

@@ -41,6 +41,7 @@ public class SpeedPowerUp extends PowerUp {
 			if ((player.getPasses() - start) >= 10) {
 				playState.setSpeed(speed);
 				player.lockLives(false);
+				player.setPlayerY(265);
 				active = false;
 
 			}

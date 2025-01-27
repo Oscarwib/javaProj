@@ -11,6 +11,7 @@ public class ExtraLifePowerUp extends PowerUp {
 	public void use(Player player, PlayState playState) {
 		player.resetLives();
 		
+		
 	}
 
 
