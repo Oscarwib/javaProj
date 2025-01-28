@@ -37,10 +37,10 @@ public class FlyingEnemy extends Object{
 
 
 	//om man vill kan man skicka med players x pos på dirren, blir lite svårare då ba
-	public Enemy dropBomb(Player p) {
+	public Enemy dropBomb(Player p, String s) {
 
 		if (!bombDropped && this.getX() >= bombDropX - 50 && this.getX() <= bombDropX + 50) {
-			Enemy bomb = new Enemy(Constants.bombImg, bombDropX, 50, Constants.bombHeight, Constants.bombWidth);  // Drop the bomb at bombDropX
+			Enemy bomb = new Enemy(s, bombDropX, 50, Constants.bombHeight, Constants.bombWidth);  // Drop the bomb at bombDropX
 			System.out.println("Bomb dropped at: " + bombDropX);
 
 			bombDropped = true;  // Mark that the bomb has been dropped

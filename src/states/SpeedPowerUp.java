@@ -19,6 +19,8 @@ public class SpeedPowerUp extends PowerUp {
 	@Override
 	public void use(Player player, PlayState playState) {
 
+
+		
 		player.lockLives(true);
 
 		playState.setSpeed(100);
@@ -37,7 +39,7 @@ public class SpeedPowerUp extends PowerUp {
 
 		} else {
 
-			if ((player.getPasses() - start) >= 10) {
+			if ((player.getPasses() - start) >= 5) {
 				playState.setSpeed(speed);
 				player.lockLives(false);
 				player.setPlayerY(265);

@@ -25,7 +25,13 @@ public interface Constants {
 	
 	//enemies
 	String enemyImg = "src/Images1/lorry.png";
+	String enemyImg2 = "src/Images1/fire_engine.png";
 	String flyingEnemyImg = "src/Images1/saucer.png";
+	String flyingEnemyImg2 = "src/Images1/helicopter.png";
+	String bombImg = "src/Images1/bomb.png";
+	String bombImg2 = "src/Images1/8ball.png";
+	double bombWidth = 50;
+	double bombHeight = 50;
 	double enemyWidth = 80;
 	double enemyHeight = 80;
 	
@@ -35,7 +41,5 @@ public interface Constants {
 	double powerWidth = 40;
 	double powerHeight = 40;
 	
-	String bombImg = "src/Images1/bomb.png";
-	double bombWidth = 50;
-	double bombHeight = 50;
+	
 }

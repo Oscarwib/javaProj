@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import constants.Constants;
 
@@ -29,8 +28,6 @@ public class PlayState extends GameState {
 	private String scoreText;
 	private ExtraLifePowerUp extraLife;
 	private FlyingEnemy flyingEnemy;
-	//	private double tempy;
-	private Random engen = new Random(); 
 	private int movingSpeed = 10;
 	private Enemy bomb;
 	private boolean isFlyingEnemyActive = false;
@@ -39,6 +36,9 @@ public class PlayState extends GameState {
 	private SpeedPowerUp speedUp;
 	private boolean isPowerUpActive;
 	private int num;
+	private String bombImg;
+	private PowerUp last = null;
+
 
 
 
@@ -60,10 +60,11 @@ public class PlayState extends GameState {
 
 	public void mode1() {
 		player = new Player(Constants.playerImg);
-		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
-		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 900.00, 170, Constants.powerHeight, Constants.powerWidth);
-		speedUp = new SpeedPowerUp(Constants.powerImg, 900.00, 265.00, Constants.powerHeight, Constants.powerWidth);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
+		enemy = new Enemy(Constants.enemyImg, 900.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 1200.00, 170, Constants.powerHeight, Constants.powerWidth);
+		speedUp = new SpeedPowerUp(Constants.powerImg, 1200.00, 265.00, Constants.powerHeight, Constants.powerWidth);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, 900.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
+		bombImg = Constants.bombImg;
 		bgColor = Color.ROYALBLUE;
 		lineColor = Color.WHITE;
 
@@ -71,10 +72,11 @@ public class PlayState extends GameState {
 
 	public void mode2() {
 		player = new Player(Constants.playerImg2);
-		enemy = new Enemy(Constants.enemyImg, -100.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
+		enemy = new Enemy(Constants.enemyImg2, 900.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
 		extraLife = new ExtraLifePowerUp(Constants.lifeImg, -100.00, 270, Constants.powerHeight, Constants.powerWidth);
 		speedUp = new SpeedPowerUp(Constants.powerImg, -100.00, 265.00, Constants.powerHeight, Constants.powerWidth);
-		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, -200.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg2, 900.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
+		bombImg = Constants.bombImg2;
 		bgColor = Color.BEIGE;
 		lineColor = Color.BLACK;
 
@@ -128,28 +130,41 @@ public class PlayState extends GameState {
 
 	private void drawPowerUps(GraphicsContext g) {
 
-		if (isPowerUpActive) {
+		if (isPowerUpActive && movingSpeed < 100) {
 
+			if (last == speedUp) {
+				num = 1;
+			}
 			if (num == 0) {
-
-				if(speedUp.getX() < 0 - Constants.playerWidth) {
-					speedUp.setX(Constants.screenWidth);
-					isPowerUpActive = false;
-				}
-
-				g.drawImage(speedUp.getImage(), speedUp.getX(), speedUp.getY(), Constants.powerWidth, Constants.powerHeight);
+				drawSpeedUp(g);
+				last = null;
 
 			} else if (num == 1){
-
-				if(extraLife.getX() < 0 - Constants.playerWidth) {
-					extraLife.setX(Constants.screenWidth);
-					isPowerUpActive = false;
-				}
-				g.drawImage(extraLife.getImage(), extraLife.getX(), extraLife.getY(), Constants.powerWidth, Constants.powerHeight);
-
+				drawExtraLife(g);
+				last = null;
 			}
 		}
+	}
 
+	public void drawSpeedUp(GraphicsContext g) {
+		if(speedUp.getX() < 0 - Constants.playerWidth) {
+			speedUp.setX(Constants.screenWidth);
+			isPowerUpActive = false;
+		}
+
+		g.drawImage(speedUp.getImage(), speedUp.getX(), speedUp.getY(), Constants.powerWidth, Constants.powerHeight);
+
+		last = speedUp;
+	}
+
+	public void drawExtraLife(GraphicsContext g) {
+		if(extraLife.getX() < 0 - Constants.playerWidth) {
+			extraLife.setX(Constants.screenWidth);
+			isPowerUpActive = false;
+		}
+		g.drawImage(extraLife.getImage(), extraLife.getX(), extraLife.getY(), Constants.powerWidth, Constants.powerHeight);
+
+		last = extraLife;
 	}
 
 	public void drawEnemies(GraphicsContext g) {
@@ -173,14 +188,17 @@ public class PlayState extends GameState {
 		g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
 		if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
-			isFlyingEnemyActive = false;
+			flyingEnemy.setX(Constants.screenWidth);
 			player.updatePasses(1);
-
-
 			// Reset bomb drop flag to allow the next bomb drop
 			flyingEnemy.resetBombDrop();
-
 			speedCheck();
+
+			int r = getRandom();
+
+			if(r == 1) {
+				isFlyingEnemyActive = false;
+			}
 
 
 		}		
@@ -200,9 +218,10 @@ public class PlayState extends GameState {
 			speedCheck();
 
 
-			if (getRandom() == 1 && player.getPasses() > 2) {  // 50% chance after player hase passed 
+			if (player.getPasses() > 4 && getRandom() == 0) {  // 50% chance after player hase passed 
 				isFlyingEnemyActive = true;
-				flyingEnemy.setX(Constants.screenWidth);  // Reset position
+				// Reset position
+				System.out.println("Stage one activated, flyingenemy added to the mix");
 			}
 		}		
 	}
@@ -214,11 +233,10 @@ public class PlayState extends GameState {
 		if (player.getPasses() % 5 == 0) {
 			movingSpeed += 1;
 			System.out.println("speed set to: " + Integer.toString(movingSpeed));
-		} else if (player.getPasses() % 2 == 0) {
-
+		} else if (player.getPasses() > 10 && player.getPasses() % 2 == 0) {
 			isPowerUpActive = true;			
-			//			num = 0;
 			num = getRandom();
+
 		}
 	}
 
@@ -359,7 +377,7 @@ public class PlayState extends GameState {
 
 			flyingEnemy.setX(flyingEnemy.getX() -movingSpeed);
 
-			Enemy droppedBomb = flyingEnemy.dropBomb(player);
+			Enemy droppedBomb = flyingEnemy.dropBomb(player, bombImg);
 
 			if (droppedBomb != null) {
 				bomb = droppedBomb;
