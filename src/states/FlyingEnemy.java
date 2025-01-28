@@ -23,9 +23,10 @@ public class FlyingEnemy extends Object{
 
 	}
 
+	
+//ceow
 
-
-	private double dropNextBombX() {
+	private double dropNextBombX() { 
 		int minX = margin;
 		int maxX = Constants.screenWidth - margin;
 		return drop.nextInt(maxX - minX + 1) + minX;
