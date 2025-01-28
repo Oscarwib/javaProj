@@ -5,7 +5,11 @@ import java.io.FileNotFoundException;
 import constants.Constants;
 import javafx.scene.image.Image;
 
-
+/**
+ * @author oscarwiberg, filipyhde
+ * player hanterar hur den rör sig efter vilka tangeter vi trycker på i playstate.
+ * Hanterar hur långt spelaren har kommit i spelet(passes), samt justerar sina liv utefter kollisioner.
+ */
 public class Player {
 
 	//	TODO se över funktioner, kanske lättare att slå samman vissa
@@ -160,9 +164,6 @@ public class Player {
 		}
 
 	}
-
-
-
 
 
 	public void lockLives(boolean b) {

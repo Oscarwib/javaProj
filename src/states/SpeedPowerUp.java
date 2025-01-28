@@ -1,5 +1,11 @@
 package states;
 
+/**
+ * @author oscarwiberg, filipyhde
+ * Denhär klassen har en liten längre chain of events vid kollision. Vi kallar på handle i playstate, sparar hur många passes vi gjort samt nuvarande hastighet i spelet
+ * därfter kallar vi på kollision, om det blir kollision kallar den på use som låser liven på player och ökar spelhastigheten till 100.
+ * När det har gått 10 passeringar sen kollision återgår hastigheten till den som den var innan. 
+ */
 public class SpeedPowerUp extends PowerUp {
 
 	private boolean active = false;
@@ -8,7 +14,6 @@ public class SpeedPowerUp extends PowerUp {
 
 	public SpeedPowerUp(String image, double x, double y, double h, double w) {
 		super(image, x, y, h, w);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -20,9 +25,6 @@ public class SpeedPowerUp extends PowerUp {
 
 		active = true;
 
-
-		// TODO Auto-generated method stub
-
 	}
 
 	public void handle(Player player, PlayState playState) {
@@ -33,24 +35,14 @@ public class SpeedPowerUp extends PowerUp {
 
 			this.checkCollision(player, playState);
 
-			
-
 		} else {
-
 
 			if ((player.getPasses() - start) >= 10) {
 				playState.setSpeed(speed);
 				player.lockLives(false);
 				player.setPlayerY(265);
 				active = false;
-
 			}
-
-
 		}
-
-
-
 	}
-
 }

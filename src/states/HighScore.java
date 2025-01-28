@@ -1,16 +1,15 @@
 package states;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author oscarwiberg
+ * Skriver och läser highscore till textfilen. Om den är tom returneras noll.
+ */
 public class HighScore {
 
 

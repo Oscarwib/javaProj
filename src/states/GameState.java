@@ -1,15 +1,12 @@
 package states;
 
 import javafx.scene.canvas.GraphicsContext;
-
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
-
 import constants.Constants;
 
 /**
+ * @author oscarwiberg, filipyhde
  * This class represents a state of the game. These states are different views
  * in the game, which contain their own separate logic.
  *
@@ -29,7 +26,6 @@ import constants.Constants;
  * To define a valid state, that state has to be derived from this class, and
  * needs to override the three functions mentioned above.
  */
-
 public abstract class GameState {
 
 	protected GameModel model;

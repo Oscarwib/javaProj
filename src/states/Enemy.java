@@ -1,15 +1,10 @@
 package states;
 
-import java.io.FileInputStream;
-
-import java.io.FileNotFoundException;
-
-import constants.Constants;
-import javafx.geometry.Bounds;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
-
+/**
+ * @author oscarwiberg, filipyhde
+ * Enemy(groundenemy), gör inte så mycket unikt och använder mest den fördefinierade funktionaliteten som finns objekt classen
+ * Bomben som flyingenemy är en instan av enemy.
+ */
 public class Enemy extends Object{
 
 	

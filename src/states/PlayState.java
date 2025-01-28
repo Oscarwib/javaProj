@@ -1,44 +1,19 @@
 package states;
 
 import javafx.scene.canvas.GraphicsContext;
-
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
 import constants.Constants;
 
 /**
- * This state represents the Playing State of the Game The main responsibility
- * of this class is to; - create Game Objects - update Game Objects - draw Game
- * Objects Game Objects are for instance; players, enemies, npc's, etc...
- *
- * The PlayState can also be thought off as a blue print where data is loaded
- * into some container from a file or some other type of data storage.
- *
- * It can also be created by some class responsible for object creation and then
- * passed to the PlayState as a parameter. This means all the PlayState has to
- * do is receive a list of objects, store them in some container and then for
- * every object in that container update and render that object.
- *
- * This way you can let the user define different Levels based on what
- * parameters are passed into the PlayState.
+ * @author oscarwiberg, filipyhde
+ * hanterar självaste spelflödet. renderar alla karaktärer och objekt under spelets gång och uppdaterar alla positioner.
  */
 public class PlayState extends GameState {
-	/*
-	 * The following three variables are just used to show that a change of state
-	 * can be made. The same variables also exist in the MenuState, can you think of
-	 * a way to make this more general and not duplicate variables?
-	 */
+
 	private String informationText;
 	private String livesleft;
 	private String gameOverText;
@@ -57,7 +32,7 @@ public class PlayState extends GameState {
 	//	private double tempy;
 	private Random engen = new Random(); 
 	private int movingSpeed = 10;
-	private Bomb bomb;
+	private Enemy bomb;
 	private boolean isFlyingEnemyActive = false;
 	private String currScore;
 	private double collisionX = -1.00;
@@ -66,11 +41,6 @@ public class PlayState extends GameState {
 	private int num;
 
 
-
-	/* Class only used for testing */
-
-	//	TODO nästa steg, lägg in en flygande enemy för att testa glid funktionen, ändra boundsen på den glidande bilden!
-	// 	TODO kanske ta bort att skicka med image när man instansierar player
 
 	public PlayState(GameModel model, boolean mode) {
 		super(model);
@@ -389,7 +359,7 @@ public class PlayState extends GameState {
 
 			flyingEnemy.setX(flyingEnemy.getX() -movingSpeed);
 
-			Bomb droppedBomb = flyingEnemy.dropBomb(player);
+			Enemy droppedBomb = flyingEnemy.dropBomb(player);
 
 			if (droppedBomb != null) {
 				bomb = droppedBomb;

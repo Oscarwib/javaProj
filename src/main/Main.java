@@ -1,16 +1,13 @@
 package main;
 
 import states.GameModel;
-
 import constants.Constants;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-//FFfffffffff
 /**
  * This Class is the entry point of the application.
  * <p>
@@ -33,11 +30,6 @@ import javafx.stage.Stage;
  * @author magni54, alomi60
  */
 public class Main extends Application {
-	
-	private GameModel model;
-	private Scene gameScene;
-	private GameFrame frame;
-	
 
 	public static void main(String[] args) {
 		launch(args);

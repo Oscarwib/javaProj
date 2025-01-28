@@ -2,12 +2,16 @@ package states;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
 import constants.Constants;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * @author oscarwiberg, filipyhde
+ * Allt som inte är player går egentligen genom denna class för att ärva funktionalitet och variabler. 
+ * 
+ */
 public abstract class Object {
 	
 	protected double posX;

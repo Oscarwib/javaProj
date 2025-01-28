@@ -1,10 +1,10 @@
 package main;
 
 import states.GameModel;
-
 import javafx.scene.canvas.Canvas;
 
 /**
+ * @author oscarwiberg, filipyhde
  * The GamePanel wraps a Canvas
  *
  * The main responsibilities of the GamePanel are:

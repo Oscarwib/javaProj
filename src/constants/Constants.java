@@ -1,26 +1,11 @@
 package constants;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import javafx.scene.image.Image;
-
+/**
+ * @author oscarwiberg, filipyhde
+ * Definerar globala konstanter som vi använder återkommande i andra klasser. 
+ */
 public interface Constants {
 
-	/**
-	 * In this file we define some global constants.
-	 *
-	 * An interface is one way to store variables that are truly constants and not
-	 * subject to change during run time.
-	 *
-	 * Please note that the problem with global variables is that anyone can change
-	 * them whenever. This makes it extremely hard to reason about your code. But
-	 * for constants, this is not a problem since we cannot change them, and
-	 * therefore they stay the same during the entire execution of the program.
-	 */
-	/*
-	 * Define the size of the window
-	 */
 	final int screenWidth = 1000;
 	final int screenHeight = 500;
 	

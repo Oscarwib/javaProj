@@ -4,7 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 
 /**
- * This class represents the current state of the game.
+ * @author oscarwiberg, filipyhde
+ * * This class represents the current state of the game.
  *
  * This implementation of a state machine keeps a reference to the current state
  * (see /src/states/GameState).
@@ -18,9 +19,7 @@ import javafx.scene.input.KeyEvent;
  * passing a reference to some other gameState.
  *
  * Initial State: MenuState
- *
  */
-
 public class GameModel {
 
 	private GameState currentState;
