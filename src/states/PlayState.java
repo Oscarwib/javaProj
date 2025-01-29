@@ -38,6 +38,7 @@ public class PlayState extends GameState {
 	private int num;
 	private String bombImg;
 	private PowerUp last = null;
+	private boolean speedActive;
 
 
 
@@ -130,7 +131,7 @@ public class PlayState extends GameState {
 
 	private void drawPowerUps(GraphicsContext g) {
 
-		if (isPowerUpActive && movingSpeed < 100) {
+		if (isPowerUpActive && !speedActive) {
 
 			if (last == speedUp) {
 				num = 1;
@@ -234,9 +235,10 @@ public class PlayState extends GameState {
 			movingSpeed += 1;
 			System.out.println("speed set to: " + Integer.toString(movingSpeed));
 		} else if (player.getPasses() > 10 && player.getPasses() % 2 == 0) {
-			isPowerUpActive = true;			
-			num = getRandom();
-
+//			if (movingSpeed < 100) {
+				isPowerUpActive = true;			
+				num = getRandom();
+//			}
 		}
 	}
 
@@ -245,7 +247,15 @@ public class PlayState extends GameState {
 	}
 
 	public void setSpeed(int s) {
+		
+		if (s == 100) {
+			speedActive = true;
+		} else {
+			speedActive = false;
+		}
+		
 		movingSpeed = s;
+		
 	}
 
 
