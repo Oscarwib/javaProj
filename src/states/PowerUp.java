@@ -1,6 +1,10 @@
 package states;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Random;
+
+import javafx.scene.image.Image;
 
 /**
  * @author oscarwiberg, filipyhde		
@@ -38,11 +42,20 @@ public abstract class PowerUp extends Object{
 	public void checkCollision(Player player, PlayState playState) {
 		if (this.playerObjectCollision(player)) {
 			use(player, playState);
+			 this.setX(-1000);
 			scoreSinceActive = player.getPasses();
 		
 		}	
 	}
 	
+	public void setImage(String s) {
+		try {
+			this.img = new Image(new FileInputStream(s));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+		
+		}
+	}
 	
 	public abstract void use(Player player, PlayState playState);
 

@@ -37,7 +37,7 @@ public class PlayState extends GameState {
 	private boolean isPowerUpActive;
 	private int num;
 	private String bombImg;
-	private PowerUp last;
+	private PowerUp last = null;
 	private PowerUp pw;
 	private boolean speedActive;
 
@@ -50,8 +50,9 @@ public class PlayState extends GameState {
 		gameOverText = "GAMEOVER\n" + informationText;
 		fontColor = Color.BLACK;
 		scoreText = "Highscore: " + Integer.toString(score.getHighScore());
-	
-		
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 1200.00, Constants.powerHeight, Constants.powerWidth);
+		speedUp = new SpeedPowerUp(Constants.powerImg, 1200.00, Constants.powerHeight, Constants.powerWidth);
+
 		if (mode) {
 			mode1();
 		} else {
@@ -130,14 +131,12 @@ public class PlayState extends GameState {
 
 		if (isPowerUpActive && !speedActive) {
 
-			if (last == speedUp) {
-				num = 1;
-			}
+
 			if (num == 0) {
 				drawSpeedUp(g);
 				last = speedUp;
 
-			} else if (num == 1){
+			} else {
 				drawExtraLife(g);
 				last = extraLife;
 			}
@@ -155,6 +154,7 @@ public class PlayState extends GameState {
 
 	public void drawExtraLife(GraphicsContext g) {
 		if(extraLife.getX() < 0 - Constants.playerWidth) {
+//			extraLife.setImage(Constants.lifeImg);
 			extraLife.setX(Constants.screenWidth);
 			isPowerUpActive = false;
 		}
@@ -189,9 +189,9 @@ public class PlayState extends GameState {
 			flyingEnemy.resetBombDrop();
 			speedCheck();
 
-			int r = getRandom();
+		
 
-			if(r == 1) {
+			if(getRandom() == 1) {
 				isFlyingEnemyActive = false;
 			}
 
@@ -224,18 +224,21 @@ public class PlayState extends GameState {
 	//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
 	//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
 
-	
-//	kör modulo 6, 10, 15
-//	dessa returnerar bara samma på nummer som är delbara med 30
+
+	//	kör modulo 6, 10, 15
+	//	dessa returnerar bara samma på nummer som är delbara med 30
 	public void speedCheck() {
-		if (player.getPasses() % 5 == 0) {
+		if (player.getPasses() % 6 == 0) {
 			movingSpeed += 1;
 			System.out.println("speed set to: " + Integer.toString(movingSpeed));
-		} else if (player.getPasses() > 10 && player.getPasses() % 2 == 0) { //denna bör ändras till något som aldrig klaffar med den ovan
-//			if (movingSpeed < 100) {
-				isPowerUpActive = true;			
-				num = getRandom();
-//			}
+		} else if (player.getPasses() > 1 && player.getPasses() % 2 == 0) { //denna bör ändras till något som aldrig klaffar med den ovan
+			//			if (movingSpeed < 100) {
+			isPowerUpActive = true;			
+//			num = getRandom();
+			num = 1;
+			System.out.println(num);
+
+			//			}
 		}
 	}
 
@@ -244,15 +247,15 @@ public class PlayState extends GameState {
 	}
 
 	public void setSpeed(int s) {
-		
+
 		if (s == 100) {
 			speedActive = true;
 		} else {
 			speedActive = false;
 		}
-		
+
 		movingSpeed = s;
-		
+
 	}
 
 

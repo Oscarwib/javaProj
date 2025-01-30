@@ -1,5 +1,7 @@
 package states;
 
+import constants.Constants;
+
 /**
  * @author oscarwiberg, filipyhde
  * Denhär klassen har en liten längre chain of events vid kollision. Vi kallar på handle i playstate, sparar hur många passes vi gjort samt nuvarande hastighet i spelet
@@ -38,12 +40,12 @@ public class SpeedPowerUp extends PowerUp {
 			this.checkCollision(player, playState);
 
 		} else {
-
 			if ((player.getPasses() - start) >= 5) {
 				playState.setSpeed(speed);
 				player.lockLives(false);
 				player.setPlayerY(265);
 				active = false;
+
 			}
 		}
 	}

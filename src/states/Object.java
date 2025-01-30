@@ -18,7 +18,7 @@ public abstract class Object {
 	protected double posY; 
 	private double height;
 	private double width;
-	private Image img;
+	protected Image img;
 
 	public Object(String image, double x, double y, double h, double w) {
 
