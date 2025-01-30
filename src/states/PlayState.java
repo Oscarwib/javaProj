@@ -37,9 +37,9 @@ public class PlayState extends GameState {
 	private boolean isPowerUpActive;
 	private int num;
 	private String bombImg;
-	private PowerUp last = null;
+	private PowerUp last;
+	private PowerUp pw;
 	private boolean speedActive;
-
 
 
 
@@ -50,7 +50,8 @@ public class PlayState extends GameState {
 		gameOverText = "GAMEOVER\n" + informationText;
 		fontColor = Color.BLACK;
 		scoreText = "Highscore: " + Integer.toString(score.getHighScore());
-
+	
+		
 		if (mode) {
 			mode1();
 		} else {
@@ -61,9 +62,7 @@ public class PlayState extends GameState {
 
 	public void mode1() {
 		player = new Player(Constants.playerImg);
-		enemy = new Enemy(Constants.enemyImg, 900.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
-		extraLife = new ExtraLifePowerUp(Constants.lifeImg, 1200.00, 170, Constants.powerHeight, Constants.powerWidth);
-		speedUp = new SpeedPowerUp(Constants.powerImg, 1200.00, 265.00, Constants.powerHeight, Constants.powerWidth);
+		enemy = new Enemy(Constants.enemyImg, 900.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);	
 		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg, 900.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
 		bombImg = Constants.bombImg;
 		bgColor = Color.ROYALBLUE;
@@ -74,8 +73,6 @@ public class PlayState extends GameState {
 	public void mode2() {
 		player = new Player(Constants.playerImg2);
 		enemy = new Enemy(Constants.enemyImg2, 900.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
-		extraLife = new ExtraLifePowerUp(Constants.lifeImg, -100.00, 270, Constants.powerHeight, Constants.powerWidth);
-		speedUp = new SpeedPowerUp(Constants.powerImg, -100.00, 265.00, Constants.powerHeight, Constants.powerWidth);
 		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg2, 900.00, 20.00, Constants.enemyHeight, Constants.enemyWidth);
 		bombImg = Constants.bombImg2;
 		bgColor = Color.BEIGE;
@@ -138,11 +135,11 @@ public class PlayState extends GameState {
 			}
 			if (num == 0) {
 				drawSpeedUp(g);
-				last = null;
+				last = speedUp;
 
 			} else if (num == 1){
 				drawExtraLife(g);
-				last = null;
+				last = extraLife;
 			}
 		}
 	}
@@ -154,8 +151,6 @@ public class PlayState extends GameState {
 		}
 
 		g.drawImage(speedUp.getImage(), speedUp.getX(), speedUp.getY(), Constants.powerWidth, Constants.powerHeight);
-
-		last = speedUp;
 	}
 
 	public void drawExtraLife(GraphicsContext g) {
@@ -165,7 +160,6 @@ public class PlayState extends GameState {
 		}
 		g.drawImage(extraLife.getImage(), extraLife.getX(), extraLife.getY(), Constants.powerWidth, Constants.powerHeight);
 
-		last = extraLife;
 	}
 
 	public void drawEnemies(GraphicsContext g) {
@@ -230,11 +224,14 @@ public class PlayState extends GameState {
 	//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
 	//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
 
+	
+//	kör modulo 6, 10, 15
+//	dessa returnerar bara samma på nummer som är delbara med 30
 	public void speedCheck() {
 		if (player.getPasses() % 5 == 0) {
 			movingSpeed += 1;
 			System.out.println("speed set to: " + Integer.toString(movingSpeed));
-		} else if (player.getPasses() > 10 && player.getPasses() % 2 == 0) {
+		} else if (player.getPasses() > 10 && player.getPasses() % 2 == 0) { //denna bör ändras till något som aldrig klaffar med den ovan
 //			if (movingSpeed < 100) {
 				isPowerUpActive = true;			
 				num = getRandom();

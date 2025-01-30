@@ -8,8 +8,8 @@ package states;
 
 public class ExtraLifePowerUp extends PowerUp {
 
-	public ExtraLifePowerUp(String image, double x, double y, double h, double w) {
-		super(image, x, y, h, w);
+	public ExtraLifePowerUp(String image, double x, double h, double w) {
+		super(image, x, h, w);
 	}
 
 	@Override

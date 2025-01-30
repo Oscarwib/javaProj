@@ -12,8 +12,8 @@ public class SpeedPowerUp extends PowerUp {
 	private int speed;
 	private int start;
 
-	public SpeedPowerUp(String image, double x, double y, double h, double w) {
-		super(image, x, y, h, w);
+	public SpeedPowerUp(String image, double x, double h, double w) {
+		super(image, x, h, w);
 	}
 
 	@Override

@@ -15,10 +15,15 @@ public abstract class PowerUp extends Object{
 	private int maxH = 110;
 	private int minH = 265;
 
-	public PowerUp(String image, double x, double y, double h, double w) {
-		super(image, x, y, h, w);
+	public PowerUp(String image, double x, double h, double w) {
+		super(image, x, h, w);
 		this.posY = spawn();
 	}
+	
+	
+	
+//	lägg in en ny constructor som bara tar in String image
+//	lägg till en funktion som returnerar en powerup, likt det som har gjortd för bomben i flying enemy
 
 
 	public double spawn() {

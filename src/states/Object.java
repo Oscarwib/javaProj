@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
  * 
  */
 public abstract class Object {
-	
+
 	protected double posX;
 	protected double posY; 
 	private double height;
@@ -21,21 +21,35 @@ public abstract class Object {
 	private Image img;
 
 	public Object(String image, double x, double y, double h, double w) {
-		
+
 		posY = y;
 		posX = x;
 		width = w;
 		height = h;
-	
+
 		try {
 			img = new Image(new FileInputStream(image));
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
+	public Object(String image, double x, double h, double w) {
+		posX = x;
+		width = w;
+		height = h;
+
+		try {
+			img = new Image(new FileInputStream(image));
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public double getX() {
 		return posX;
 	}
@@ -47,8 +61,8 @@ public abstract class Object {
 	public Image getImage() {
 		return img;
 	}
-	
-	
+
+
 	public void setX(double posX) {
 		this.posX = posX;
 	}
@@ -67,7 +81,7 @@ public abstract class Object {
 
 	public boolean playerObjectCollision(Player player) {
 		boolean hit = false;
-		
+
 		double playerX = player.getPlayerX();
 		double playerY = player.getPlayerY();
 
@@ -79,7 +93,7 @@ public abstract class Object {
 		double centeredX = playerX + (Constants.playerWidth - smallerWidth) / 2;
 		double centeredY = playerY + (Constants.playerHeight - smallerHeight) / 2;
 
-		
+
 		Bounds playerRect = new Rectangle(centeredX, centeredY, smallerWidth, smallerHeight).getBoundsInParent();
 
 
@@ -88,12 +102,12 @@ public abstract class Object {
 		if (playerRect.intersects(objectRect)) {
 			hit = true;
 		}
-		
+
 		return hit;
 	}
-	
-	
-	
-//	här kommer de två olika powerupsen avgöra vad som händer när ma ta den, denna klass kallar på kollisionen
-	
+
+
+
+	//	här kommer de två olika powerupsen avgöra vad som händer när ma ta den, denna klass kallar på kollisionen
+
 }
