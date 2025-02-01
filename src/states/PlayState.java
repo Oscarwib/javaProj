@@ -235,7 +235,7 @@ public class PlayState extends GameState {
 			//			if (movingSpeed < 100) {
 			isPowerUpActive = true;			
 //			num = getRandom();
-			num = 1;
+			num = 0;
 			System.out.println(num);
 
 			//			}
