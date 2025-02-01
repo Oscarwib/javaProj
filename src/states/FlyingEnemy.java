@@ -1,107 +1,74 @@
 package states;
 
-import java.util.ArrayList;
 import constants.Constants;
 import java.util.Random;
 
-import javafx.scene.image.Image;
-
-public class FlyingEnemy extends Antagonist{
-
-//	private double enemyX = 800.00;
-	private ArrayList<Double> enemyY;
-	private double currY;
-	private Random rnd = new Random();
-
-
-	public FlyingEnemy(String enemyImg, double x, double y) {
-		super(enemyImg, x, y);	
-		this.enemyY = new ArrayList<Double>();
-		this.enemyY.add(150.0);
-		this.enemyY.add(180.0);
-		this.enemyY.add(200.0);
-		this.enemyY.add(250.0);
-		//		enemyY.add(265.00);
-		//		enemyY.add(265.00);
-		//		enemyY.add(265.00);
-		//		enemyY.add(265.00);
+/**
+ * @author oscarwiberg, filipyhde
+ * FlyingEnemy är en klass som extendar object.
+ * Den flygande enemyn är en enemy som slöpper bomber på player.
+ * Första bomben släpps på random, därefter tar den in players posiotion fär att försöka släppa på player.
+ * Går att konfigurera den om man vill att den tar in player xpos efter senaste passeringen eller här och nu(det blir svårare)
+ * 
+ */
+public class FlyingEnemy extends Object{
 
 
-		//		double[] enemyY = {250, 200, 150,100};
-		//		enemyY[0] = 100.0;
-		//		enemyY[1] = 150.0;
-		//		enemyY[2] = 200.0;
-		//		enemyY[3] = 250.0;
+	private Random drop;
+	private int margin = 50;
+	private double bombDropX;
+	private boolean bombDropped = false;
+
+	public FlyingEnemy(String enemyImg, double x, double y, double h, double w) {
+		super(enemyImg, x, y, h, w);	
+
+		this.drop = new Random();
+		this.bombDropX = dropNextBombX();
 
 	}
 
-	//	System.out.println(weather.get(rnd.nextInt(weather.size())));
-
-
-
-//	public boolean playerFlyingEnemyCollision(Player player) {
-//		boolean hit = false;
-//
-//		if ((enemyX < (player.getPlayerX() + 80.00)) && ((enemyX) > player.getPlayerX())) { //borde vara +80 på enemyx men funkar ej
-//			//			if((player.getPlayerY() + 60.00) >= enemyY) {
-//			if((player.getPlayerY() + 60.00) >= currY) {
-//				//			if ((enemyY + 80  > (player.getPlayerY())) && ((player.getPlayerY() + 80) > enemyY))  {
-//
-//				hit = true;
-//				player.decreaseLives();
-//				//				if (hit && enemyX < player.getPlayerX() + 100) {
-//				//					hit = false;
-//				//				}
-//
-//			}
-//
-//		}
-//
-//		return hit;
-//
-//		//	public void setEnemyY() {
-//		//		enemyY = 0.0;
-//		//		
-//	}
-
-	public FlyingEnemy(String enemyImg) {
-		super(enemyImg);
-		this.enemyY = new ArrayList<Double>();
-		this.enemyY.add(200.00); //går att stå under
-		this.enemyY.add(210.00); //behöver ducka
-		this.enemyY.add(220.00); //behöver ducka
-		this.enemyY.add(250.00); //behöver hoppa
-	}
-
-	@Override
-	public boolean playerAntagonistCollision(Player player) {
-
-		boolean collisionX = player.getPlayerX() < (x + 60.00) && (player.getPlayerX() + 60.00) > x;
-
-	    // Check for collision on the y-axis
-	    boolean collisionY = player.getRect() < (currY + 60.00) && (player.getRect() + 60.00) > currY;
-
-
-	    if (collisionX && collisionY && !collisionDetected) {
-	        player.decreaseLives();
-	        collisionDetected = true;
-	        return true;
-	    }
-	    
-	    if (!collisionX) {
-            collisionDetected = false;
-        }
-	    
-
-		return false;
 	
+
+	private double dropNextBombX() { 
+		int minX = margin;
+		int maxX = Constants.screenWidth - margin;
+		return drop.nextInt(maxX - minX + 1) + minX;
 	}
 
-	@Override
-	public double getY() {
 
-		currY = enemyY.get(rnd.nextInt(enemyY.size()));
-		return currY;
+	//om man vill kan man skicka med players x pos på dirren, blir lite svårare då ba
+	public Enemy dropBomb(Player p, String s) {
+
+		if (!bombDropped && this.getX() >= bombDropX - 50 && this.getX() <= bombDropX + 50) {
+			Enemy bomb = new Enemy(s, bombDropX, 50, Constants.bombHeight, Constants.bombWidth);  // Drop the bomb at bombDropX
+			System.out.println("Bomb dropped at: " + bombDropX);
+
+			bombDropped = true;  // Mark that the bomb has been dropped
+
+			// Optionally, reset bombDropX to a new random location after dropping the bomb
+			bombDropX = p.getPlayerX();
+			return bomb;
+		}
+
+		return null;
 	}
+
+	public void resetBombDrop() {
+		bombDropped = false;
+	}
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
 
 }

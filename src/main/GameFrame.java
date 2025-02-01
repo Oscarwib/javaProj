@@ -1,16 +1,15 @@
 package main;
 
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import states.GameModel;
 
 /**
+ * @author oscarwiberg, filipyhde
  * This class Wraps a HBox: A HBox is a second level JavaFX container used
  * organize contents in the window (Stage/Scene).
  *
  * The GameFrame, in this case, has the job of creating the game panel, and
  * adding it to itself in order for it to show.
- *
  */
 public class GameFrame extends HBox {
 	private GamePanel g;

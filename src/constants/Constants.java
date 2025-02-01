@@ -1,26 +1,11 @@
 package constants;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import javafx.scene.image.Image;
-
+/**
+ * @author oscarwiberg, filipyhde
+ * Definerar globala konstanter som vi använder återkommande i andra klasser. 
+ */
 public interface Constants {
 
-	/**
-	 * In this file we define some global constants.
-	 *
-	 * An interface is one way to store variables that are truly constants and not
-	 * subject to change during run time.
-	 *
-	 * Please note that the problem with global variables is that anyone can change
-	 * them whenever. This makes it extremely hard to reason about your code. But
-	 * for constants, this is not a problem since we cannot change them, and
-	 * therefore they stay the same during the entire execution of the program.
-	 */
-	/*
-	 * Define the size of the window
-	 */
 	final int screenWidth = 1000;
 	final int screenHeight = 500;
 	
@@ -40,12 +25,21 @@ public interface Constants {
 	
 	//enemies
 	String enemyImg = "src/Images1/lorry.png";
+	String enemyImg2 = "src/Images1/fire_engine.png";
 	String flyingEnemyImg = "src/Images1/saucer.png";
-	double enemyWidth = 100;
-	double enemyHeight = 100;
+	String flyingEnemyImg2 = "src/Images1/helicopter.png";
+	String bombImg = "src/Images1/bomb.png";
+	String bombImg2 = "src/Images1/8ball.png";
+	double bombWidth = 50;
+	double bombHeight = 50;
+	double enemyWidth = 80;
+	double enemyHeight = 80;
 	
 //	powerups
-	String lifeImg = "src/Images1/heart2.png";
-	String powerImge = "src/Images1/blixt.png";
+	String lifeImg = "src/Images1/apple.png";
+	String powerImg = "src/Images1/zap.png";
+	double powerWidth = 40;
+	double powerHeight = 40;
+	
 	
 }
