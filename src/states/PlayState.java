@@ -37,12 +37,10 @@ public class PlayState extends GameState {
 	private boolean isPowerUpActive;
 	private int num;
 	private String bombImg;
-	private PowerUp last = null;
-	private PowerUp pw;
 	private boolean speedActive;
 
 
-
+// Sätter upp playstate och tar en in en boolean som avgör om mode 1 eller 2
 	public PlayState(GameModel model, boolean mode) {
 		super(model);
 		informationText = "Press Escape \nTo Return To The Menu";
@@ -60,7 +58,7 @@ public class PlayState extends GameState {
 		}
 
 	}
-
+// sätter upp mode1 med relevanta variabler
 	public void mode1() {
 		player = new Player(Constants.playerImg);
 		enemy = new Enemy(Constants.enemyImg, 900.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);	
@@ -70,7 +68,7 @@ public class PlayState extends GameState {
 		lineColor = Color.WHITE;
 
 	}
-
+//samma som ovan fast mode 2
 	public void mode2() {
 		player = new Player(Constants.playerImg2);
 		enemy = new Enemy(Constants.enemyImg2, 900.00, 270.00, Constants.enemyHeight, Constants.enemyWidth);
@@ -82,10 +80,8 @@ public class PlayState extends GameState {
 
 	}
 
-	/**
-	 * Draws information text to the screen.
-	 */
-	@Override
+	
+//	ritar ut allt relevant på skärmen, gärs från main och sker med 50 ggr per sekund
 	public void draw(GraphicsContext g) {
 		drawBackground(g);
 		drawGameStats(g);
@@ -93,11 +89,11 @@ public class PlayState extends GameState {
 		drawEnemies(g);
 		drawPowerUps(g);
 	}
-
+//	ritar player
 	private void drawPlayer(GraphicsContext g) {
 		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);		
 	}
-
+//	ritar texten på skärmen samt 
 	private void drawGameStats(GraphicsContext g) {
 		currScore = "Currently: " + Integer.toString(player.getPasses());
 
@@ -117,7 +113,7 @@ public class PlayState extends GameState {
 		}
 
 	}
-
+//	ritar bakgrunden samt linjen som spelaren står på
 	private void drawBackground(GraphicsContext g) {
 		drawBg(g, bgColor);
 		g.setStroke(lineColor);
@@ -126,7 +122,7 @@ public class PlayState extends GameState {
 		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
 	}
-
+//	om powerups har blivit ativerade och speedup powerupen inte är aktiov så ritas en ny powerup ut, beroende på om den tar num är 0 eller 1, som genereras random i speedcheck()
 	private void drawPowerUps(GraphicsContext g) {
 
 		if (isPowerUpActive && !speedActive) {
@@ -134,15 +130,14 @@ public class PlayState extends GameState {
 
 			if (num == 0) {
 				drawSpeedUp(g);
-				last = speedUp;
 
 			} else {
 				drawExtraLife(g);
-				last = extraLife;
 			}
 		}
 	}
 
+//	ritar speedup, fungerar likadant som ritningen under för den andra powerupen
 	public void drawSpeedUp(GraphicsContext g) {
 		if(speedUp.getX() < 0 - Constants.playerWidth) {
 			speedUp.setX(Constants.screenWidth);
@@ -154,7 +149,6 @@ public class PlayState extends GameState {
 
 	public void drawExtraLife(GraphicsContext g) {
 		if(extraLife.getX() < 0 - Constants.playerWidth) {
-//			extraLife.setImage(Constants.lifeImg);
 			extraLife.setX(Constants.screenWidth);
 			isPowerUpActive = false;
 		}
@@ -162,8 +156,11 @@ public class PlayState extends GameState {
 
 	}
 
+//	ritar enemy, beroende på om den flygande har blivit aktiverad eller ej, som intitielt sker i ground enemy, därefter i flygande enemy
+//	om bomb inte är null så ritas den också.
 	public void drawEnemies(GraphicsContext g) {
 
+		
 		if (!isFlyingEnemyActive) {	
 			drawGroundEnemy(g);
 		} else {
@@ -178,7 +175,8 @@ public class PlayState extends GameState {
 
 
 
-
+//	om den befinner sig utanför skärmen så pterställer vi en vriabel för att bomben har blivit droppad i flyingenemy klassen
+//	Den tar ett rando 50/50 beslut om det ska ritas uten en flygande enemy härnäst, om false så blir det flygande igen
 	private void drawFlyingEnemy(GraphicsContext g) {
 		g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), flyingEnemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
@@ -199,8 +197,9 @@ public class PlayState extends GameState {
 		}		
 	}
 
+//	fungerar mer eller mindre likadant som för flying enemy. 
+//	Sparar en variabel för om det skett en kollision eller ej, sätter den til null samt kordinaten för kollisonen varje gång enemy hamnar utanför skärmen.
 	private void drawGroundEnemy(GraphicsContext g) {
-
 
 		g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
 
@@ -215,37 +214,38 @@ public class PlayState extends GameState {
 
 			if (player.getPasses() > 4 && getRandom() == 0) {  // 50% chance after player hase passed 
 				isFlyingEnemyActive = true;
-				// Reset position
-				System.out.println("Stage one activated, flyingenemy added to the mix");
+				System.out.println("flyingenemy");
 			}
 		}		
 	}
 
-	//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
-	//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
 
-
-	//	kör modulo 6, 10, 15
-	//	dessa returnerar bara samma på nummer som är delbara med 30
+//	Vi baserar nivåperna och hastigheten på spelet baserat på hur mpånga enemy vi har passerat.
+//	dessa returnerar bara samma på nummer som är delbara med 30, därmed gör vi båda sakerna om det är en siffra jämt delbar med 30
+//	om vi har passerat ett antal jämt delbart med 6, ökjar vi farten på spelet.
+//	om vi har passerat fler än tio samt att det är en siffra jämt delbart med 10, aktiverar vi powerupsm, och genrar vilken som ska ritas, 50/50 chans.
 	public void speedCheck() {
-		if (player.getPasses() % 6 == 0) {
+		if (player.getPasses() % 30 == 0) {
 			movingSpeed += 1;
 			System.out.println("speed set to: " + Integer.toString(movingSpeed));
-		} else if (player.getPasses() > 1 && player.getPasses() % 2 == 0) { //denna bör ändras till något som aldrig klaffar med den ovan
-			//			if (movingSpeed < 100) {
 			isPowerUpActive = true;			
-//			num = getRandom();
-			num = 0;
-			System.out.println(num);
+			num = getRandom();
+		} else if (player.getPasses() % 6 == 0) {
+			movingSpeed += 1;
+			System.out.println("speed set to: " + Integer.toString(movingSpeed));
+		} else if (player.getPasses() >= 10 && player.getPasses() % 10 == 0) {
+			isPowerUpActive = true;			
+			num = getRandom();
 
-			//			}
 		}
 	}
 
 	public int getSpeed() {
 		return movingSpeed;
 	}
-
+	
+//	används genom speedup powerup, man måste veta i denhär klassen om den är aktiv.
+// Använde inte för något annat än speedpowerup
 	public void setSpeed(int s) {
 
 		if (s == 100) {
@@ -258,7 +258,7 @@ public class PlayState extends GameState {
 
 	}
 
-
+//	funktion för att returnera random, denna kan hantera att den kallas på på flera ställen samtidigt.
 	public int getRandom() {
 		return ThreadLocalRandom.current().nextInt(2);
 	}
@@ -281,7 +281,6 @@ public class PlayState extends GameState {
 			break;
 
 		case UP:
-			//		Om spelaren duckar kan den inte hoppa, då ställer sig spelaren upp istället
 			up = true;
 			break;
 
@@ -313,7 +312,7 @@ public class PlayState extends GameState {
 		}
 	}
 
-
+//	om powerups är aktiva updaterar den poweruppen som har ritats basserat på vilken siffra numm är, samt kollar efter kollisioner.
 	private void movePowerUps() {
 		if (isPowerUpActive) {
 
@@ -332,7 +331,9 @@ public class PlayState extends GameState {
 
 	}
 
-
+//	om vi hoppar med player aktiveras up boolean, detta för att hoppet blir som en animation snarar än när vi flyttar oss högfer och vänster.
+//	spelar objectet hanterar hoppet själv. den minskar sin y position tills den når toppen, sen ökar den y positionen tills den är tillbaks på marken.
+//	då återställer vi till ursprungspositionen och ställer up variabeln till false för att sluta animationen. 
 	private void movePlayer() {
 		if (up) {
 
@@ -344,7 +345,8 @@ public class PlayState extends GameState {
 		}		
 	}
 
-
+//	Eftersom ground enemy inte försvinner när vi krockar behöver vi en global boolean här som gör att vi bara kollar efter kollision tills den är true.
+//	annars tappar vi alla liv på en gång eftersom den kallas 50 ggr per sekund. 
 	private void checkGroundCollision() {
 		if (!collided && enemy.playerObjectCollision(player)) {
 
@@ -364,7 +366,8 @@ public class PlayState extends GameState {
 		} 		
 	}
 
-
+//	fungerar lite annorlunda jämfört med kollisionen på marken. Här behöver vi ingen global variabel. Vi ställer istället bomben till null om det sker en kollisone eller om den åker utanför skärmen.
+	
 	private void checkBombCollision() {
 		if (bomb != null) {
 			bomb.setY(bomb.getY() + movingSpeed);
@@ -381,7 +384,9 @@ public class PlayState extends GameState {
 		}
 	}
 
-
+//	om det är en bil enemy så minskar vi bara dens x position.
+//	Om flygande enemy så skapar vi en ny bomb som får x koordinaten som player hade sist vi kallade på den funktionen. Sen släpps bomben inom +-50px av den.
+//	om den bomben vi skapat inte är null så tilldelar vi globala variabeln bomb den nya bomben. Anars ritas bomben bara vid ursprungspositionen.
 	private void moveEnemies() {
 		if (isFlyingEnemyActive) {
 
