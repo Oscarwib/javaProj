@@ -1,6 +1,7 @@
 package main;
 
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import states.GameModel;
 
 /**

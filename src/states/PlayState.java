@@ -1,16 +1,20 @@
 package states;
 
-import testing.Tester;
-
 import javafx.scene.canvas.GraphicsContext;
+
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-import static constants.Constants.SCREEN_HEIGHT;
-import static constants.Constants.SCREEN_WIDTH;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Random;
+
+import constants.Constants;
 
 /**
  * This state represents the Playing State of the Game The main responsibility
@@ -35,20 +39,80 @@ public class PlayState extends GameState {
 	 * a way to make this more general and not duplicate variables?
 	 */
 	private String informationText;
+	private String livesleft;
+	private String gameOverText;
 	private Color bgColor;
+	private Color lineColor;
 	private Color fontColor;
-	private Line dottedline;
+	private Player player;
+	private Enemy enemy;
+	private boolean collided = false;
+	private boolean up = false;
+	private boolean down = false;
+	private boolean gameOver = false;
+	private MenuState menu;
+	private HighScore score = new HighScore();
+	private int clearedEnemies;
+	private String scoreText;
+	private ExtraLifePowerUp extraLife;
+	private FlyingEnemy flyingEnemy;
+	private double tempy;
+	private Random engen;
+	private String slidingPlayer;
+	private int movingSpeed = 10;
+
 
 	/* Class only used for testing */
-	private Tester tester;
 
-	public PlayState(GameModel model) {
+	//	TODO nästa steg, lägg in en flygande enemy för att testa glid funktionen, ändra boundsen på den glidande bilden!
+	// 	TODO kanske ta bort att skicka med image när man instansierar player
+
+	public PlayState(GameModel model, boolean mode) {
 		super(model);
-		informationText = "Press Escape To Return To The Menu";
-		bgColor = Color.WHITE;
-		fontColor = Color.BLUE;
+		informationText = "Press Escape \nTo Return To The Menu";
+		livesleft = "Lives left: ";
+		gameOverText = "GAMEOVER\n" + informationText;
+		fontColor = Color.BLACK;
+		scoreText = "Highscore: " + Integer.toString(score.getHighScore());
+		//		+ Integer.toString(score.getHighScore());
 
-		tester = new Tester();
+
+		if (mode) {
+			mode1();
+		} else {
+			mode2();
+		}
+
+
+		//		menu = new MenuState(model);
+
+	}
+
+	public void mode1() {
+		player = new Player(Constants.playerImg);
+		slidingPlayer = Constants.slidingPlayerImg;
+		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
+		flyingEnemy.setAntagonistX(800.00);
+		tempy = flyingEnemy.getY();
+		bgColor = Color.ROYALBLUE;
+		lineColor = Color.WHITE;
+
+	}
+
+	public void mode2() {
+		player = new Player(Constants.playerImg2);
+		slidingPlayer = Constants.slidingPlayerImg2;
+		enemy = new Enemy(Constants.enemyImg, 800.00, 250.00);
+		extraLife = new ExtraLifePowerUp(Constants.lifeImg);
+		flyingEnemy = new FlyingEnemy(Constants.flyingEnemyImg);
+		flyingEnemy.setAntagonistX(800.00);
+		tempy = flyingEnemy.getY();
+		bgColor = Color.BEIGE;
+		lineColor = Color.BLACK;
+
+
 	}
 
 	/**
@@ -60,36 +124,183 @@ public class PlayState extends GameState {
 
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
-		g.fillText(informationText, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
-//		dottedline = new Line(20, 200, 120, 270);
-//		dottedline.getStrokeDashArray().addAll(2d);
-		g.setStroke(Color.BLACK);
+		//		ritar liv kvar + nuvarande highscore om det inte är gameover, annars ritar den bara gemaovertexten
+
+		if (!gameOver) {
+			g.fillText(livesleft+player.getLives(), 0, 30);
+			g.fillText(informationText, Constants.screenWidth - 300, 30);
+			g.fillText(scoreText, 0, 60);
+		} else {
+			g.fillText(gameOverText, Constants.screenWidth/2, 200);
+			score.saveScore(player.getPasses());
+		}
+
+	
+
+		g.setStroke(lineColor);
 		g.setLineWidth(1);
 		g.setLineDashes(2);
-		g.strokeLine(SCREEN_WIDTH, 650, 0, 650);
-		// Can also use:
-		// g.setStroke(fontColor);
-		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		g.strokeLine(Constants.screenWidth, 350, 0, 350);
 
-		// This could be a call to all our objects that we want to draw.
-		// Using the tester simply to illustrate how it could work.
-		tester.delegate(g);
+		
+		g.drawImage(player.getImage(), player.getPlayerX(), player.getPlayerY(), Constants.playerWidth, Constants.playerHeight);
+		
+		
+		
+//		Detta block används för att rita ut rectanglarna runt spelare och enemy
+		g.setStroke(Color.BLACK); // Set the rectangle's border color
+		g.setLineWidth(2); // Set the border width
+		g.strokeRect(flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
+		g.strokeRect(player.getPlayerX(), player.getRect(), Constants.playerWidth, Constants.playerHeight);
+
+		
+		
+		drawEnemy(g);
+
+	
+
+
 	}
+
+	public void drawEnemy(GraphicsContext g) {
+		engen = new Random(); 
+
+
+		//		g.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), Constants.enemyWidth, Constants.enemyHeight);
+		//		if (enemy.getX() < 0 - Constants.enemyWidth) {
+		//			enemy.setAntagonistX(Constants.screenWidth);
+		//			player.updatePasses(1);
+		//		}
+
+
+
+
+		g.drawImage(flyingEnemy.getImage(), flyingEnemy.getX(), tempy, Constants.enemyWidth, Constants.enemyHeight);
+		if (flyingEnemy.getX() < 0 - Constants.enemyWidth) {
+			flyingEnemy.setAntagonistX(Constants.screenWidth);
+			player.updatePasses(1);
+			tempy = flyingEnemy.getY();
+			
+			if (player.getPasses() % 5 == 0) {
+				movingSpeed += 4;
+			}
+
+		}
+
+	}
+
+
+
+
+
+	//TODO om score är större än visst antal --> lotta mellan flying och vanlig, vi kan göra en random med 2 int, ochberoende på vad den blir kan vi rita en
+	//TODO göra en variabel för y positionen som hämtas om vi ritar flygande, för att den ska behålla samma position på hela y axeln
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	@Override
 	public void keyPressed(KeyEvent key) {
-		System.out.println("Trycker på " + key.getCode() + " i PlayState");
 
-		if (key.getCode() == KeyCode.ESCAPE)
+
+		switch (key.getCode()) {
+
+		case ESCAPE:
 			model.switchState(new MenuState(model));
+			break;
+
+		case UP:
+			//		Om spelaren duckar kan den inte hoppa, då ställer sig spelaren upp istället
+			if (down) {
+				player.standUp();
+				down = false;
+			} else {
+				up = true;
+			}
+			break;
+
+		case DOWN:
+			//		Spelaren kan inte ducka om den är mitt i ett hopp
+			if (!up) {
+				down = true;
+
+			}
+			break;
+
+		default:
+			break;
+
+		}
+
+
+
 	}
 
 	@Override
 	public void update() {
-		// Here one would probably instead move the player and any
-		// enemies / moving obstacles currently active.
-		tester.update();
+		//om enemy position är mindre än player och collide är true kollar den inte collision
+
+		//		Enemy hoppar 10 snäpp till vänster för varje update
+		//		enemy.setAntagonistX(enemy.getX()-10);
+		flyingEnemy.setAntagonistX(flyingEnemy.getX()-movingSpeed);
+		//		flyingEnemy.setAntagonistX(flyingEnemy.getX() -10);
+
+		//		Om 
+		if (!gameOver) {
+
+			if (!collided) {
+				//				collided = enemy.playerAntagonistCollision(player);
+				collided = flyingEnemy.playerAntagonistCollision(player);
+
+
+				if (Integer.valueOf(player.getLives()) == 0) {
+					gameOver = true;
+				} 
+			}
+			
+			//återställer boolean när enemy passerat
+			if (collided && flyingEnemy.getX() < player.getPlayerX()) {
+				collided = false;
+			}
+
+
+
+
+
+			if (up) {
+
+				player.jump(movingSpeed);
+			}
+
+			if (player.getPlayerY() == 265) {
+				up = false;
+			}
+
+			if (down) {
+
+				player.slide(slidingPlayer);
+
+			}
+
+		}
+
 	}
+
+
+
+	// Here one would probably instead move the player and any
+	// enemies / moving obstacles currently active.
 
 	/**
 	 * We currently don't have anything to activate in the PlayState so we leave
@@ -97,7 +308,7 @@ public class PlayState extends GameState {
 	 */
 	@Override
 	public void activate() {
-		
+
 	}
 
 	/**
@@ -106,7 +317,7 @@ public class PlayState extends GameState {
 	 */
 	@Override
 	public void deactivate() {
-		
+
 	}
 
 }

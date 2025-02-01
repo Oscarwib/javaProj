@@ -1,13 +1,19 @@
 package states;
 
 import javafx.scene.canvas.GraphicsContext;
+
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.image.Image;
 
-import static constants.Constants.SCREEN_HEIGHT;
-import static constants.Constants.SCREEN_WIDTH;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import constants.Constants;
 
 /**
  * This state represents the menu of the Game The main responsibility of this
@@ -24,13 +30,23 @@ public class MenuState extends GameState {
 	private Color fontColor;
 	// A PlayState, so we can change to the PlayState from the menu.
 	private PlayState playState;
+	private Image dinosaur;
+	private boolean mode1;
 
 	public MenuState(GameModel model) {
 		super(model);
-		playState = new PlayState(model);
-		informationText = "Press Enter To Play\nEscape to exit";
-		bgColor = Color.GREEN;
-		fontColor = Color.RED;
+		informationText = "Welcome to the Dino game!\nTo play, press 1 for mode 1 or 2 for mode 2\nEscape to exit game";
+		bgColor = Color.GREY;
+		fontColor = Color.LIGHTBLUE;
+		
+		try {
+			
+		dinosaur = new Image(new FileInputStream("src/Images1/dinosaur.png"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -39,62 +55,52 @@ public class MenuState extends GameState {
 	@Override
 	public void draw(GraphicsContext g) {
 		drawBg(g, bgColor);
-
 		g.setFill(fontColor);
 		g.setFont(new Font(30)); // Big letters
 		// Print the information text, centered on the canvas
-		g.fillText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-		// Can also use:
-		// g.setStroke(fontColor);
-		// g.strokeText(informationText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		g.fillText(informationText, Constants.screenWidth/4, Constants.screenHeight / 4);
+		g.drawImage(dinosaur, Constants.screenWidth/2, Constants.screenHeight/2, 200, 200);
+	
 	}
 
-	/**
-	 *
-	 * @param key KeyEvent representing the pressed key
-	 *
-	 *            This function prints the pressed key to the console it's used to
-	 *            show that a change of state has been made
-	 *
-	 *            For more information see GameState
-	 */
+	
 	@Override
 	public void keyPressed(KeyEvent key) {
 		System.out.println("Trycker på " + key.getText() + " i MenuState");
 
-		if (key.getCode() == KeyCode.ENTER) {
+		if (key.getCode() == KeyCode.DIGIT1) {
+			mode1 = true;
+			playState = new PlayState(model, mode1);
+			model.switchState(playState);
+		} else if (key.getCode() == KeyCode.DIGIT2) {
+			mode1 = false;
+			playState = new PlayState(model, mode1);
 			model.switchState(playState);
 		} else if (key.getCode() == KeyCode.ESCAPE) {
 			System.exit(0);
 		}
+		
 	}
 
-	/**
-	 * We have nothing to update in the menu, no moving objects etc. so we leave the
-	 * update method empty.
-	 */
 	@Override
 	public void update() {
+		// TODO Auto-generated method stub
+		
 	}
 
-	/**
-	 * We currently don't have anything to activate in the MenuState so we leave
-	 * this method empty in this case.
-	 */
 	@Override
 	public void activate() {
-
+		// TODO Auto-generated method stub
+		
 	}
-
-	/**
-	 * We currently don't have anything to deactivate in the MenuState so we leave
-	 * this method empty in this case.
-	 */
 
 	@Override
 	public void deactivate() {
-
+		// TODO Auto-generated method stub
+		
 	}
+
+	
 
 }
 

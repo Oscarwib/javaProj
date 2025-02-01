@@ -1,5 +1,10 @@
 package constants;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javafx.scene.image.Image;
+
 public interface Constants {
 
 	/**
@@ -16,16 +21,31 @@ public interface Constants {
 	/*
 	 * Define the size of the window
 	 */
-	int SCREEN_WIDTH = 1000;
-	int SCREEN_HEIGHT = 800;
+	final int screenWidth = 1000;
+	final int screenHeight = 500;
 	
 	// Player
-	
+	String slidingPlayerImg = "src/Images1/player_sliding.png";
+//	String playerImg = "src/Images1/runner.png";
 	String playerImg = "src/Images1/player.png";
+	String slidingPlayerImg2 = "src/Images1/player2_sliding.png";
+//	String playerImg2 = "src/Images1/woman-running.png";
+	String playerImg2 = "src/Images1/player2.png";
+	double playerWidth = 100;
+	double playerHeight = 100;
 	
 	//colours
 	String Bluebackground = "-fx-background-color: #34495E;";
 	String Blackbackground = "-fx-background-color: #111111;";
 	
+	//enemies
+	String enemyImg = "src/Images1/lorry.png";
+	String flyingEnemyImg = "src/Images1/saucer.png";
+	double enemyWidth = 100;
+	double enemyHeight = 100;
+	
+//	powerups
+	String lifeImg = "src/Images1/heart2.png";
+	String powerImge = "src/Images1/blixt.png";
 	
 }
