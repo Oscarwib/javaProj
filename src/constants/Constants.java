@@ -41,5 +41,7 @@ public interface Constants {
 	double powerWidth = 40;
 	double powerHeight = 40;
 	
+	String backgroundImg = "src/Images1/city.png";
+	String backgroundImg2 = "src/Images1/city1.png";
 	
 }

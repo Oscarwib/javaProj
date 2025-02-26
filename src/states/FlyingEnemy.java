@@ -11,7 +11,7 @@ import java.util.Random;
  * Går att konfigurera den om man vill att den tar in player xpos efter senaste passeringen eller här och nu(det blir svårare)
  * 
  */
-public class FlyingEnemy extends Object{
+public class FlyingEnemy extends NonPlayableObject{
 
 
 	private Random drop;

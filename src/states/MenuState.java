@@ -25,10 +25,17 @@ public class MenuState extends GameState {
 	private Image img1;
 	private Image img2;
 	private boolean mode1;
+	private HighScore score = new HighScore();
+
 
 	public MenuState(GameModel model) {
 		super(model);
-		informationText = "Welcome to the Dino game!\nTo play, press:\n1 for mode 1\n2 for mode 2\nEscape to exit game";
+		informationText = "Welcome to the Dino game!"
+				+ "\nCurrent highscore is: " + Integer.toString(score.getHighScore())
+				+ "\nTo play, press:"
+				+ "\n1 for mode 1"
+				+ "\n2 for mode 2"
+				+ "\nEscape to exit game";
 		bgColor = Color.GREY;
 		fontColor = Color.LIGHTBLUE;
 

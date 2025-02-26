@@ -5,7 +5,7 @@ package states;
  * Enemy(groundenemy), gör inte så mycket unikt och använder mest den fördefinierade funktionaliteten som finns objekt classen
  * Bomben som flyingenemy är en instan av enemy.
  */
-public class Enemy extends Object{
+public class Enemy extends NonPlayableObject{
 
 	
 

@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
  * Allt som inte är player går egentligen genom denna class för att ärva funktionalitet och variabler. 
  * 
  */
-public abstract class Object {
+public abstract class NonPlayableObject {
 
 	protected double posX;
 	protected double posY; 
@@ -20,7 +20,7 @@ public abstract class Object {
 	private double width;
 	protected Image img;
 
-	public Object(String image, double x, double y, double h, double w) {
+	public NonPlayableObject(String image, double x, double y, double h, double w) {
 
 		posY = y;
 		posX = x;
@@ -36,7 +36,7 @@ public abstract class Object {
 		}
 	}
 
-	public Object(String image, double x, double h, double w) {
+	public NonPlayableObject(String image, double x, double h, double w) {
 		posX = x;
 		width = w;
 		height = h;
